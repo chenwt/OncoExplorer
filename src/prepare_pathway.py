@@ -143,7 +143,7 @@ def step1(path_inputData,path_outputData):
     print 'Done step 1!'
 
 
-def step2(path_outputData)
+def step2(path_outputData):
 
     print 'preparing training and test set...'
 
