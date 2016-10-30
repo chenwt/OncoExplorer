@@ -1,0 +1,11 @@
+# update_local: update local code files from Github
+# . update_local
+# under directory of OncoExplorer
+
+git config --global user.name "yifengtao"
+git config --global user.email "taoyf12@sina.com"
+
+git remote add upstream https://github.com/yifengtao/OncoExplorer.git
+
+git fetch upstream
+git merge upstream/master
