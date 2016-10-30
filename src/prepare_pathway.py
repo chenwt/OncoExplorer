@@ -1,10 +1,11 @@
 # Usage:
-# python --inputData '/home/yifengt/Github/inputData' --outputData '/home/yifengt/Github/outputData'
+# python prepare_pathway.py --inputData '/home/yifengt/Github/inputData' --outputData '/home/yifengt/Github/outputData'
 
 from collections import defaultdict as dd
 import io
 import os
 import random
+import argparse
 
 def readTDI_tuple(path, pos_patient, pos_sga, pos_deg, pos_prob):
     '''
@@ -374,5 +375,5 @@ if __name__ == '__main__':
     step2(path_outputData)
     step3(path_outputData)
 
-    # python --inputData '/home/yifengt/Github/inputData' --outputData '/home/yifengt/Github/outputData'
+# python prepare_pathway.py --inputData '/home/yifengt/Github/inputData' --outputData '/home/yifengt/Github/outputData'
 
