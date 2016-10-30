@@ -1,3 +1,6 @@
+# Usage:
+# python --inputData '/home/yifengt/Github/inputData' --outputData '/home/yifengt/Github/outputData'
+
 from collections import defaultdict as dd
 import io
 import os
@@ -355,20 +358,21 @@ def step3(path_outputData):
     print 'Done step 3!'
 
 if __name__ == '__main__':
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--inputData', help = 'directory of input data', type = str)
+    parser.add_argument('--outputData', help = 'directory of output data', type = str)
+    args = parser.parse_args()
 
-    root = '/home/yifengt/Github'
-    path_inputData = root+'/inputData'
-    path_outputData = root+'/outputData'
+    # root = '/home/yifengt/Github'
+    # path_inputData = root+'/inputData'
+    # path_outputData = root+'/outputData'
 
-    #step1(path_inputData,path_outputData)
-    #step2(path_outputData)
+    path_inputData = args.inputData
+    path_outputData = args.outputData
+
+    step1(path_inputData,path_outputData)
+    step2(path_outputData)
     step3(path_outputData)
 
-
-
-
-
-    
-
-
+    # python --inputData '/home/yifengt/Github/inputData' --outputData '/home/yifengt/Github/outputData'
 
