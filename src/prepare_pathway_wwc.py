@@ -123,13 +123,33 @@ if __name__ == '__main__':
         sga2deg[(sga,deg)] = prob
         #print sga,deg,prob
 
-    f = open(path_outputData+'/sga2deg.graph', 'w')
+    f = open(path_outputData+'/deg2sga.graph', 'w')
     for row in sga2deg.keys():
         sga,deg = row[0],row[1]
         prob = sga2deg[(sga,deg)]
-        print >> f, 'sga2deg'+'\t'+row[0].lower()+'\t'+row[1].lower()+'\t'+prob
+        print >> f, 'deg2sga'+'\t'+deg.lower()+'\t'+sga.lower()+'\t'+prob
 #        print prob
     f.close()
+
+
+    sga_corpus_test = set()
+    deg2sgalist_test = dd(list)
+    path_test = path_inputData+'/tdi-test.exam'
+    print 'reading from: {}...'.format(path_test)
+    for line in open(path_train, 'r'):
+        values = line.strip().split('\t')
+        deg = values[1]
+        for i in len(values):
+            if i <= 1: continue
+            sga = values[i]
+            sga_corpus_test.add(sga)
+            deg2sgalist_test[deg].append(sga)
+
+
+
+
+
+    writeSample(path_outputData, 'test.examples', deg2sgalist_test, sga_corpus_test)
 
 
 
