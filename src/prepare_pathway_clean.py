@@ -283,12 +283,21 @@ def step2(path_outputData):
     sga2deg_remain = dd(float)
 
 
+    sga_train_corpus = set()
+    deg_train_corpus = set()
+    sga_test_corpus = set()
+    deg_test_corpus = set()
+    sga_remain_corpus = set()
+    deg_remain_corpus = set()
+
     print 'saving to {}...'.format(path_sga2deg_train)
     f = open(path_sga2deg_train, 'w')
     for row in sga2deg_train_clean.keys():
         if sga2deg_train_clean[row] < 0.1:
             print >> f, row[0]+'\t'+row[1]+'\t'+str(1.0 - sga2deg_train_clean[row])
             sga2deg_train[row] = 1.0 - sga2deg_train_clean[row]
+            sga_train_corpus.add(row[0])
+            deg_train_corpus.add(row[1])
     f.close()
 
     print 'saving to {}...'.format(path_sga2deg_test)
@@ -297,6 +306,8 @@ def step2(path_outputData):
         if sga2deg_test_clean[row] < 0.1:
             print >> f, row[0]+'\t'+row[1]+'\t'+str(1.0 - sga2deg_test_clean[row])
             sga2deg_test[row] = 1.0 - sga2deg_test_clean[row]
+            sga_test_corpus.add(row[0])
+            deg_test_corpus.add(row[1])
     f.close()
 
     print 'saving to {}...'.format(path_sga2deg_remain)
@@ -305,6 +316,8 @@ def step2(path_outputData):
         if sga2deg_remain_clean[row] < 0.1:
             print >> f, row[0]+'\t'+row[1]+'\t'+str(1.0 - sga2deg_remain_clean[row])
             sga2deg_remain[row] = 1.0 - sga2deg_remain_clean[row]
+            sga_remain_corpus.add(row[0])
+            deg_remain_corpus.add(row[1])
     f.close()
 
 
