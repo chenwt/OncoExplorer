@@ -1,6 +1,3 @@
-# Usage:
-# python prepare_pathway.py --inputData '/home/yifengt/Github/inputData' --outputData '/home/yifengt/Github/outputData'
-
 from collections import defaultdict as dd
 import io
 import os
@@ -375,5 +372,6 @@ if __name__ == '__main__':
     step2(path_outputData)
     step3(path_outputData)
 
-# python prepare_pathway.py --inputData '/home/yifengt/Github/inputData' --outputData '/home/yifengt/Github/outputData'
+# Usage:
+# python prepare_pathway.py --inputData '/remote/curtis/yifengt/inputData' --outputData '/remote/curtis/yifengt/outputData'
 
