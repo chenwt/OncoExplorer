@@ -203,7 +203,7 @@ def step2(path_outputData):
     random.shuffle(patid_list)
 
     thresh1 = 0.25
-    thresh2 = 0.25
+    thresh2 = 0.5
     cut1 = int(thresh1*NUM_PAT)
     cut2 = int(thresh2*NUM_PAT)
     patid_train = patid_list[0:cut1]
@@ -358,7 +358,7 @@ def step2(path_outputData):
     path_label = dest+'/isDEG.cfacts'
     print 'saving to {}...'.format(path_label)
     f = open(path_label,'w')
-    for deg in deg_train_corpus:
+    for deg in deg_train_corpus.intersection(deg_test_corpus):
         print >> f, 'isDEG\t'+deg
     f.close
     print 'Done step 2!'
@@ -369,6 +369,10 @@ def step3(path_outputData):
 
     root = path_outputData
     dest = root+'/pathway'
+
+
+
+
 
     deg_corpus_train = set()
     path_deg_corpus_train = dest+'/isDEG.cfacts'
@@ -389,15 +393,14 @@ def step3(path_outputData):
 
 
 
-
-
-
-
-
-
     # generate the testing set.
     deg_corpus_test = set()
     path_deg_corpus_test = dest+'/isDEG.cfacts'
+
+    print 'reading from: {}...'.format(path_deg_corpus_test)
+    for line in open(path_deg_corpus_test, 'r'):
+        values = line.strip().split('\t')
+        deg_corpus_test.add(values[1])
 
     sga2deglist_test = dd(list)
     path_test= dest+'/test'
@@ -409,6 +412,11 @@ def step3(path_outputData):
         deg_corpus_test.add(deg)
 
     writeSample(dest, 'test.examples', sga2deglist_test, deg_corpus_test)
+
+
+
+
+
 
     print 'Done step 3!'
 
@@ -430,5 +438,5 @@ if __name__ == '__main__':
     step3(path_outputData)
 
 # Usage:
-# python prepare_pathway.py --inputData '/remote/curtis/yifengt/inputData' --outputData '/remote/curtis/yifengt/outputData'
+# python prepare_pathway_clean.py --inputData '/remote/curtis/yifengt/inputData' --outputData '/remote/curtis/yifengt/outputData'
 
