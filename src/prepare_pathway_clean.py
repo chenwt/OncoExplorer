@@ -276,25 +276,35 @@ def step2(path_outputData):
             print 'error!!!'
 
 
+
+
+    sga2deg_train = dd(float)
+    sga2deg_test = dd(float)
+    sga2deg_remain = dd(float)
+
+
     print 'saving to {}...'.format(path_sga2deg_train)
     f = open(path_sga2deg_train, 'w')
     for row in sga2deg_train_clean.keys():
-        #if sga2deg_train_clean[row] < 0.1:
+        if sga2deg_train_clean[row] < 0.1:
             print >> f, row[0]+'\t'+row[1]+'\t'+str(1.0 - sga2deg_train_clean[row])
+            sga2deg_train[row] = 1.0 - sga2deg_train_clean[row]
     f.close()
 
     print 'saving to {}...'.format(path_sga2deg_test)
     f = open(path_sga2deg_test, 'w')
     for row in sga2deg_test_clean.keys():
-        #if sga2deg_test_clean[row] < 0.1:
+        if sga2deg_test_clean[row] < 0.1:
             print >> f, row[0]+'\t'+row[1]+'\t'+str(1.0 - sga2deg_test_clean[row])
+            sga2deg_test[row] = 1.0 - sga2deg_test_clean[row]
     f.close()
 
     print 'saving to {}...'.format(path_sga2deg_remain)
     f = open(path_sga2deg_remain, 'w')
     for row in sga2deg_remain_clean.keys():
-        #if sga2deg_remain_clean[row] < 0.1:
+        if sga2deg_remain_clean[row] < 0.1:
             print >> f, row[0]+'\t'+row[1]+'\t'+str(1.0 - sga2deg_remain_clean[row])
+            sga2deg_remain[row] = 1.0 - sga2deg_remain_clean[row]
     f.close()
 
 
@@ -320,9 +330,9 @@ def step2(path_outputData):
     print 'saving to {}...'.format(path_graph)
     f = open(path_graph,'w')
     for row in sga2deg_remain_clean.keys():
-        # TODO:
-        sga,deg,prob = row[0],row[1],str(1.0 - sga2deg_remain_clean[row])
-        print >> f, 'sga2deg\t'+sga+'\t'+deg+'\t'+prob
+        if sga2deg_remain_clean[row] < 0.1:
+            sga,deg,prob = row[0],row[1],str(1.0 - sga2deg_remain_clean[row])
+            print >> f, 'sga2deg\t'+sga+'\t'+deg+'\t'+prob
 
     f.close
 
