@@ -202,8 +202,8 @@ def step2(path_outputData):
     random.seed(SEED)
     random.shuffle(patid_list)
 
-    thresh1 = 0.1
-    thresh2 = 0.2
+    thresh1 = 0.25
+    thresh2 = 0.25
     cut1 = int(thresh1*NUM_PAT)
     cut2 = int(thresh2*NUM_PAT)
     patid_train = patid_list[0:cut1]
