@@ -76,7 +76,7 @@ def writeSample(path, filename, sga2deglist, deg_corpus):
             if itr%1000 == 0:
                 print itr
             deg = sga2deglist[sga]
-            file.write(u'pathTo(%s,Y)'%sga)
+            file.write(u'causedBy(%s,Y)'%sga)
             # TODO:
             for gene in deg_corpus:
                 # TODO:
@@ -86,7 +86,7 @@ def writeSample(path, filename, sga2deglist, deg_corpus):
                 else:
                     file.write(u'\t-')
                     #j += 1
-                file.write(u'pathTo(%s,%s)'%(sga,gene))
+                file.write(u'causedBy(%s,%s)'%(sga,gene))
             file.write(u'\n')
 
     examples = []
@@ -136,22 +136,32 @@ if __name__ == '__main__':
     deg2sgalist_test = dd(list)
     path_test = path_inputData+'/tdi-test.exam'
     print 'reading from: {}...'.format(path_test)
-    for line in open(path_train, 'r'):
+    for line in open(path_test, 'r'):
         values = line.strip().split('\t')
         deg = values[1]
-        for i in len(values):
+        for i in range(len(values)):
             if i <= 1: continue
             sga = values[i]
-            sga_corpus_test.add(sga)
-            deg2sgalist_test[deg].append(sga)
+            sga_corpus_test.add(sga.lower())
+            deg2sgalist_test[deg.lower()].append(sga.lower())
 
 
+    print len(sga_corpus_test)
+    path_isSGA = path_outputData+'/isSGA.cfacts'
+    f = open(path_isSGA,'w')
+    for sga in sga_corpus_test:
+        print >> f, 'isSGA\t'+sga
+    f.close
 
-
+    path_test0 = path_outputData+'/test'
+    f = open(path_test0, 'w')
+    for deg in deg2sgalist_test.keys():
+        sgalist = deg2sgalist_test[deg]
+        for sga in sgalist:
+            print >> f, deg+'\t'+sga
+    f.close
 
     writeSample(path_outputData, 'test.examples', deg2sgalist_test, sga_corpus_test)
-
-
 
 # Usage:
 # python prepare_pathway_clean.py --inputData '/remote/curtis/yifengt/inputData' --outputData '/remote/curtis/yifengt/outputData'
