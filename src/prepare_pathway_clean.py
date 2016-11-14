@@ -266,7 +266,7 @@ def step2(path_outputData):
         elif patid in patid_remain:
             sga_remain_corpus.add(sga)
             deg_remain_corpus.add(deg)
-            if sga2deg_remain[(sga2deg)] == 0:
+            if sga2deg_remain[(sga,deg)] == 0:
                 sga2deg_remain_clean[(sga,deg)] = 1.0
             sga2deg_remain_clean[(sga,deg)] *= (1.0-prob)
             sga2deg_remain[(sga,deg)] += prob
@@ -279,19 +279,22 @@ def step2(path_outputData):
     print 'saving to {}...'.format(path_sga2deg_train)
     f = open(path_sga2deg_train, 'w')
     for row in sga2deg_train_clean.keys():
-        print >> f, row[0]+'\t'+row[1]+'\t'+str(1.0 - sga2deg_train_clean[row])
+        #if sga2deg_train_clean[row] < 0.1:
+            print >> f, row[0]+'\t'+row[1]+'\t'+str(1.0 - sga2deg_train_clean[row])
     f.close()
 
     print 'saving to {}...'.format(path_sga2deg_test)
     f = open(path_sga2deg_test, 'w')
     for row in sga2deg_test_clean.keys():
-        print >> f, row[0]+'\t'+row[1]+'\t'+str(1.0 - sga2deg_test_clean[row])
+        #if sga2deg_test_clean[row] < 0.1:
+            print >> f, row[0]+'\t'+row[1]+'\t'+str(1.0 - sga2deg_test_clean[row])
     f.close()
 
     print 'saving to {}...'.format(path_sga2deg_remain)
     f = open(path_sga2deg_remain, 'w')
     for row in sga2deg_remain_clean.keys():
-        print >> f, row[0]+'\t'+row[1]+'\t'+str(1.0 - sga2deg_remain_clean[row])
+        #if sga2deg_remain_clean[row] < 0.1:
+            print >> f, row[0]+'\t'+row[1]+'\t'+str(1.0 - sga2deg_remain_clean[row])
     f.close()
 
 
@@ -316,7 +319,8 @@ def step2(path_outputData):
     path_graph = dest+'/sga2deg.graph'
     print 'saving to {}...'.format(path_graph)
     f = open(path_graph,'w')
-    for row in sga2deg_remain.keys():
+    for row in sga2deg_remain_clean.keys():
+        # TODO:
         sga,deg,prob = row[0],row[1],str(1.0 - sga2deg_remain_clean[row])
         print >> f, 'sga2deg\t'+sga+'\t'+deg+'\t'+prob
 
