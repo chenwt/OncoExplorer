@@ -115,10 +115,21 @@ if __name__ == '__main__':
     path_outputData = path_inputData
 
 
-    sga2deg = dd(float)
+    sga2deg = dd(str)
     for line in open(path_inputData+'/drives.cfacts', 'r'):
         line = line.strip().split('\t')
-        print line
+        #print line
+        sga,deg,prob = line[1],line[2],line[3]
+        sga2deg[(sga,deg)] = prob
+        #print sga,deg,prob
+
+    f = open(path_outputData+'/sga2deg.graph', 'w')
+    for row in sga2deg.keys():
+        sga,deg = row[0],row[1]
+        prob = sga2deg[(sga,deg)]
+        print >> f, 'sga2deg'+'\t'+row[0].lower()+'\t'+row[1].lower()+'\t'+prob
+#        print prob
+    f.close()
 
 
 
