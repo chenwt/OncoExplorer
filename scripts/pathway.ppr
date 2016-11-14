@@ -1,0 +1,2 @@
+pathTo(A,B) :- sga2deg(A,B),isDEG(B).
+pathTo(A,B) :- sga2deg(A,C),pathTo(C,B).
