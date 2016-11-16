@@ -13,4 +13,4 @@ Explore cancer data interactively.
 * DEG sets (not all of them appear in TDI pairs): 19,515
 * SGA & DEG: 15,252
 * Nodes(SGA | DEG): 23,995
-* Directed edges(TDI pairs, same path in different patients count as different ones): 3,281,019.
+* Directed edges(TDI pairs, same path in different patients count as different ones): 3,279,967.
