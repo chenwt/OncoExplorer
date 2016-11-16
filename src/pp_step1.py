@@ -5,12 +5,11 @@ import random
 import argparse
 
 if __name__ == '__main__':
-'''
-First step to generate the ensembled data for proceeding requirement.
-Raw: Patients.sql, Cancers.sql, TDI_Results_filter_no_unit.csv, TDI_Results_new.csv.
-Usage:
-python pp_step1.py --inputData '<dir contatins raw>' --outputData '<dir to contain output>'
-'''
+    ''' First step to generate the ensembled data for proceeding requirement.
+    Raw: Patients.sql, Cancers.sql, TDI_Results_filter_no_unit.csv, TDI_Results_new.csv.
+    Usage:
+    python pp_step1.py --inputData <dir contatins raw> --outputData <dir to contain output> 
+    '''
     parser = argparse.ArgumentParser()
     parser.add_argument('--inputData', help = 'directory of input data', type = str)
     parser.add_argument('--outputData', help = 'directory of output data', type = str)
