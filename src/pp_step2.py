@@ -26,8 +26,8 @@ if __name__ == '__main__':
 
     print 'reading from... {}'.format(path_inputData+'/ensemble.txt')
     for line in open(path_inputData+'/ensemble.txt', 'r'):
-        line = line.split('\t')
+        line = line.strip().split('\t')
         pat, patid, can, canid, sga, deg, prob = line
-        print pat, patid, can, canid, sga, deg, prob
+
 
 #End
