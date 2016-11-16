@@ -4,29 +4,6 @@ import os
 import random
 import argparse
 
-def readSQL(path, pos_src, pos_dist):
-    '''
-    Read LUT from .sql file.
-    src2dist: a dictionary
-    '''
-    print 'reading into... {}'.format(path)
-    src2dist = {}
-    for line in open(path, 'r'):
-        values = line.split('),(')
-        # reach to the line of data.
-        if 'INSERT INTO' in values[0]:
-            # modify first and last string in list.
-            values[-1] = values[-1][:-3]
-            tmp = values[0].split('(')
-            values[0] = tmp[1]
-            for val in values:
-                row = val.split(',')
-                src2dist[row[pos_src]] = row[pos_dist]
-
-    print '#src2dist = {}'.format(len(src2dist))
-    return src2dist
-
-
 if __name__ == '__main__':
 
     parser = argparse.ArgumentParser()
@@ -58,24 +35,21 @@ if __name__ == '__main__':
 
     # cancer_id -> cancer
     print 'reading into... {}'.format(path_inputData+'/Cancers.sql')
-    src2dist = {}
-    for line in open(path, 'r'):
+    canid2can = dd()
+    for line in open(path_inputData+'/Cancers.sql', 'r'):
         values = line.split('),(')
-        # reach to the line of data.
         if 'INSERT INTO' in values[0]:
-            # modify first and last string in list.
             values[-1] = values[-1][:-3]
             tmp = values[0].split('(')
             values[0] = tmp[1]
             for val in values:
                 row = val.split(',')
-                src2dist[row[pos_src]] = row[pos_dist]
+                canid2can[row[0]] = row[2]
 
-    print '#src2dist = {}'.format(len(src2dist))
-
-
+    print '#cancers = {}'.format(len(canid2can))
 
 
+    # set of (patient, sga, deg)
     pat2sga2deg = set()
     #first line does not overlap, deleted automatically.
     print 'reading into...'+path_inputData+'/TDI_Results_filter_no_unit.csv'
@@ -85,6 +59,7 @@ if __name__ == '__main__':
         pat2sga2deg.add((pat,sga,deg))
     print '#records = {}'.format(len(pat2sga2deg))
 
+    # (patient, sga, deg) -> probability
     pat2sga2deg2prob = dd(str)
     print 'reading into...'+path_inputData+'/TDI_Results_new.csv'
     for line in open(path_inputData+'/TDI_Results_new.csv', 'r'):
@@ -96,10 +71,14 @@ if __name__ == '__main__':
 
 
 
-    f = open(path_outputData+'/pat2patid2can2canid2sga2deg2prob.txt', 'w')
+    # output
+    f = open(path_outputData+'/ensemble.txt', 'w')
+    print >> f, 'patient_name\tpatient_id\tcancer_name\tcancer_id\tsga_name\tdeg_name\tposterior_probability'
     for line in pat2sga2deg2prob.keys():
         pat,sga,deg,prob = line[0],line[1],line[2],pat2sga2deg2prob[line]
-        print >> f, pat+'\t'+sga+'\t'+deg+'\t'+prob 
+        patid, canid = pat2patid2canid[pat]
+        can = canid2can[canid]
+        print >> f, pat+'\t'patid+'\t'+can+'\t'+canid+'\t'+sga+'\t'+deg+'\t'+prob 
     f.close()
 
 
