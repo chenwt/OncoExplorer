@@ -5,7 +5,12 @@ import random
 import argparse
 
 if __name__ == '__main__':
-
+'''
+First step to generate the ensembled data for proceeding requirement.
+Raw: Patients.sql, Cancers.sql, TDI_Results_filter_no_unit.csv, TDI_Results_new.csv.
+Usage:
+python pp_step1.py --inputData '<dir contatins raw>' --outputData '<dir to contain output>'
+'''
     parser = argparse.ArgumentParser()
     parser.add_argument('--inputData', help = 'directory of input data', type = str)
     parser.add_argument('--outputData', help = 'directory of output data', type = str)
@@ -13,6 +18,7 @@ if __name__ == '__main__':
 
     path_inputData = args.inputData 
     path_outputData = args.outputData
+
 
     # patient -> (patient_id, cancer_id)
     pat2patid2canid = dd()
@@ -44,7 +50,6 @@ if __name__ == '__main__':
             for val in values:
                 row = val.split(',')
                 canid2can[row[0]] = row[2][1:-1]
-
     print '#cancers = {}'.format(len(canid2can))
 
 
@@ -58,6 +63,7 @@ if __name__ == '__main__':
         pat2sga2deg.add((pat,sga,deg))
     print '#records = {}'.format(len(pat2sga2deg))
 
+
     # (patient, sga, deg) -> probability
     pat2sga2deg2prob = dd(str)
     print 'reading from...'+path_inputData+'/TDI_Results_new.csv'
@@ -69,8 +75,7 @@ if __name__ == '__main__':
     print '#records = {}'.format(len(pat2sga2deg2prob))
 
 
-
-    # output
+    # output to ensemble files.
     print 'writing into...'+path_outputData+'/ensemble.txt'
     f = open(path_outputData+'/ensemble.txt', 'w')
     print >> f, 'patient_id\tpat_id\tcancer\tcan_id\tsga\tdeg\tprobability'
@@ -80,7 +85,4 @@ if __name__ == '__main__':
         can = canid2can[canid]
         print >> f, pat.lower()+'\t'+patid+'\t'+can.lower()+'\t'+canid+'\t'+sga.lower()+'\t'+deg.lower()+'\t'+prob 
     f.close()
-
-
-# python prepare_pathway_clean.py --inputData '/remote/curtis/yifengt/inputData' --outputData '/remote/curtis/yifengt/outputData'
-
+#End
