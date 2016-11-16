@@ -1,0 +1,1 @@
+python preprocess.py --inputDir /home/yifengt/Github/inputData --outputDir /home/yifengt/Github/outputData
