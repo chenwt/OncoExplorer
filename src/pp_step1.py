@@ -16,7 +16,7 @@ if __name__ == '__main__':
 
     # patient -> (patient_id, cancer_id)
     pat2patid2canid = dd()
-    print 'reading into... {}'.format(path_inputData+'/Patients.sql')
+    print 'reading from... {}'.format(path_inputData+'/Patients.sql')
     for line in open(path_inputData+'/Patients.sql', 'r'):
         values = line.split('),(')
         # reach to the line of data.
@@ -33,7 +33,7 @@ if __name__ == '__main__':
 
 
     # cancer_id -> cancer
-    print 'reading into... {}'.format(path_inputData+'/Cancers.sql')
+    print 'reading from... {}'.format(path_inputData+'/Cancers.sql')
     canid2can = dd()
     for line in open(path_inputData+'/Cancers.sql', 'r'):
         values = line.split('),(')
@@ -51,7 +51,7 @@ if __name__ == '__main__':
     # set of (patient, sga, deg)
     pat2sga2deg = set()
     #first line does not overlap, deleted automatically.
-    print 'reading into...'+path_inputData+'/TDI_Results_filter_no_unit.csv'
+    print 'reading from...'+path_inputData+'/TDI_Results_filter_no_unit.csv'
     for line in open(path_inputData+'/TDI_Results_filter_no_unit.csv', 'r'):
         line = line.strip().split(',')
         pat,sga,deg = line[2],line[0],line[1]
@@ -60,7 +60,7 @@ if __name__ == '__main__':
 
     # (patient, sga, deg) -> probability
     pat2sga2deg2prob = dd(str)
-    print 'reading into...'+path_inputData+'/TDI_Results_new.csv'
+    print 'reading from...'+path_inputData+'/TDI_Results_new.csv'
     for line in open(path_inputData+'/TDI_Results_new.csv', 'r'):
         line = line.strip().split(',')
         pat,sga,deg,prob = line[0],line[1],line[2],line[3]
@@ -71,13 +71,14 @@ if __name__ == '__main__':
 
 
     # output
+    print 'writing into...'+path_outputData+'/ensemble.txt'
     f = open(path_outputData+'/ensemble.txt', 'w')
-    print >> f, 'patient\tpat_id\tcancer\tcancer_id\tsga\tdeg\tprobability'
+    print >> f, 'patient_id\tpat_id\tcancer\tcan_id\tsga\tdeg\tprobability'
     for line in pat2sga2deg2prob.keys():
         pat,sga,deg,prob = line[0],line[1],line[2],pat2sga2deg2prob[line]
         patid, canid = pat2patid2canid[pat]
         can = canid2can[canid]
-        print >> f, pat+'\t'+patid+'\t'+can+'\t'+canid+'\t'+sga+'\t'+deg+'\t'+prob 
+        print >> f, pat.lower()+'\t'+patid+'\t'+can.lower()+'\t'+canid+'\t'+sga.lower()+'\t'+deg.lower()+'\t'+prob 
     f.close()
 
 
