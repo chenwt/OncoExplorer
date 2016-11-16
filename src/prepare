@@ -1,1 +1,2 @@
 python preprocess.py --inputDir /home/yifengt/Github/inputData --outputDir /home/yifengt/Github/outputData
+python prep_step2.py --inputDir /home/yifengt/Github/outputData --outputDir /home/yifengt/Github/outputData
