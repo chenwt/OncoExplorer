@@ -1,2 +1,9 @@
-python preprocess.py --inputDir /home/yifengt/Github/inputData --outputDir /home/yifengt/Github/outputData
-python prep_step2.py --inputDir /home/yifengt/Github/outputData --outputDir /home/yifengt/Github/outputData
+#python pp_step1.py --inputData /home/yifengt/Github/inputData --outputData /home/yifengt/Github/outputData
+# Go to the directory of outputData
+# Generate sets of sga:
+# tail -n +2 ensemble.txt | cut -f5 | sort | uniq > SGA.txt
+# Generate sets of deg:
+# tail -n +2 ensemble.txt | cut -f6 | sort | uniq > DEG.txt
+# Generate aggregate of genes:
+# cat SGA.txt DEG.txt | sort | uniq > Gene.txt
+python pp_step2.py --inputData /home/yifengt/Github/outputData --outputData /home/yifengt/Github/outputData --noisyor True --threshold 0.9 --division 0.25
