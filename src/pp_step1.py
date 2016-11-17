@@ -51,7 +51,7 @@ if __name__ == '__main__':
                 canid2can[row[0]] = row[2][1:-1]
     print '#cancers = {}'.format(len(canid2can))
 
-
+# filter the tdi results
 #    # set of (patient, sga, deg)
 #    pat2sga2deg = set()
 #    #first line does not overlap, deleted automatically.
@@ -66,13 +66,13 @@ if __name__ == '__main__':
     # (patient, sga, deg) -> probability
     pat2sga2deg2prob = dd(str)
     print 'reading from...'+path_inputData+'/TDI_Results_new.csv'
-    for line in open(path_inputData+'/TDI_Results_new.csv', 'r'):
-        line = line.strip().split(',')
-        pat,sga,deg,prob = line[0],line[1],line[2],line[3]
-#        if (pat,sga,deg) in pat2sga2deg:
-        pat2sga2deg2prob[(pat,sga,deg)] = prob
+    with open(path_inputData+'/TDI_Results_new.csv') as f:
+        next(f)
+        for line in f:
+            line = line.strip().split(',')
+            pat,sga,deg,prob = line[0],line[1],line[2],line[3]
+            pat2sga2deg2prob[(pat,sga,deg)] = prob
     print '#records = {}'.format(len(pat2sga2deg2prob))
-
 
     # output to ensemble files.
     print 'writing into...'+path_outputData+'/ensemble.txt'
