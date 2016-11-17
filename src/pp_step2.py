@@ -28,7 +28,7 @@ if __name__ == '__main__':
     patid_list = range(1,NUM_PAT+1)
     random.seed(6)
     random.shuffle(patid_list)
-    cut1, cut2 = int(division*NUM_PAT), int(2*divisoin*NUM_PAT)
+    cut1, cut2 = int(division*NUM_PAT), int(2*division*NUM_PAT)
     patid_train, patid_test = patid_list[0:cut1], patid_list[cut1:cut2]
 
 
@@ -41,6 +41,7 @@ if __name__ == '__main__':
 
     print 'reading from... {}'.format(path_inputData+'/ensemble.txt')
     for line in open(path_inputData+'/ensemble.txt', 'r'):
+    
         line = line.strip().split('\t')
         pat, patid, can, canid, sga, deg, prob = line
         if patid in patid_train:
@@ -53,7 +54,7 @@ if __name__ == '__main__':
                 tmp_test[(sga,deg)] = 1.0
                 set_test.add((sga,deg))
             tmp_test[(sga,deg)] *= (1.0 - float(prob))
-        else # patid in patid_graph:
+        else: # patid in patid_graph
             if (sga,deg) not in set_graph:
                 tmp_graph[(sga,deg)] = 1.0
                 set_graph.add((sga,deg))
@@ -62,21 +63,21 @@ if __name__ == '__main__':
     f = open(path_outputData+'/train.txt', 'w')
     for line in tmp_train.keys():
         sag,deg,prob = line[0],line[1],1.0-tmp_train[line]
-        if prob > 0.9:
+        if prob > threshold:
             print >> f, sga+'\t'+deg+'\t'+str(prob)
     f.close()
 
     f = open(path_outputData+'/test.txt', 'w')
     for line in tmp_test.keys():
         sag,deg,prob = line[0],line[1],1.0-tmp_test[line]
-        if prob > 0.9:
+        if prob > threshold:
             print >> f, sga+'\t'+deg+'\t'+str(prob)
     f.close()
 
     f = open(path_outputData+'/graph.txt', 'w')
     for line in tmp_graph.keys():
         sag,deg,prob = line[0],line[1],1.0-tmp_graph[line]
-        if prob > 0.9:
+        if prob > threshold:
             print >> f, sga+'\t'+deg+'\t'+str(prob)
     f.close()
 
