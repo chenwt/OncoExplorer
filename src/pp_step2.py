@@ -72,21 +72,21 @@ if __name__ == '__main__':
 #        print line
         sga,deg,prob = line[0],line[1],1.0-tmp_train[(line[0],line[1])]
         #print sga,deg,str(prob)
-        if prob > threshold:
-            print >> f, sga+'\t'+deg+'\t'+str(prob)
+#        if prob > threshold:
+        print >> f, sga+'\t'+deg+'\t'+str(prob)
     f.close()
 
     f = open(path_outputData+'/test.txt', 'w')
     for line in tmp_test.keys():
         sga,deg,prob = line[0],line[1],1.0-tmp_test[(line[0],line[1])]
-        if prob > threshold:
-            print >> f, sga+'\t'+deg+'\t'+str(prob)
+#        if prob > threshold:
+        print >> f, sga+'\t'+deg+'\t'+str(prob)
     f.close()
 
     f = open(path_outputData+'/graph.txt', 'w')
     for line in tmp_graph.keys():
         sga,deg,prob = line[0],line[1],1.0-tmp_graph[(line[0],line[1])]
-        if prob > threshold:
-            print >> f, sga+'\t'+deg+'\t'+str(prob)
+#        if prob > threshold:
+        print >> f, sga+'\t'+deg+'\t'+str(prob)
     f.close()
 #End
