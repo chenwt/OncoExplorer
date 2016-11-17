@@ -59,6 +59,31 @@ if __name__ == '__main__':
                 set_graph.add((sga,deg))
             tmp_graph[(sga,deg)] *= (1.0 - float(prob))
 
+    f = open(path_outputData+'/train.txt', 'w')
+    for line in tmp_train.keys():
+        sag,deg,prob = line[0],line[1],1.0-tmp_train[line]
+        if prob > 0.9:
+            print >> f, sga+'\t'+deg+'\t'+str(prob)
+    f.close()
+
+    f = open(path_outputData+'/test.txt', 'w')
+    for line in tmp_test.keys():
+        sag,deg,prob = line[0],line[1],1.0-tmp_test[line]
+        if prob > 0.9:
+            print >> f, sga+'\t'+deg+'\t'+str(prob)
+    f.close()
+
+    f = open(path_outputData+'/graph.txt', 'w')
+    for line in tmp_graph.keys():
+        sag,deg,prob = line[0],line[1],1.0-tmp_graph[line]
+        if prob > 0.9:
+            print >> f, sga+'\t'+deg+'\t'+str(prob)
+    f.close()
+
+
+
+
+
 
 
 
