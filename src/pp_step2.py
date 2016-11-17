@@ -40,25 +40,28 @@ if __name__ == '__main__':
     tmp_train, tmp_test, tmp_graph = dd(), dd(), dd()
 
     print 'reading from... {}'.format(path_inputData+'/ensemble.txt')
-    for line in open(path_inputData+'/ensemble.txt', 'r'):
-    
-        line = line.strip().split('\t')
-        pat, patid, can, canid, sga, deg, prob = line
-        if patid in patid_train:
-            if (sga,deg) not in set_train:
-                tmp_train[(sga,deg)] = 1.0
-                set_train.add((sga,deg))
-            tmp_train[(sga,deg)] *= (1.0 - float(prob))
-        elif patid in patid_test:
-            if (sga,deg) not in set_test:
-                tmp_test[(sga,deg)] = 1.0
-                set_test.add((sga,deg))
-            tmp_test[(sga,deg)] *= (1.0 - float(prob))
-        else: # patid in patid_graph
-            if (sga,deg) not in set_graph:
-                tmp_graph[(sga,deg)] = 1.0
-                set_graph.add((sga,deg))
-            tmp_graph[(sga,deg)] *= (1.0 - float(prob))
+    k = 0
+    with open(path_inputData+'/ensemble.txt') as f:
+        next(f)
+        for line in f:
+            k = k+1
+            line = line.strip().split('\t')
+            pat, patid, can, canid, sga, deg, prob = line
+            if patid in patid_train:
+                if (sga,deg) not in set_train:
+                    tmp_train[(sga,deg)] = 1.0
+                    set_train.add((sga,deg))
+                tmp_train[(sga,deg)] *= (1.0 - float(prob))
+            elif patid in patid_test:
+                if (sga,deg) not in set_test:
+                    tmp_test[(sga,deg)] = 1.0
+                    set_test.add((sga,deg))
+                tmp_test[(sga,deg)] *= (1.0 - float(prob))
+            else: # patid in patid_graph
+                if (sga,deg) not in set_graph:
+                    tmp_graph[(sga,deg)] = 1.0
+                    set_graph.add((sga,deg))
+                tmp_graph[(sga,deg)] *= (1.0 - float(prob))
 
     f = open(path_outputData+'/train.txt', 'w')
     for line in tmp_train.keys():
