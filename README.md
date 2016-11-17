@@ -13,7 +13,7 @@ Explore cancer data interactively.
 * base graph = 32,726 (overlap: 31,172)
 
 ## Raw dataset
-* Directed edges(TDI pairs, same path in different patients count as different ones): 3,279,967.
+* Directed edges(TDI pairs, same path in different patients count as different ones): 11,769,129(filtered,...3,279,967).
 
 Note: we do not remove the duplicated records, they account for 200/3,279,967.
 We use the aggregate of SGA and DEG in advance.
