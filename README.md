@@ -6,9 +6,11 @@ Explore cancer data interactively.
 * DEG sets: 8,841
 * Nodes(SGA | DEG): 9,158 
 * Directed edges(TDI pairs) = 1,496,128(?????)
+
+## Noisy-or > 0.9
 * train edges = 31,304
-* test edges = 31,293
-* base graph = 32,726
+* test edges = 31,293 (overlap: 29,871)
+* base graph = 32,726 (overlap: 31,172)
 
 ## Raw dataset
 * Directed edges(TDI pairs, same path in different patients count as different ones): 3,279,967.
