@@ -6,4 +6,10 @@
 # tail -n +2 ensemble.txt | cut -f6 | sort | uniq > DEG.txt
 # Generate aggregate of genes:
 # cat SGA.txt DEG.txt | sort | uniq > Gene.txt
-python pp_step2.py --inputData /home/yifengt/Github/outputData --outputData /home/yifengt/Github/outputData --threshold_readin 0.1 --threshold_noisyor 0.9 --division 0.25
+#python pp_step2.py --inputData /home/yifengt/Github/outputData --outputData /home/yifengt/Github/outputData --threshold_readin 0.1 --threshold_noisyor 0.95 --division 0.25
+python pp_step2.py --inputData /home/yifengt/Github/outputData --outputData /home/yifengt/Github/outputData --threshold_readin 0.0 --threshold_noisyor 0.0 --division 0.25
+
+
+# cat train.txt test.txt graph.txt | cut -f1 | sort | uniq > SGA.txt
+# cat train.txt test.txt graph.txt | cut -f2 | sort | uniq > DEG.txt
+
