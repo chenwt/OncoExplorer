@@ -1,4 +1,4 @@
-python pp_step1.py --inputData /home/yifengt/Github/inputData --outputData /home/yifengt/Github/outputData
+# python pp_step1.py --inputData /home/yifengt/Github/inputData --outputData /home/yifengt/Github/outputData
 # Go to the directory of outputData
 # Generate sets of sga:
 # tail -n +2 ensemble.txt | cut -f5 | sort | uniq > SGA.txt
@@ -6,4 +6,4 @@ python pp_step1.py --inputData /home/yifengt/Github/inputData --outputData /home
 # tail -n +2 ensemble.txt | cut -f6 | sort | uniq > DEG.txt
 # Generate aggregate of genes:
 # cat SGA.txt DEG.txt | sort | uniq > Gene.txt
-# python pp_step2.py --inputData /home/yifengt/Github/outputData --outputData /home/yifengt/Github/outputData --threshold 0.9 --division 0.1
+python pp_step2.py --inputData /home/yifengt/Github/outputData --outputData /home/yifengt/Github/outputData --threshold_readin 0.1 --threshold_noisyor 0.9 --division 0.25

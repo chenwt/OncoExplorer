@@ -12,13 +12,15 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--inputData', help = 'directory of input data', type = str)
     parser.add_argument('--outputData', help = 'directory of output data', type = str)
-    parser.add_argument('--threshold', help = 'threshold of whether a (sga,deg) pair exists', type = float)
+    parser.add_argument('--threshold_readin', help = 'threshold of whether to read into a raw record of (sga,deg) pair', type = float)
+    parser.add_argument('--threshold_noisyor', help = 'threshold of whether a (sga,deg) pair exists', type = float)
     parser.add_argument('--division', help = 'proportion of training patients (same as test)', type = float)
     args = parser.parse_args()
 
     path_inputData = args.inputData 
     path_outputData = args.outputData
-    threshold = args.threshold
+    threshold_readin = args.threshold_readin
+    threshold_noisyor = args.threshold_noisyor
     division = args.division
 
     # shuffle training and test
@@ -44,10 +46,11 @@ if __name__ == '__main__':
     with open(path_inputData+'/ensemble.txt') as f:
         next(f)
         for line in f:
-            k = k+1
-            if k%100000 == 0: print k 
             line = line.strip().split('\t')
             patid, sga, deg, prob = int(line[1]),line[4],line[5],line[6]
+            if float(prob) < threshold_readin: continue
+            k = k+1
+            if k%1000000 == 0: print k 
             if patid in patid_train:
                 if (sga,deg) not in set_train:
                     tmp_train[(sga,deg)] = 1.0
@@ -66,27 +69,28 @@ if __name__ == '__main__':
                     set_graph.add((sga,deg))
                 tmp_graph[(sga,deg)] *= (1.0 - float(prob))
                 #sum_graph[(sga,deg)] += float(prob)
+    print '#readin_edge = {}'.format(k)
 
     f = open(path_outputData+'/train.txt', 'w')
     for line in tmp_train.keys():
 #        print line
         sga,deg,prob = line[0],line[1],1.0-tmp_train[(line[0],line[1])]
         #print sga,deg,str(prob)
-#        if prob > threshold:
-        print >> f, sga+'\t'+deg+'\t'+str(prob)
+        if prob > threshold_noisyor:
+            print >> f, sga+'\t'+deg+'\t'+str(prob)
     f.close()
 
     f = open(path_outputData+'/test.txt', 'w')
     for line in tmp_test.keys():
         sga,deg,prob = line[0],line[1],1.0-tmp_test[(line[0],line[1])]
-#        if prob > threshold:
-        print >> f, sga+'\t'+deg+'\t'+str(prob)
+        if prob > threshold_noisyor:
+            print >> f, sga+'\t'+deg+'\t'+str(prob)
     f.close()
 
     f = open(path_outputData+'/graph.txt', 'w')
     for line in tmp_graph.keys():
         sga,deg,prob = line[0],line[1],1.0-tmp_graph[(line[0],line[1])]
-#        if prob > threshold:
-        print >> f, sga+'\t'+deg+'\t'+str(prob)
+        if prob > threshold_noisyor:
+            print >> f, sga+'\t'+deg+'\t'+str(prob)
     f.close()
 #End
