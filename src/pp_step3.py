@@ -40,18 +40,36 @@ if __name__ == '__main__':
     path_TensorlogData = args.TensorlogData
     path_PropprData = args.PropprData
 
+    sga_corpus = set()
+    with open(path_inputData+'/SGA.txt') as f:
+        for line in f:
+            line = line.strip()
+            sga_corpus.add(line)
+
     deg_corpus = set()
     with open(path_inputData+'/DEG.txt') as f:
         for line in f:
             line = line.strip()
-            print line
+            deg_corpus.add(line)
 
+    f = open(path_PropprData+'/isSGA.cfacts', 'w')
+    for line in sga_corpus:
+        print >> f, 'isSGA\t'+line
+    f.close()
 
+    f = open(path_PropprData+'/isDEG.cfacts', 'w')
+    for line in deg_corpus:
+        print >> f, 'isDEG\t'+line
+    f.close()
 
+    sga2deg_list = dd(list)
+    deg2sga_list = dd(list)
 
-
-
-
+    f = open(path_inputData+'/train.txt', 'r')
+    for line in f:
+        line = line.strip().split('\t')
+        sga,deg = line[0], line[1]
+        print sga,deg
 
 
 
