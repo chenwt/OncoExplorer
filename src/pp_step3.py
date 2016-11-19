@@ -42,8 +42,9 @@ if __name__ == '__main__':
 
     deg_corpus = set()
     with open(path_inputData+'/DEG.txt') as f:
-    	for line in f:
-    		print line
+        for line in f:
+            line = line.strip()
+            print line
 
 
 
