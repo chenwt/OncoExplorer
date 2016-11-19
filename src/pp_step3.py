@@ -4,7 +4,40 @@ import os
 import random
 import argparse
 
+def writeSample_Proppr(path, filename, relname, src2dst_list, dst_corpus):
+    # print 'saving to {}...'.format(path+'/'+filename)
 
+    f = io.open(path+'/tmp','w')
+    for itr, src in enumerate(src2dst_list):
+        if itr%1000 == 0:
+            print itr
+        dst = src2dst_list[src]
+        f.write( u'%s(%s,Y)'%(relname,src) )
+        for gene in dst_corpus:
+            if gene in dst:
+                f.write(u'\t+')
+            else:
+                f.write(u'\t-')
+            f.write( u'%s(%s,%s)'%(relname,src,dst) )
+        f.write(u'\n')
+    f.close()
+
+    examples = []
+    for line in open(path+'/tmp', 'r'):
+        line = line.strip()
+        examples.append(line)
+
+    print 'len(examples) = {}'.format(len(examples))
+
+    SEED = 6
+    random.seed(SEED)
+    random.shuffle(examples)
+    os.remove(path+'/tmp');
+
+    f = open(path+'/'+filename, 'w')
+    for line in examples:
+        print >> f, line
+    f.close()
 
 
 if __name__ == '__main__':
@@ -71,40 +104,7 @@ if __name__ == '__main__':
     writeSample_Proppr(path_PropprData, 'train_causedBy.examples', 'causedBy', train_deg2sga_list, sga_corpus)
     writeSample_Proppr(path_PropprData, 'test_causedBy.examples', 'causedBy', test_deg2sga_list, sga_corpus)
 
-def writeSample_Proppr(path, filename, relname, src2dst_list, dst_corpus):
-    # print 'saving to {}...'.format(path+'/'+filename)
 
-    f = io.open(path+'/tmp','w')
-    for itr, src in enumerate(src2dst_list):
-        if itr%1000 == 0:
-            print itr
-        dst = src2dst_list[src]
-        f.write( u'%s(%s,Y)'%(relname,src) )
-        for gene in dst_corpus:
-            if gene in dst:
-                f.write(u'\t+')
-            else:
-                f.write(u'\t-')
-            f.write( u'%s(%s,%s)'%(relname,src,dst) )
-        f.write(u'\n')
-    f.close()
-
-    examples = []
-    for line in open(path+'/tmp', 'r'):
-        line = line.strip()
-        examples.append(line)
-
-    print 'len(examples) = {}'.format(len(examples))
-
-    SEED = 6
-    random.seed(SEED)
-    random.shuffle(examples)
-    os.remove(path+'/tmp');
-
-    f = open(path+'/'+filename, 'w')
-    for line in examples:
-        print >> f, line
-    f.close()
 
 #     # (sga,deg) -> prob
 #     #sga2deg2prob_train = dd()
