@@ -120,8 +120,8 @@ if __name__ == '__main__':
 
 
     
-    writeSample_Tensorlog(path_TensorlogData,'train_causedBy.exam','causedBy',train_deg2sga_list)
-    writeSample_Tensorlog(path_TensorlogData,'test_causedBy.exam','causedBy',test_deg2sga_list)
+    writeSample_Tensorlog(path_TensorlogData,'train.exam','causedBy',train_deg2sga_list)
+    writeSample_Tensorlog(path_TensorlogData,'test.exam','causedBy',test_deg2sga_list)
 
 
     graph = list()
@@ -132,12 +132,12 @@ if __name__ == '__main__':
         graph.append((sga,deg))
     f.close()    
 
-    f = open(path_TensorlogData+'/pathway_causedBy.cfacts', 'w')
+    f = open(path_TensorlogData+'/pathway.cfacts', 'w')
     for line in graph:
         print >> f, 'drivenBy\t'+line[1]+'\t'+line[0]
     print >> f, ''
     for line in sga_corpus:
-        print >> f, 'isSAG\t'+line
+        print >> f, 'isSGA\t'+line
     print >> f, ''
     for deg in train_deg2sga_list.keys():
         for sga in train_deg2sga_list[deg]:
