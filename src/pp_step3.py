@@ -47,7 +47,7 @@ def writeSample_Tensorlog(path, filename, relname, src2dst_list):
         for gene in dst:
             f.write(u'\t%s'%gene)
         f.write(u'\n')
-        
+
 if __name__ == '__main__':
     ''' Third step to generate the files for ProPPR and TensorLog.
     Usage: python pp_step3.py --inputData <dir contatins train/test/graph.txt> --TensorlogData <dir to contain input of TensorLog> --PropprData <dir to contain input of ProPPR> 
@@ -73,6 +73,12 @@ if __name__ == '__main__':
         for line in f:
             line = line.strip()
             deg_corpus.add(line)
+
+    gene_corpus = set()
+    with open(path_inputData+'/Gene.txt') as f:
+        for line in f:
+            line = line.strip()
+            gene_corpus.add(line)
 
     f = open(path_PropprData+'/isSGA.cfacts', 'w')
     for line in sga_corpus:
@@ -115,9 +121,42 @@ if __name__ == '__main__':
 
     
     writeSample_Tensorlog(path_TensorlogData,'train_causedBy.exam','causedBy',train_deg2sga_list)
+    writeSample_Tensorlog(path_TensorlogData,'test_causedBy.exam','causedBy',test_deg2sga_list)
 
 
+    graph = list()
+    f = open(path_inputData+'/graph.txt', 'r')
+    for line in f:
+        line = line.strip().split('\t')
+        sga,deg = line[0], line[1]
+        graph.append((sga,deg))
+    f.close()    
 
+    f = open(path_TensorlogData+'/pathway_causedBy.cfacts', 'w')
+    for line in graph:
+        print >> f, 'causedBy\t'+line[1]+'\t'+line[0]
+    print >> f, ''
+    for line in sga_corpus:
+        print >> f, 'isSAG\t'+line
+    print >> f, ''
+    for deg in train_deg2sga_list.keys():
+        for sga in train_deg2sga_list[deg]:
+            print >> f, 'train\t'+deg+'\t'+sga
+    print >> f, ''
+    for deg in test_deg2sga_list.keys():
+        for sga in test_deg2sga_list[deg]:
+            print >> f, 'test\t'+deg+'\t'+sga
+    print >> f, ''
+    print >> f, 'rule\tf1'
+    print >> f, 'rule\tf2'
+    print >> f, ''
+    for gene in gene_corpus:
+        print >> f, 'src\t'+gene
+    print >> f, ''
+    for gene in gene_corpus:
+        print >> f, 'dst\t'+gene
+    f.close()
+    print 'Done!'
 
 
 
