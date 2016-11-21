@@ -39,7 +39,15 @@ def writeSample_Proppr(path, filename, relname, src2dst_list, dst_corpus):
         print >> f, line
     f.close()
 
-
+def writeSample_Tensorlog(path, filename, relname, src2dst_list):
+    f = io.open(path+'/'+filename,'w')
+    for src in src2dst_list.keys():
+        dst = src2dst_list[src]
+        f.write(u'%s\t%s'%(relname,src))
+        for gene in dst:
+            f.write(u'\t%s'%gene)
+        f.write(u'\n')
+        
 if __name__ == '__main__':
     ''' Third step to generate the files for ProPPR and TensorLog.
     Usage: python pp_step3.py --inputData <dir contatins train/test/graph.txt> --TensorlogData <dir to contain input of TensorLog> --PropprData <dir to contain input of ProPPR> 
@@ -98,11 +106,23 @@ if __name__ == '__main__':
         test_deg2sga_list[deg].append(sga)
     f.close()
 
-    writeSample_Proppr(path_PropprData, 'train_causes.examples', 'causes', train_sga2deg_list, deg_corpus)
-    writeSample_Proppr(path_PropprData, 'test_causes.examples', 'causes', test_sga2deg_list, deg_corpus)
+    #writeSample_Proppr(path_PropprData, 'train_causes.examples', 'causes', train_sga2deg_list, deg_corpus)
+    #writeSample_Proppr(path_PropprData, 'test_causes.examples', 'causes', test_sga2deg_list, deg_corpus)
 
-    writeSample_Proppr(path_PropprData, 'train_causedBy.examples', 'causedBy', train_deg2sga_list, sga_corpus)
-    writeSample_Proppr(path_PropprData, 'test_causedBy.examples', 'causedBy', test_deg2sga_list, sga_corpus)
+    #writeSample_Proppr(path_PropprData, 'train_causedBy.examples', 'causedBy', train_deg2sga_list, sga_corpus)
+    #writeSample_Proppr(path_PropprData, 'test_causedBy.examples', 'causedBy', test_deg2sga_list, sga_corpus)
+
+
+    
+    writeSample_Tensorlog(path_TensorlogData,'train_causedBy.exam','causedBy',train_deg2sga_list)
+
+
+
+
+
+
+
+
 
 
 
