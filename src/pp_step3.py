@@ -134,7 +134,7 @@ if __name__ == '__main__':
 
     f = open(path_TensorlogData+'/pathway_causedBy.cfacts', 'w')
     for line in graph:
-        print >> f, 'causedBy\t'+line[1]+'\t'+line[0]
+        print >> f, 'drivenBy\t'+line[1]+'\t'+line[0]
     print >> f, ''
     for line in sga_corpus:
         print >> f, 'isSAG\t'+line
