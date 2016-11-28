@@ -1,5 +1,5 @@
-# python pp_step1.py --inputData /home/yifengt/Github/inputData --outputData /home/yifengt/Github/outputData
-# python pp_step2.py --inputData /home/yifengt/Github/outputData --outputData /home/yifengt/Github/outputData --threshold_readin 0.1 --threshold_noisyor 0.95 --division 0.25
+python pp_step1.py --inputData /home/yifengt/Github/inputData --outputData /home/yifengt/Github/outputData
+# python pp_step2.py --inputData /home/yifengt/Github/outputData --outputData /home/yifengt/Github/outputData --threshold_readin 0.3 --threshold_noisyor 0.99 --division 0.25
 
 # Go to the directory of outputData
 # Generate sets of sga:
@@ -9,4 +9,4 @@
 # Generate aggregate of genes:
 # cat SGA.txt DEG.txt | sort | uniq > Gene.txt
 
-python pp_step3.py --inputData /home/yifengt/Github/outputData --TensorlogData /home/yifengt/Github/TensorlogData --PropprData /home/yifengt/Github/PropprData
+# python pp_step3.py --inputData /home/yifengt/Github/outputData --TensorlogData /home/yifengt/Github/TensorlogData --PropprData /home/yifengt/Github/PropprData
