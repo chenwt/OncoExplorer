@@ -51,17 +51,16 @@ if __name__ == '__main__':
                 canid2can[row[0]] = row[2][1:-1]
     print '#cancers = {}'.format(len(canid2can))
 
-# filter the tdi results
-#    # set of (patient, sga, deg)
-#    pat2sga2deg = set()
-#    #first line does not overlap, deleted automatically.
-#    print 'reading from...'+path_inputData+'/TDI_Results_filter_no_unit.csv'
-#    for line in open(path_inputData+'/TDI_Results_filter_no_unit.csv', 'r'):
-#        line = line.strip().split(',')
-#        pat,sga,deg = line[2],line[0],line[1]
-#        pat2sga2deg.add((pat,sga,deg))
-#    print '#records = {}'.format(len(pat2sga2deg))
-
+    #filter the tdi results
+    # set of (patient, sga, deg)
+    pat2sga2deg = set()
+    #first line does not overlap, deleted automatically.
+    print 'reading from...'+path_inputData+'/TDI_Results_filter_no_unit.csv'
+    for line in open(path_inputData+'/TDI_Results_filter_no_unit.csv', 'r'):
+       line = line.strip().split(',')
+       pat,sga,deg = line[2],line[0],line[1]
+       pat2sga2deg.add((pat,sga,deg))
+    print '#records = {}'.format(len(pat2sga2deg))
 
     # (patient, sga, deg) -> probability
     pat2sga2deg2prob = dd(str)
@@ -71,7 +70,8 @@ if __name__ == '__main__':
         for line in f:
             line = line.strip().split(',')
             pat,sga,deg,prob = line[0],line[1],line[2],line[3]
-            pat2sga2deg2prob[(pat,sga,deg)] = prob
+            if (pat,sga,deg) in pat2sga2deg:
+                pat2sga2deg2prob[(pat,sga,deg)] = prob
     print '#records = {}'.format(len(pat2sga2deg2prob))
 
     # output to ensemble files.
