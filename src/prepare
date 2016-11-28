@@ -10,4 +10,4 @@
 # cat SGA.txt DEG.txt | sort | uniq > Gene.txt
 
 # python pp_step3.py --inputData /home/yifengt/Github/outputData --TensorlogData /home/yifengt/Github/TensorlogData --PropprData /home/yifengt/Github/PropprData
-python ../src/extract_link.py --inputData /home/yifengt/Github/PropprData --outputData /home/yifengt/Github/PropprData
+python -i ../src/extract_link.py --inputData /home/yifengt/Github/PropprData --outputData /home/yifengt/Github/PropprData

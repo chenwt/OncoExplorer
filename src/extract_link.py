@@ -16,9 +16,13 @@ def extract(path, pos_start):
         prob = line[1]
         # get the last 'linked(,)' and strip 'linked(' and ')'
         value = line[-1][pos_start:-2]
-        
-        #value = value[pos_start:-1]
-        print value
+        value = value.split(',')
+        src, dst = value[0], value[1]
+
+        print src, dst
+        if src == dst: continue
+        if link[(dst,src)] == 1: link[(dst, src)] += 1
+        else link[(src,dst)] += 1
 
     # src_tmp,dst_tmp = 'src_tmp','dst_tmp'
     # prob_tmp = 0.0
