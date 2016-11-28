@@ -7,15 +7,17 @@ import argparse
 
 def extract(path, pos_start):
     #print 'reading from: {}...'.format(path)
-    link = dd{int}
+    link = dd(int)
 
 
     for line in open(path, 'r'):
         line = line.strip().split('\t')
         if '#' in line[0]: continue
         prob = line[1]
-        value = line[-1][:-1]
-        value = value[pos_start:-1]
+        # get the last 'linked(,)' and strip 'linked(' and ')'
+        value = line[-1][pos_start:-2]
+        
+        #value = value[pos_start:-1]
         print value
 
     # src_tmp,dst_tmp = 'src_tmp','dst_tmp'
