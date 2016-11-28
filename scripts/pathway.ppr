@@ -1,2 +1,1 @@
-pathTo(A,B) :- sga2deg(A,B),isDEG(B).
-pathTo(A,B) :- sga2deg(A,C),pathTo(C,B).
+linked(X,Y) :- drives(X,Z), drives(Y,Z).
