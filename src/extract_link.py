@@ -7,7 +7,7 @@ import argparse
 
 def extract(path, pos_start):
     #print 'reading from: {}...'.format(path)
-    link = dd(int)
+    link = dd(float)
 
 
     for line in open(path, 'r'):
@@ -19,9 +19,12 @@ def extract(path, pos_start):
         value = value.split(',')
         src, dst = value[0], value[1]
 
-        if src == dst: continue
-        link[(src,dst)] += 1
-        link[(dst,src)] += 1
+#        if src == dst: continue
+        if float(prob) >= 0.01:
+            link[(src,dst)] = float(prob)
+
+#        link[(src,dst)] += 1
+#        link[(dst,src)] += 1
     return link
 
 
@@ -61,22 +64,23 @@ if __name__ == '__main__':
     f.close()
     pi3k_sel = dd(int) 
 
+    weight = dd(float)
     link = extract(path_inputData+'/test_linked.solutions.txt', pos_start)
     print len(link)
-    link_set = set()
     for line in link.keys():
-        if link[line] == 1: continue
-        src, dst = line[0],line[1]
-        if (dst,src) in link_set: continue
-        link_set.add((src,dst))
+        #if link[line] == 1: continue
+        src, dst, prob = line[0],line[1],link[line]
+        #if (dst,src) in link_set: continue
+        #link_set.add((src,dst))
         pi3k_sel[src], pi3k_sel[dst] = 0, 0
+        weight[(src, dst)] = prob
         if src in pi3k: pi3k_sel[src] = 1
         if dst in pi3k: pi3k_sel[dst] = 1
-    print len(link_set)
+    print len(weight)
     f = open(path_outputData+'/linked.txt', 'w')
-    print >> f, 'Source\tTarget\tType'
-    for line in link_set:
-        print >> f, line[0]+'\t'+line[1]+'\tUndirected'
+    print >> f, 'Source\tTarget\tType\tWeight'
+    for line in weight.keys():
+        print >> f, line[0]+'\t'+line[1]+'\tUndirected\t'+str(weight[line])
     f.close()
     f = open(path_outputData+'/node.txt', 'w')
     print >> f, 'Id\tPi3k'
