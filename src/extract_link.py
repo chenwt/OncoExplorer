@@ -19,47 +19,9 @@ def extract(path, pos_start):
         value = value.split(',')
         src, dst = value[0], value[1]
 
-#        print src, dst
         if src == dst: continue
         link[(src,dst)] += 1
         link[(dst,src)] += 1
-#        if link[(dst,src)] == 1:
-#            link[(dst, src)] += 1
-#        else:
-#            link[(src,dst)] += 1
-
-    # src_tmp,dst_tmp = 'src_tmp','dst_tmp'
-    # prob_tmp = 0.0
-    # flag = 0
-    # for line in open(path, 'r'):
-    #     values = line.strip().split('\t')
-    #     #print values
-    #     if '#' in values[0]:
-    #         flag = 1
-    #         continue
-    #     prob = values[1]
-    #     val = values[-1][:-1]
-    #     val = val[pos_start:-1]
-    #     val = val.split(',')
-    #     src,dst = val[0], val[1]
-    #     prob = float(prob)
-
-    #     T = k+1
-    #     if flag == 1:
-    #         src_tmp,dst_tmp,prob_tmp = src,dst,prob
-    #         src2dst.add((src,dst))
-    #         flag = flag + 1
-    #     elif flag <= T-1: # possiblity1: a new src; possibility2: continued src
-    #         # obviously, src == src_tmp:
-    #         src_tmp,dst_tmp,prob_tmp = src,dst,prob
-    #         src2dst.add((src,dst))
-    #         # else:
-    #         # do nothing
-    #         flag = flag + 1
-    #     elif flag == T:
-    #         continue
-    # print src2dst
-    # print 'len(src2dst) = {}'.format(len(src2dst))
     return link
 
 
@@ -90,6 +52,18 @@ if __name__ == '__main__':
     pos_start = len(relation) + 1
 
     link = extract(path_inputData+'/test_linked.solutions.txt', pos_start)
+    print len(link)
+    link_set = set()
+    for line in link.keys():
+        src, dst = line[0],line[1]
+        if (dst,src) in link_set: continue
+        link_set.add((src,dst))
+    print len(link_set)
+    f = open(path_outputData+'/linked.txt', 'w')
+    print >> f, 'src\tdst'
+    for line in link_set:
+        print >> f, line[0]+'\t'+line[1]
+    f.close()
 
     print 'Done!'
 #EOF.
