@@ -19,10 +19,14 @@ def extract(path, pos_start):
         value = value.split(',')
         src, dst = value[0], value[1]
 
-        print src, dst
+#        print src, dst
         if src == dst: continue
-        if link[(dst,src)] == 1: link[(dst, src)] += 1
-        else link[(src,dst)] += 1
+        link[(src,dst)] += 1
+        link[(dst,src)] += 1
+#        if link[(dst,src)] == 1:
+#            link[(dst, src)] += 1
+#        else:
+#            link[(src,dst)] += 1
 
     # src_tmp,dst_tmp = 'src_tmp','dst_tmp'
     # prob_tmp = 0.0
