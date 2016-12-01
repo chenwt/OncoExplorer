@@ -6,9 +6,7 @@ import random
 import argparse
 
 def extract(path, pos_start):
-    #print 'reading from: {}...'.format(path)
     link = dd(float)
-
 
     for line in open(path, 'r'):
         line = line.strip().split('\t')
@@ -26,19 +24,6 @@ def extract(path, pos_start):
 #        link[(src,dst)] += 1
 #        link[(dst,src)] += 1
     return link
-
-
-
-def save2txt(path, table):
-    '''
-    path: the filename to be saved.
-    table: list of string list / set of tuples, data to be saved.
-    '''
-    print 'saving to {}...'.format(path)
-    f = open(path, 'w')
-    for row in table:
-        print >> f, '\t'.join(row)
-    f.close()
 
 if __name__ == '__main__':
 
@@ -83,7 +68,7 @@ if __name__ == '__main__':
         print >> f, line[0]+'\t'+line[1]+'\tUndirected\t'+str(weight[line])
     f.close()
     f = open(path_outputData+'/node.txt', 'w')
-    print >> f, 'Id\tPi3k'
+    print >> f, 'Id\tTP53pathway'
     for line in pi3k_sel.keys():
         print >> f, line + '\t'+ str(pi3k_sel[line])
     f.close()
