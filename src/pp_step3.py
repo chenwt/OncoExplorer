@@ -59,12 +59,12 @@ if __name__ == '__main__':
     f = open(path_PropprData+'/pathway.graph', 'w')
     for line in graph:
         sga,deg = line[0], line[1]
-        print >> f, 'drives\t'+sga+'\t'+deg+'\t'+str(deg2count[deg])
+        print >> f, 'drives\t'+sga+'\t'+deg
     f.close()
     f = open(path_PropprData+'/pathwayr.graph', 'w')
     for line in graph:
         sga,deg = line[0], line[1]
-        print >> f, 'drivenBy\t'+deg+'\t'+sga+'\t'+str(deg2count[deg])
+        print >> f, 'drivenBy\t'+deg+'\t'+sga
     f.close()
 
     print 'Done!'

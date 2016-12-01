@@ -61,10 +61,13 @@ if __name__ == '__main__':
         if src in tp53_set: tp53_sel[src] = 1
         if dst in tp53_set: tp53_sel[dst] = 1
 
+    
+
+
     f = open(path_outputData+'/linked.txt', 'w')
     print >> f, 'Source\tTarget\tType\tWeight'
     for line in link.keys():
-        print >> f, line[0]+'\t'+line[1]+'\tDirected\t'+str(link[line])
+        print >> f, line[0]+'\t'+line[1]+'\tUndirected\t'+str(link[line])
     f.close()
     f = open(path_outputData+'/node.txt', 'w')
     print >> f, 'Id\tTP53pathway'
