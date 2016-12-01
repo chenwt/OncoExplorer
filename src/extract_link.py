@@ -5,7 +5,7 @@ import os
 import random
 import argparse
 
-def extract(path, pos_start):
+def extract(path, pos_start, threshold):
     link = dd(float)
 
     for line in open(path, 'r'):
@@ -17,12 +17,9 @@ def extract(path, pos_start):
         value = value.split(',')
         src, dst = value[0], value[1]
 
-#        if src == dst: continue
-        if float(prob) >= 0.01:
+        if src == dst: continue
+        if float(prob) >= threshold:
             link[(src,dst)] = float(prob)
-
-#        link[(src,dst)] += 1
-#        link[(dst,src)] += 1
     return link
 
 if __name__ == '__main__':
@@ -40,37 +37,38 @@ if __name__ == '__main__':
     pos_start = len(relation) + 1
 
 
-    pi3k = set()
-
-    f = open('/home/yifengt/Github/inputData/pi3k.txt','r')
+    # The components of TP53 pathway.
+    tp53_set = set()
+    f = open('/home/yifengt/Github/inputData/tp53_pathway.txt','r')
     for line in f:
         line = line.strip().lower() 
-        pi3k.add(line)
+        tp53_set.add(line)
     f.close()
-    pi3k_sel = dd(int) 
 
-    weight = dd(float)
-    link = extract(path_inputData+'/test_linked.solutions.txt', pos_start)
+    # Extract the link from proppr rest.
+    threshold = 0.01 # threshold to decide if the weight is large enough to to take the link. 
+    link = extract(path_inputData+'/test_linked.solutions.txt', pos_start, threshold)
     print len(link)
+
+    # Get ground truth of the pathway.
+    tp53_sel = dd(int) 
     for line in link.keys():
-        #if link[line] == 1: continue
         src, dst, prob = line[0],line[1],link[line]
-        #if (dst,src) in link_set: continue
-        #link_set.add((src,dst))
-        pi3k_sel[src], pi3k_sel[dst] = 0, 0
-        weight[(src, dst)] = prob
-        if src in pi3k: pi3k_sel[src] = 1
-        if dst in pi3k: pi3k_sel[dst] = 1
-    print len(weight)
+        tp53_sel[src], tp53_sel[dst] = 0, 0
+    for line in link.keys():
+        src, dst = line[0],line[1]
+        if src in tp53_set: tp53_sel[src] = 1
+        if dst in tp53_set: tp53_sel[dst] = 1
+
     f = open(path_outputData+'/linked.txt', 'w')
     print >> f, 'Source\tTarget\tType\tWeight'
-    for line in weight.keys():
-        print >> f, line[0]+'\t'+line[1]+'\tUndirected\t'+str(weight[line])
+    for line in link.keys():
+        print >> f, line[0]+'\t'+line[1]+'\tDirected\t'+str(link[line])
     f.close()
     f = open(path_outputData+'/node.txt', 'w')
     print >> f, 'Id\tTP53pathway'
-    for line in pi3k_sel.keys():
-        print >> f, line + '\t'+ str(pi3k_sel[line])
+    for line in tp53_sel.keys():
+        print >> f, line + '\t'+ str(tp53_sel[line])
     f.close()
 
     print 'Done!'
