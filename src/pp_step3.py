@@ -41,23 +41,30 @@ if __name__ == '__main__':
 
     writetestSample_Proppr(path_PropprData, 'test_linked.examples', 'linked', sga_corpus)
 
+
+    deg2count = dd(float)
     graph = list()
     f = open(path_inputData+'/graph.txt', 'r')
     for line in f:
         line = line.strip().split('\t')
         sga,deg = line[0], line[1]
         graph.append((sga,deg))
+        deg2count[deg] += 1.0
     f.close()    
+    # Weight for the edge point to deg
+    for deg in deg2count.keys():
+        deg2count[deg] = 1.0/deg2count[deg]
+
 
     f = open(path_PropprData+'/pathway.graph', 'w')
     for line in graph:
         sga,deg = line[0], line[1]
-        print >> f, 'drives\t'+sga+'\t'+deg
+        print >> f, 'drives\t'+sga+'\t'+deg+'\t'+str(deg2count[deg])
     f.close()
     f = open(path_PropprData+'/pathwayr.graph', 'w')
     for line in graph:
         sga,deg = line[0], line[1]
-        print >> f, 'drivenBy\t'+deg+'\t'+sga
+        print >> f, 'drivenBy\t'+deg+'\t'+sga+'\t'+str(deg2count[deg])
     f.close()
 
     print 'Done!'
