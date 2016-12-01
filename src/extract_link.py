@@ -27,10 +27,11 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--inputData', help = 'directory of inputData', type = str)
     parser.add_argument('--outputData', help = 'directory of outputData', type = str)
+    parser.add_argument('--threshold', help = 'threshold of taking edges', type = float)
     args = parser.parse_args()
     path_inputData = args.inputData
     path_outputData = args.outputData
-
+    threshold = args.threshold
     print 'extracting...'
 
     relation = 'linked'
@@ -46,7 +47,7 @@ if __name__ == '__main__':
     f.close()
 
     # Extract the link from proppr rest.
-    threshold = 0.01 # threshold to decide if the weight is large enough to to take the link. 
+    # threshold to decide if the weight is large enough to to take the link. 
     link = extract(path_inputData+'/test_linked.solutions.txt', pos_start, threshold)
     print len(link)
 
