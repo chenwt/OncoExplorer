@@ -13,8 +13,8 @@
 #python ../src/extract_link.py --inputData /home/yifengt/Github/PropprData --outputData /home/yifengt/Github/PropprData --pathwayName /home/yifengt/Github/outputData/pathway_pi3k.txt --threshold 0.03
 
 
+# extract the pathway genes from kegg files.
+# python pp_extract_xml.py --inputData /home/yifengt/Github/inputData --outputData /home/yifengt/Github/outputData --pathwayName coad,gbm,blca,prad,ucec,brca,pi3k,cancer
 
-python pp_extract_xml.py --inputData /home/yifengt/Github/inputData --outputData /home/yifengt/Github/outputData --pathwayName coad,gbm,blca,prad,ucec,brca,pi3k,cancer
-
-#python pathway_discover.py --inputData /home/yifengt/Github/outputData --outputData /home/yifengt/Github/outputData
+python pathway_discover.py --inputData /home/yifengt/Github/PropprData --outputData /home/yifengt/Github/PropprData --groundData /home/yifengt/Github/outputData --threshold 0.0
 
