@@ -77,7 +77,7 @@ if __name__ == '__main__':
     print 'len(node)=%d'%len(gene_set)
 
     pathwayName = ['coad', 'gbm', 'blca', 'prad',
-    'ucec', 'brca', 'pi3k', 'cancer']
+    'ucec', 'brca', 'pi3k', 'cancer','p53']
     # name_pathway -> set of genes in KEGG pathway
     pathway_set = dd(set)
     # (name_pathway, gene) -> whether gene in name_pathway

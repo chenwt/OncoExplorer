@@ -14,7 +14,6 @@
 
 
 # extract the pathway genes from kegg files.
-# python pp_extract_xml.py --inputData /home/yifengt/Github/inputData --outputData /home/yifengt/Github/outputData --pathwayName coad,gbm,blca,prad,ucec,brca,pi3k,cancer
+#python pp_extract_xml.py --inputData /home/yifengt/Github/inputData --outputData /home/yifengt/Github/outputData --pathwayName coad,gbm,blca,prad,ucec,brca,pi3k,cancer,p53
 
 python pathway_discover.py --inputData /home/yifengt/Github/PropprData --outputData /home/yifengt/Github/PropprData --groundData /home/yifengt/Github/outputData --threshold 0.0
-
