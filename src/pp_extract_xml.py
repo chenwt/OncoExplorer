@@ -4,11 +4,12 @@ import os
 import random
 import argparse
 
-def extract_xml(name_xml, name_pathway, path_inputData, path_outputData):
-    print 'reading from... {}'.format(path_inputData+'/'+name_xml+'.xml')
+def extract_xml(name_xml, name_pathway, path_inputData, path_outputData, all_gene_set):
+    
     k = 0
     entity_type = None
     gene_name = None
+    set_gene = set()
     f = open(path_inputData+'/'+name_xml+'.xml', 'r')
     for _ in range(7): next(f)
     for line in f:
@@ -29,6 +30,7 @@ def extract_xml(name_xml, name_pathway, path_inputData, path_outputData):
     for line in set_gene:
         print >> f, line
     f.close()
+    print '{}\t{}\t{}/{}'.format(name_xml, name_pathway, len(all_gene_set.intersection(set_gene)), len(set_gene))
     return
 
 if __name__ == '__main__':
@@ -42,12 +44,23 @@ if __name__ == '__main__':
     path_outputData = args.outputData
     pathwayName = args.pathwayName
     pathwayName = pathwayName.split(',')
-    set_gene = set()
 
-    pathway2xml = {'pi3k':'hsa04151','cancer':'hsa05200'}
+    all_gene_set = [line.strip() for line in open(path_outputData+'/SGA.txt')]
+    all_gene_set = set(all_gene_set)
+
+    # pathway2xml = {'pi3k':'hsa04151','cancer':'hsa05200'}
+    pathway2xml = {'coad':'hsa05210',
+    'gbm':'hsa05214',
+    'blca':'hsa05219',
+    'prad': 'hsa05215',
+    'ucec': 'hsa05213',
+    'brca': 'hsa05224',
+    'pi3k':'hsa04151',
+    'cancer':'hsa05200'}
+    print 'KEGGpathway\tcancer\tintersect/pathway'
     for name_pathway in pathwayName:
         name_xml = pathway2xml[name_pathway]
-        extract_xml(name_xml, name_pathway, path_inputData, path_outputData)
+        extract_xml(name_xml, name_pathway, path_inputData, path_outputData, all_gene_set)
 
 
 
