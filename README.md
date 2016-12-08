@@ -3,6 +3,7 @@ Explore cancer data interactively.
 
 ## Metrics
 * # patients: 4453/4468
+* blca 200, brca 1041, cancer 1042, coad 1224, esca 1373, gbm 1574, hnsc 2032, kirc 2456, kirp 2624, lihc 2771, luad 3154, lusc 3290, ov 3609, prad 4007, read 4084, stad 4260, ucec 4453
 
 
 
