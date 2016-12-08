@@ -1,6 +1,12 @@
 # Onco Knowledge Explorer
 Explore cancer data interactively.
 
+## Metrics
+* # patients: 4453/4468
+
+
+
+
 ## Connected pathway graph
 * SGA sets: 559
 * DEG sets: 8,841
