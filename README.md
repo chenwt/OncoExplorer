@@ -3,22 +3,11 @@ Explore cancer data interactively.
 
 ## Metrics
 * # patients: 4453/4468
-* blca 200, brca 1041, cancer 1042, coad 1224, esca 1373, gbm 1574, hnsc 2032, kirc 2456, kirp 2624, lihc 2771, luad 3154, lusc 3290, ov 3609, prad 4007, read 4084, stad 4260, ucec 4453
 
-| blca 200| brca 1041| cancer 1042| coad 1224| esca 1373| gbm 1574| hnsc 2032| kirc 2456| kirp 2624| lihc 2771| luad 3154| lusc 3290| ov 3609| prad 4007| read 4084| stad 4260| ucec 4453|
+|can| blca | brca | coad | esca | gbm | hnsc | kirc | kirp | lihc | luad | lusc | ov | prad | read | stad | ucec |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| blca 200| brca 841| cancer 1| coad 182 | esca 149 | gbm 201 | hnsc 458 | kirc 424 | kirp 168 | lihc 147 | luad 383 | lusc 136 | ov 319 | prad 398 | read 77| stad 176| ucec 193|
+|#pat|  200|  841| 182 |  149 |  201 |  458 |  424 |  168 |  147 |  383 |  136 |  319 |  398 |  77|  176|  193|
 
-
-| cancer    | blca |
-|--------|----------------------|
-|# patients | 200  |
-
-| Tables        | Are           | Cool  |
-| ------------- |:-------------:| -----:|
-| col 3 is      | right-aligned | $1600 |
-| col 2 is      | centered      |   $12 |
-| zebra stripes | are neat      |    $1 |
 
 
 
