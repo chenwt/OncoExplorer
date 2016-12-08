@@ -1,6 +1,16 @@
 # Onco Knowledge Explorer
 Explore cancer data interactively.
 
+## Metrics
+* # patients: 4453/4468
+
+|can| blca | brca | coad | esca | gbm | hnsc | kirc | kirp | lihc | luad | lusc | ov | prad | read | stad | ucec |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+|#pat|  200|  841| 182 |  149 |  201 |  458 |  424 |  168 |  147 |  383 |  136 |  319 |  398 |  77|  176|  193|
+
+
+
+
 ## Connected pathway graph
 * SGA sets: 559
 * DEG sets: 8,841
