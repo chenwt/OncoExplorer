@@ -76,8 +76,24 @@ if __name__ == '__main__':
 
     print 'len(node)=%d'%len(gene_set)
 
+    delset = {'apc', 'vhl'}
+
+    exist_node_set = set() 
+    f = open(path_outputData+'/linked.txt', 'w')
+    print >> f, 'Source\tTarget\tType\tWeight'
+    for line in sgaWsga.keys():
+        sga1, sga2 = line[0], line[1]
+        if sga1 in delset: continue
+        if sga2 in delset: continue
+        print >> f, sga1+'\t'+sga2+'\tUndirected\t'+str(sgaWsga[(sga1,sga2)])
+        exist_node_set.add(sga1)
+        exist_node_set.add(sga2)
+    f.close()
+
+
+   
     pathwayName = ['coad', 'gbm', 'blca', 'prad',
-    'ucec', 'brca', 'pi3k', 'cancer','p53']
+    'ucec', 'brca', 'pi3k', 'p53', 'notch', 'cancer']
     # name_pathway -> set of genes in KEGG pathway
     pathway_set = dd(set)
     # (name_pathway, gene) -> whether gene in name_pathway
@@ -101,27 +117,12 @@ if __name__ == '__main__':
         f.write( u'\t%s'%name_pathway)
     f.write(u'\n')
     for sga in gene_set:
+        if sga in delset: continue
+        if sga not in exist_node_set: continue
         f.write(u'%s'%(sga))
         for name_pathway in pathwayName:
             f.write( u'\t%s'%pathway_sel[(name_pathway,sga)])
         f.write(u'\n')
     f.close()
-
-    # f.write( u'%s(%s,Y)\n'%(relname,src) )
-
-    # f = open(path_outputData+'/node.txt', 'w')
-    # print >> f, 'Id\tTP53pathway'
-    # for line in tp53_sel.keys():
-    #     print >> f, line + '\t'+ str(tp53_sel[line])
-    # f.close()
-
-
-    f = open(path_outputData+'/linked.txt', 'w')
-    print >> f, 'Source\tTarget\tType\tWeight'
-    for line in sgaWsga.keys():
-        sga1, sga2 = line[0], line[1]
-        print >> f, sga1+'\t'+sga2+'\tUndirected\t'+str(sgaWsga[(sga1,sga2)])
-    f.close()
-
 
 #EOF.
