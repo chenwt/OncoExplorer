@@ -33,6 +33,20 @@ We use the aggregate of SGA and DEG in advance.
 * Test with GO database for community detection.
 
 
-TDI_Results_new.csv: 1 + 11,769,129 records (No duplication, containing unit SGA).
-min posterior = 0.011143. (sort -t$',' -k 4g TDI_Results_new.csv)
-TDI_Results_filter_no_unit.csv [remove duplicated entities]-> TDI_Results_filter.csv
+*TDI_Results_new.csv: 1 + 11,769,129 records (No duplication, containing unit SGA).
+lowercase the record: tr A-Z a-z < TDI_Results_new.csv > out (Also No duplication, containing unit SGA)
+
+min posterior = 0.011143. (sort -t$',' -k 4g TDI_Results_new.csv).
+
+*TDI_Results_filter_no_unit.csv (1+3,281,866) [remove duplicated entities]->  (1+3,281,018) [overlap with TDI_Results_new.csv]-> ensemble.txt (1+3,281,018)
+
+tr A-Z a-z < TDI_Results_filter_no_unit.csv > out
+
+min posterior = 0.1
+
+* SGAs.txt (559 filtered SGAs); DEGs.txt (8,844 filtered DEGs)
+overlap: 
+cut -f5 ensemble.txt | tail -n +2 | sort | uniq > SGAs.txt
+
+cut -f6 ensemble.txt | tail -n +2 | sort | uniq > DEGs.txt
+
