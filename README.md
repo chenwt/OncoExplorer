@@ -45,8 +45,22 @@ tr A-Z a-z < TDI_Results_filter_no_unit.csv > out
 min posterior = 0.1
 
 * SGAs.txt (559 filtered SGAs); DEGs.txt (8,844 filtered DEGs)
-overlap: 
+
+__Overlap:242; SGAs & hsa05200(cancer) = 25/179; DEGs & hsa05200 = 100/179;__
+
 cut -f5 ensemble.txt | tail -n +2 | sort | uniq > SGAs.txt
 
 cut -f6 ensemble.txt | tail -n +2 | sort | uniq > DEGs.txt
 
+
+X (The sort here will change MARCH9 to 9-mar)cut -f2 -d',' TDI_Results_new_lc.csv | tail -n +2 | sort | uniq > SGAl.txt
+
+SGAl.txt (19,850 unfiltered SGAs); DEGl.txt (19,414 unfiltered DEGs);
+
+__Overlap:14,984; SGAs & hsa05200(cancer) = 168/179; DEGs & hsa05200 = 171/179;__
+
+cut -f2 -d',' TDI_Results_new_lc.csv | tail -n +2 | sort -g | uniq > SGAl.txt
+
+cut -f3 -d',' TDI_Results_new_lc.csv | tail -n +2 | sort -g| uniq > DEGl.txt
+
+EOF.
