@@ -31,3 +31,8 @@ We use the aggregate of SGA and DEG in advance.
 
 * Check the overlap of SGA & DEG w/ KEGG pathway.
 * Test with GO database for community detection.
+
+
+TDI_Results_new.csv: 1 + 11,769,129 records (No duplication, containing unit SGA).
+min posterior = 0.011143. (sort -t$',' -k 4g TDI_Results_new.csv)
+TDI_Results_filter_no_unit.csv [remove duplicated entities]-> TDI_Results_filter.csv
