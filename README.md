@@ -27,3 +27,7 @@ Explore cancer data interactively.
 
 Note: we do not remove the duplicated records, they account for 200/3,279,967.
 We use the aggregate of SGA and DEG in advance.
+
+
+* Check the overlap of SGA & DEG w/ KEGG pathway.
+* Test with GO database for community detection.
