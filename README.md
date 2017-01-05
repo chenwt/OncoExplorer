@@ -29,9 +29,8 @@ Note: we do not remove the duplicated records, they account for 200/3,279,967.
 We use the aggregate of SGA and DEG in advance.
 
 
-* Check the overlap of SGA & DEG w/ KEGG pathway.
-* Test with GO database for community detection.
 
+* Check the overlap of SGA & DEG w/ KEGG pathway.
 
 *TDI_Results_new.csv: 1 + 11,769,129 records (No duplication, containing unit SGA).
 lowercase the record: tr A-Z a-z < TDI_Results_new.csv > out (Also No duplication, containing unit SGA)
@@ -62,5 +61,14 @@ __Overlap:14,984; SGAs & hsa05200(cancer) = 168/179; DEGs & hsa05200 = 171/179;_
 cut -f2 -d',' TDI_Results_new_lc.csv | tail -n +2 | sort -g | uniq > SGAl.txt
 
 cut -f3 -d',' TDI_Results_new_lc.csv | tail -n +2 | sort -g| uniq > DEGl.txt
+
+
+* Test with GO database for community detection.
+
+* try different scoring methods.
+
+* try different methods of clustering.
+
+* grant.
 
 EOF.
