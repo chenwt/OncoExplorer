@@ -71,4 +71,13 @@ cut -f3 -d',' TDI_Results_new_lc.csv | tail -n +2 | sort -g| uniq > DEGl.txt
 
 * grant.
 
+* Test within one subset:
+
+molecular function
+molecular activities of gene products
+__cellular component__
+where gene products are active
+__biological process__
+pathways and larger processes made up of the activities of multiple gene products.
+
 EOF.
