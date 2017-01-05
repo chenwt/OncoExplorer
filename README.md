@@ -63,7 +63,174 @@ cut -f2 -d',' TDI_Results_new_lc.csv | tail -n +2 | sort -g | uniq > SGAl.txt
 cut -f3 -d',' TDI_Results_new_lc.csv | tail -n +2 | sort -g| uniq > DEGl.txt
 
 
-* Test with GO database for community detection.
+* __Test with GO database for community detection.__
+* examine the GO terms:
+* SGA
+cdkn2b  go:0000079
+cdkn2b  go:0000086
+cdkn2b  go:0004861
+cdkn2b  go:0005515
+cdkn2b  go:0005634
+cdkn2b  go:0005654
+cdkn2b  go:0005737
+cdkn2b  go:0005829
+cdkn2b  go:0007050
+cdkn2b  go:0007093
+cdkn2b  go:0008285
+cdkn2b  go:0019901
+cdkn2b  go:0030219
+cdkn2b  go:0030511
+cdkn2b  go:0031668
+cdkn2b  go:0031670
+cdkn2b  go:0042326
+cdkn2b  go:0045944
+cdkn2b  go:0048536
+cdkn2b  go:0050680
+cdkn2b  go:0071901
+cdkn2b  go:2000134
+
+grin2b  go:0000165
+grin2b  go:0004972
+grin2b  go:0005088
+grin2b  go:0005234
+grin2b  go:0005515
+grin2b  go:0005622
+grin2b  go:0005886
+grin2b  go:0005887
+grin2b  go:0006810
+grin2b  go:0007215
+grin2b  go:0007268
+grin2b  go:0007611
+grin2b  go:0008270
+grin2b  go:0009986
+grin2b  go:0016594
+grin2b  go:0017146
+grin2b  go:0030054
+grin2b  go:0034220
+grin2b  go:0035235
+grin2b  go:0043005
+grin2b  go:0043547
+grin2b  go:0045211
+grin2b  go:0045471
+grin2b  go:0048013
+
+mrpl27  go:0003735
+mrpl27  go:0005515
+mrpl27  go:0005743
+mrpl27  go:0005762
+mrpl27  go:0006412
+mrpl27  go:0044822
+mrpl27  go:0070125
+mrpl27  go:0070126
+
+rbm17   go:0000166
+rbm17   go:0000380
+rbm17   go:0003723
+rbm17   go:0005515
+rbm17   go:0005681
+rbm17   go:0043234
+
+tvp23c  go:0009306
+tvp23c  go:0016192
+tvp23c  go:0030173
+
+* DEG
+
+adamts5 go:0004222
+adamts5 go:0005178
+adamts5 go:0005515
+adamts5 go:0005576
+adamts5 go:0005578
+adamts5 go:0005615
+adamts5 go:0005788
+adamts5 go:0006508
+adamts5 go:0008201
+adamts5 go:0008237
+adamts5 go:0008270
+adamts5 go:0022617
+adamts5 go:0036066
+adamts5 go:0042742
+adamts5 go:0044691
+adamts5 go:0050840
+
+cyp4f2  go:0000038
+cyp4f2  go:0001676
+cyp4f2  go:0003091
+cyp4f2  go:0003095
+cyp4f2  go:0004497
+cyp4f2  go:0005506
+cyp4f2  go:0005515
+cyp4f2  go:0005737
+cyp4f2  go:0005789
+cyp4f2  go:0006690
+cyp4f2  go:0006691
+cyp4f2  go:0007596
+cyp4f2  go:0008217
+cyp4f2  go:0008392
+cyp4f2  go:0016324
+cyp4f2  go:0016709
+cyp4f2  go:0017144
+cyp4f2  go:0018685
+cyp4f2  go:0019369
+cyp4f2  go:0019373
+cyp4f2  go:0020037
+cyp4f2  go:0031090
+cyp4f2  go:0032304
+cyp4f2  go:0032305
+cyp4f2  go:0036101
+cyp4f2  go:0042360
+cyp4f2  go:0042361
+cyp4f2  go:0042376
+cyp4f2  go:0042377
+cyp4f2  go:0043231
+cyp4f2  go:0050051
+cyp4f2  go:0052869
+cyp4f2  go:0052871
+cyp4f2  go:0052872
+cyp4f2  go:0055078
+cyp4f2  go:0055114
+cyp4f2  go:0097258
+cyp4f2  go:0097259
+cyp4f2  go:0097267
+
+kcnj13  go:0005242
+kcnj13  go:0005887
+kcnj13  go:0006813
+kcnj13  go:0010107
+kcnj13  go:0034765
+
+pmepa1  go:0000139
+pmepa1  go:0005515
+pmepa1  go:0005654
+pmepa1  go:0005886
+pmepa1  go:0010008
+pmepa1  go:0010991
+pmepa1  go:0016021
+pmepa1  go:0030512
+pmepa1  go:0030521
+pmepa1  go:0031901
+pmepa1  go:0043231
+pmepa1  go:0050699
+pmepa1  go:0060394
+pmepa1  go:0070412
+
+tnni3k  go:0002027
+tnni3k  go:0004672
+tnni3k  go:0004674
+tnni3k  go:0004871
+tnni3k  go:0005515
+tnni3k  go:0005524
+tnni3k  go:0005634
+tnni3k  go:0005737
+tnni3k  go:0006468
+tnni3k  go:0008022
+tnni3k  go:0031013
+tnni3k  go:0035556
+tnni3k  go:0046872
+tnni3k  go:0055117
+tnni3k  go:0086069
+tnni3k  go:1903779
+
 
 * try different scoring methods.
 
