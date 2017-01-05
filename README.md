@@ -130,9 +130,51 @@ rbm17   go:0005515
 rbm17   go:0005681
 rbm17   go:0043234
 
+
 tvp23c  go:0009306
+id: GO:0009306
+name: protein secretion
+namespace: biological_process
+alt_id: GO:0045166
+alt_id: GO:0045731
+def: "The controlled release of proteins from a cell." [GOC:ai]
+subset: gosubset_prok
+synonym: "glycoprotein secretion" NARROW []
+synonym: "protein secretion during cell fate commitment" NARROW []
+synonym: "protein secretion resulting in cell fate commitment" NARROW []
+is_a: GO:0015031 ! protein transport
+is_a: GO:0032940 ! secretion by cell
+
 tvp23c  go:0016192
+id: GO:0016192
+name: vesicle-mediated transport
+namespace: biological_process
+alt_id: GO:0006899
+def: "A cellular transport process in which transported substances are moved in membrane-bounded vesicles; transported substances are enclosed in the vesicle lumen or located in the vesicle membrane. The process begins with a step that directs a substance to the forming vesicle, and includes vesicle budding and coating. Vesicles are then targeted to, and fuse with, an acceptor membrane." [GOC:ai, GOC:mah, ISBN:08789310662000]
+subset: goslim_aspergillus
+subset: goslim_candida
+subset: goslim_chembl
+subset: goslim_generic
+subset: goslim_pir
+subset: goslim_pombe
+subset: gosubset_prok
+synonym: "nonselective vesicle transport" NARROW []
+synonym: "protein sorting along secretory pathway" RELATED []
+synonym: "vesicle trafficking" RELATED []
+synonym: "vesicle transport" EXACT []
+synonym: "vesicular transport" EXACT [GOC:mah]
+is_a: GO:0006810 ! transport
+
 tvp23c  go:0030173
+id: GO:0030173
+name: integral component of Golgi membrane
+namespace: cellular_component
+def: "The component of the Golgi membrane consisting of the gene products and protein complexes having at least some part of their peptide sequence embedded in the hydrophobic region of the membrane." [GOC:go_curators]
+synonym: "Golgi integral membrane protein" RELATED []
+synonym: "integral to Golgi membrane" NARROW []
+is_a: GO:0031228 ! intrinsic component of Golgi membrane
+is_a: GO:0031301 ! integral component of organelle membrane
+relationship: part_of GO:0000139 ! Golgi membrane
 
 * DEG
 
@@ -232,9 +274,9 @@ tnni3k  go:0086069
 tnni3k  go:1903779
 
 
-* try different scoring methods.
+* try different scoring methods, e.g., Jaccard.
 
-* try different methods of clustering.
+* try different methods of clustering, e.g. using spetral clustering to check the differences between cancers.
 
 * grant.
 
