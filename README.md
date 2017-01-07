@@ -160,4 +160,8 @@ pathways and larger processes made up of the activities of multiple gene product
 
 * It would be pretty interesting to check the results from three parts: simplified (SGA,SGA) weighted, results from SGA->DEG->GoTerm, results from SGA->GoTerm. We may compare the effect of classification.
 
+* Also we can consider the role within through patient-wise rule.
+
+* Note that we may want to filter the GoTerm which is not related to biological process in the goAnn.cfacts file?
+
 EOF.
