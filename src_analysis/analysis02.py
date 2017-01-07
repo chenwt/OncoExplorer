@@ -52,4 +52,57 @@ if __name__ == '__main__':
         #if prob > threshold_noisyor:
         print >> f, sga+'\t'+deg+'\t'+str(weight)
     f.close()
+
+
+
+    sga2deg = dd(list)
+
+    deg2sga = dd(list)
+
+    sgaWsga = dd(int)
+
+    for line in tmp_graph.keys():
+        sga,deg = line[0],line[1]
+        sga2deg[sga].append(deg)
+        deg2sga[deg].append(sga)
+
+    # count reciprocal distance matrix
+    for sga in sga2deg.keys():
+        for deg in sga2deg[sga]:
+            for sga2 in deg2sga[deg]:
+                sgaWsga[(sga,sga2)] += 1.0
+    # remove digonal elements
+    for line in sgaWsga.keys():
+        sga1, sga2 = line[0], line[1]
+        if sga1 == sga2: del sgaWsga[(sga1,sga2)]
+    #print len(sgaWsga)    
+
+    # remove half of matrix
+    del_set = set()
+    for line in sgaWsga.keys():
+        sga1, sga2 = line[0], line[1]
+        if (sga1, sga2) not in del_set:
+            del_set.add((sga2, sga1))
+            del sgaWsga[(sga1,sga2)]
+    print 'len(link)=%d'%len(sgaWsga)
+
+    # for line in sgaWsga.keys():
+    #     if sgaWsga[line] < threshold: del sgaWsga[line]
+    # print 'len(flink)=%d'%len(sgaWsga)
+
+    gene_set = set()
+    for line in sgaWsga.keys():
+        gene_set.add(line[0])
+        gene_set.add(line[1])
+
+    print 'len(node)=%d'%len(gene_set)
+
+    f = open(path_outputData+'/linked_'+cancer+'.txt', 'w')
+    print >> f, 'Source\tTarget\tType\tWeight'
+    for line in sgaWsga.keys():
+        sga1, sga2 = line[0], line[1]
+        scale = 100.0
+        print >> f, sga1+'\t'+sga2+'\tUndirected\t'+str(sgaWsga[(sga1,sga2)]/scale)
+    f.close()    
+
 #End
