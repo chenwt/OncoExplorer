@@ -279,6 +279,9 @@ tnni3k  go:1903779
 
 * Test with BRCA, GBM, OV.
 
+python analysis02.py --inputData /usr1/public/yifeng/Github/outputData --outputData /usr1/public/yifeng/Github/outputData --cancer gbm
+
+
 BRCA: 480,577 pat,sga,deg records -> aggregate 22,499, 21,141 SGA edges, 529 nodes.
 
 GBM: 151,030 -> 7,150, 3,043 SGA edges, 313 nodes.
@@ -292,6 +295,14 @@ It seems that merely aggregate the total number of overlap is not enough to dist
 ![alt tag](https://github.com/yifengtao/OncoExplorer/blob/master/figure/fig2_ov_cluster1.jpg)
 
 * try different scoring methods, e.g., Jaccard.
+
+python analysis03.py --inputData /usr1/public/yifeng/Github/outputData --outputData /usr1/public/yifeng/Github/outputData --cancer gbm
+
+The parameter of edges and nodes is the same with the raw methods.
+
+It seems to be better, but may become better if we can set a threshold?
+![alt tag](https://github.com/yifengtao/OncoExplorer/blob/master/figure/fig3_ov_cluster2.jpg)
+
 
 Remember to check duplicated edges among patients.
 
