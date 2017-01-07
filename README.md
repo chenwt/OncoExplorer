@@ -281,9 +281,12 @@ Remember to check duplicated edges among patients.
 * try different methods of clustering, e.g. using spetral clustering to check the differences between cancers.
 
 * Test with BRCA, GBM, OV.
-BRCA: 480,577 -> aggregate 22,499
-GBM: 151,030 -> 7,150
-OV: 110,125 -> 9,397
+
+BRCA: 480,577 pat,sga,deg records -> aggregate 22,499, 21,141 SGA edges, 529 nodes.
+
+GBM: 151,030 -> 7,150, 3,043 SGA edges, 313 nodes.
+
+OV: 110,125 -> 9,397, 6,251 SGA edges, 418 nodes.
 
 ![alt tag](https://github.com/yifengtao/OncoExplorer/blob/master/figure/fig1_hist_weight.jpg)
 
