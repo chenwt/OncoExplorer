@@ -300,9 +300,14 @@ python analysis03.py --inputData /usr1/public/yifeng/Github/outputData --outputD
 
 The parameter of edges and nodes is the same with the raw methods.
 
-It seems to be better, but may become better if we can set a threshold?
+It seems to be better.
 ![alt tag](https://github.com/yifengtao/OncoExplorer/blob/master/figure/fig3_ov_cluster2.jpg)
 
+This can also be seen from the distribution of the (SGA,SGA) weight, which shows some edges have much larger weight, other than the noise in simple overlap version.
+![alt tag](https://github.com/yifengtao/OncoExplorer/blob/master/figure/fig6_hist_SGAweight_jaccard.jpg)
+Simple overlap version:
+![alt tag](https://github.com/yifengtao/OncoExplorer/blob/master/figure/fig7_hist_SGAweight_simple.jpg)
+But may become better if we can set a threshold?
 
 Remember to check duplicated edges among patients.
 
