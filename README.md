@@ -130,6 +130,9 @@ rbm17   go:0005515
 rbm17   go:0005681
 rbm17   go:0043234
 
+* __We could use the 'is_a' relationship to cluster the DEGs. Further, we can propogate the SGA->DEG->GOTerm->subsets goterm of 8150.__
+![alt tag](https://github.com/yifengtao/OncoExplorer/blob/master/figure/fig8_rbm17.jpg)
+
 
 tvp23c  go:0009306
 id: GO:0009306
