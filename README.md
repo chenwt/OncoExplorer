@@ -276,7 +276,15 @@ tnni3k  go:1903779
 
 * try different scoring methods, e.g., Jaccard.
 
+Remember to check duplicated edges among patients.
+
 * try different methods of clustering, e.g. using spetral clustering to check the differences between cancers.
+
+* Test with BRCA, GBM, OV.
+BRCA: 480,577 -> aggregate 22,499
+GBM: 151,030 -> 7,150
+OV: 110,125 -> 9,397
+* Our methods is able to analyze within different types of cancers with different number of patients.
 
 * grant.
 
