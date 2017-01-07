@@ -45,6 +45,7 @@ if __name__ == '__main__':
     print '#readin_edge = {}'.format(k)
 
     f = open(path_outputData+'/graph_'+cancer+'.txt', 'w')
+    print >> f, 'SGA\tDEG\tWeight'
     for line in tmp_graph.keys():
         sga,deg,weight = line[0],line[1],tmp_graph[(line[0],line[1])]
         #sga,deg,prob = line[0],line[1],1.0-tmp_graph[(line[0],line[1])]
