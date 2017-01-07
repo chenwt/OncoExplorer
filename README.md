@@ -284,6 +284,9 @@ Remember to check duplicated edges among patients.
 BRCA: 480,577 -> aggregate 22,499
 GBM: 151,030 -> 7,150
 OV: 110,125 -> 9,397
+
+![alt tag](https://github.com/yifengtao/OncoExplorer/figure/fig1_hist_weight.jpg)
+
 * Our methods is able to analyze within different types of cancers with different number of patients.
 
 * grant.
