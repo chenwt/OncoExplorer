@@ -158,4 +158,6 @@ pathways and larger processes made up of the activities of multiple gene product
 
 * (Try with the unfiltered datasets of TDI pairs)
 
+* It would be pretty interesting to check the results from three parts: simplified (SGA,SGA) weighted, results from SGA->DEG->GoTerm, results from SGA->GoTerm. We may compare the effect of classification.
+
 EOF.
