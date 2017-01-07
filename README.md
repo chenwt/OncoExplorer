@@ -274,9 +274,6 @@ tnni3k  go:0086069
 tnni3k  go:1903779
 
 
-* try different scoring methods, e.g., Jaccard.
-
-Remember to check duplicated edges among patients.
 
 * try different methods of clustering, e.g. using spetral clustering to check the differences between cancers.
 
@@ -289,6 +286,15 @@ GBM: 151,030 -> 7,150, 3,043 SGA edges, 313 nodes.
 OV: 110,125 -> 9,397, 6,251 SGA edges, 418 nodes.
 
 ![alt tag](https://github.com/yifengtao/OncoExplorer/blob/master/figure/fig1_hist_weight.jpg)
+
+It seems that merely aggregate the total number of overlap is not enough to distinguish the clusters...
+
+![alt tag](https://github.com/yifengtao/OncoExplorer/blob/master/figure/fig2_ov_cluster1.jpg)
+
+* try different scoring methods, e.g., Jaccard.
+
+Remember to check duplicated edges among patients.
+
 
 * Our methods is able to analyze within different types of cancers with different number of patients.
 
