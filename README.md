@@ -308,6 +308,7 @@ This can also be seen from the distribution of the (SGA,SGA) weight, which shows
 Simple overlap version:
 ![alt tag](https://github.com/yifengtao/OncoExplorer/blob/master/figure/fig7_hist_SGAweight_simple.jpg)
 But may become better if we can set a threshold?
+Well... Actually I am really not sure if this is better after the experiment... if merely from the figure. Might need some other source?
 
 Remember to check duplicated edges among patients.
 
