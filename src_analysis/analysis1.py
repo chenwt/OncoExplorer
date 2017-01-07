@@ -6,7 +6,7 @@ import argparse
 
 if __name__ == '__main__':
     ''' 
-    python analysis1.py --inputData /usr1/public/yifeng/Github/inputData --outputData /usr1/public/yifeng/Github/inputData
+    python analysis1.py --inputData /usr1/public/yifeng/Github/inputData --outputData /usr1/public/yifeng/Github/outputData
     '''
     parser = argparse.ArgumentParser()
     parser.add_argument('--inputData', help = 'directory of input data', type = str)
