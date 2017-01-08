@@ -164,4 +164,8 @@ pathways and larger processes made up of the activities of multiple gene product
 
 * Note that we may want to filter the GoTerm which is not related to biological process in the goAnn.cfacts file?
 
+* Test with organelles structure, other than biological process.
+
+* Consider the directions of the perturbations? (Future direction)
+
 EOF.
