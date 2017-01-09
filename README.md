@@ -168,4 +168,6 @@ pathways and larger processes made up of the activities of multiple gene product
 
 * Consider the directions of the perturbations? (Future direction)
 
+* t-SNE.
+
 EOF.
