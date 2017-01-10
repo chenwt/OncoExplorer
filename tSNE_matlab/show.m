@@ -1,14 +1,17 @@
 % show.m
 clc; clear; close all;
 
-can = 'ov';
+can = 'brca';
 input = tdfread(sprintf(['linked_',can,'_n.txt']));
 Source = input.Source;
 Target = input.Target;
 Weight = input.Weight;
-Distance = 1./Weight;
+Distance = 1./Weight/100;
 
-perplexity = 10;
+%hist(Distance,1000)
+
+%
+perplexity = 14;
 
 input = tdfread(sprintf(['lut_',can,'.txt']));
 Id = input.Id;
@@ -70,7 +73,7 @@ end
 fig = figure();
 hold on;
 
-gscatter(ydata(:,1), ydata(:,2));
+gscatter(ydata(:,1), ydata(:,2), [], 'r',[],20);
 
 set(fig,'Position',[-20, 800, 900, 900]);
 
