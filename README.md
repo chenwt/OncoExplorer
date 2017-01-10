@@ -156,6 +156,12 @@ where gene products are active
 __biological process__
 pathways and larger processes made up of the activities of multiple gene products.
 
+* t-SNE.
+It looks crazy, even if I tried to carefully tune the perplexity, the graph in 2D is hard to cluster into different classes. The example of BRCA is shown below:
+![alt tag](https://github.com/yifengtao/OncoExplorer/blob/master/figure/fig9_tsne_brca.jpg)
+
+There might be some other parameters to tune, e.g., the calculation of weight and distance.
+
 * (Try with the unfiltered datasets of TDI pairs)
 
 * It would be pretty interesting to check the results from three parts: simplified (SGA,SGA) weighted, results from SGA->DEG->GoTerm, results from SGA->GoTerm. We may compare the effect of classification.
@@ -167,7 +173,5 @@ pathways and larger processes made up of the activities of multiple gene product
 * Test with organelles structure, other than biological process.
 
 * Consider the directions of the perturbations? (Future direction)
-
-* t-SNE.
 
 EOF.
