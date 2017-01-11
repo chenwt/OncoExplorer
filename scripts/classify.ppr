@@ -1,4 +1,4 @@
 # 'BP' stands for 'Biological Process'
-isBP(Gene, BP) :- goAnn(Gene,GoTerm1), isA(GoTerm1,GoTerm2), ab_isBP(GoTerm2,BP).
+isBP(Gene,BP) :- goAnn(Gene,GoTerm), ab_isBP(GoTerm,BP).
 ab_isBP(GoTerm,BP) :- isA(GoTerm,GoTerm2), ab_isBP(GoTerm2,BP).
 ab_isBP(GoTerm,BP) :- isBase(GoTerm,BP).

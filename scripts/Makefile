@@ -1,9 +1,9 @@
 export PROPPR_JAVA_ARGS=-Xmx150g
 proppr compile classify.ppr
-proppr set --programFiles classify.wam:goAnn.cfacts:isA.cfacts
+proppr set --programFiles classify.wam:goAnn.cfacts:isA.cfacts:isBase.cfacts
 
 # proppr answer test_linked.examples --apr eps=1e-3 --threads 20 > answer_test.out
-proppr answer test.examples --apr eps=1e-7 --threads 60 > answer_test.out
+proppr answer test_ov.examples --apr eps=1e-7 --threads 60 > answer_test_ov.out
 #proppr answer test_linked.examples --apr eps=1e-8 --threads 60 --unnormalized > answer_test.out
 
 echo 'Done!'
