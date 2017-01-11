@@ -30,6 +30,11 @@ We use the aggregate of SGA and DEG in advance.
 
 
 
+* Test with organelles structure, other than biological process.
+* Consider the directions of the perturbations? (Future direction)
+* (Try with the unfiltered datasets of TDI pairs)
+
+
 * Check the overlap of SGA & DEG w/ KEGG pathway.
 
 *TDI_Results_new.csv: 1 + 11,769,129 records (No duplication, containing unit SGA).
@@ -162,16 +167,23 @@ It looks crazy, even if I tried to carefully tune the perplexity, the graph in 2
 
 There might be some other parameters to tune, e.g., the calculation of weight and distance.
 
-* (Try with the unfiltered datasets of TDI pairs)
 
-* It would be pretty interesting to check the results from three parts: simplified (SGA,SGA) weighted, results from SGA->DEG->GoTerm, results from SGA->GoTerm. We may compare the effect of classification.
+
+
+
+
 
 * Also we can consider the role within through patient-wise rule.
 
-* Note that we may want to filter the GoTerm which is not related to biological process in the goAnn.cfacts file?
 
-* Test with organelles structure, other than biological process.
+Note that we may want to filter the GoTerm which is not related to biological process in the goAnn.cfacts file: Already filltered.
 
-* Consider the directions of the perturbations? (Future direction)
+
+
+* Continue to test with pathway, although they overlap little.
+
+* It would be pretty interesting to check the results from three parts: simplified (SGA,SGA) weighted.
+* Check with SGA->GoTerm classification.
+* Check with SGA->DEG->GoTerm classification.
 
 EOF.
