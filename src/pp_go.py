@@ -88,4 +88,41 @@ if __name__ == '__main__':
             print >> f, 'goAnn\t'+line[0]+'\t'+goterm
     f.close()
 
+
+    # Processing test.examples.
+    cancer = 'ov'
+    path_lut = '/usr1/public/yifeng/Github/outputData/lut_'+cancer+'.txt'
+    f = open(path_lut, 'r')
+    next(f)
+
+    gene_set = set()
+    for line in f:
+        gene = line.strip().split('\t')[0]
+        gene_set.add(gene)
+
+
+
+    f.close()
+
+    path_exam = '/usr1/public/yifeng/Github/PropprData/test_'+cancer+'.examples'
+    f = open(path_exam, 'w')
+    for line in gene_set:
+        print >> f, 'isBP('+line+',Y)'
+
+    f.close()
+
+    base_set = set()
+    path_base = '/usr1/public/yifeng/Github/PropprData/isBase.bak'
+    f = open(path_base, 'r')
+    for line in f:
+        base = line.strip().split('\t')[1]
+        base_set.add(base)
+    f.close()
+
+    path_base = '/usr1/public/yifeng/Github/PropprData/isBase.cfacts'
+    f = open(path_base, 'w')
+    for line in base_set:
+        print >> f, 'isBase\t'+line
+    f.close()
+
 #EOF.
