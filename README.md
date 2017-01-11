@@ -184,6 +184,34 @@ Note that we may want to filter the GoTerm which is not related to biological pr
 
 * It would be pretty interesting to check the results from three parts: simplified (SGA,SGA) weighted.
 * Check with SGA->GoTerm classification.
+
+isA     go0000003       go0008150
+isA     go0001906       go0008150
+isA     go0002376       go0008150
+isA     go0007610       go0008150
+isA     go0008152       go0008150
+isA     go0009987       go0008150
+isA     go0022414       go0008150
+isA     go0022610       go0008150
+isA     go0023052       go0008150
+isA     go0032501       go0008150
+isA     go0032502       go0008150
+isA     go0040007       go0008150
+isA     go0040011       go0008150
+isA     go0044699       go0008150
+isA     go0044848       go0008150
+isA     go0048511       go0008150
+isA     go0050896       go0008150
+isA     go0051179       go0008150
+isA     go0051704       go0008150
+isA     go0065007       go0008150
+isA     go0071840       go0008150
+isA     go0098743       go0008150
+isA     go0098754       go0008150
+isA     go0099531       go0008150
+
 * Check with SGA->DEG->GoTerm classification.
+
+* Compare the SGA network in different cancers.
 
 EOF.
