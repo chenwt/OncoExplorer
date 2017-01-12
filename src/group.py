@@ -42,12 +42,13 @@ if __name__ == '__main__':
     f.close()
 
 
-    path_sol = '/usr1/public/yifeng/Github/outputData/test_'+cancer+'.txt'
-    f = open(path_sol, 'w')
-    for line in gene_set:
-        print >> f, line+'\t'+gene2base[line]
+    # path_sol = '/usr1/public/yifeng/Github/outputData/test_'+cancer+'.txt'
+    # f = open(path_sol, 'w')
+    # print >> f, 'gene\tgoterm'
+    # for line in gene_set:
+    #     print >> f, line+'\t'+gene2base[line]
 
-    f.close()
+    # f.close()
 
     base_set = set()
     base_set.add('undifined')
@@ -59,19 +60,27 @@ if __name__ == '__main__':
 
     f.close()
 
-    path_lut = '/usr1/public/yifeng/Github/outputData/lut.txt'
+    goterm2group = dd()
 
-    f = open(path_lut, 'w')
-    print >> f, 'Id\tGroup'
+    #path_lut = '/usr1/public/yifeng/Github/outputData/lut.txt'
+
+    #f = open(path_lut, 'w')
+    #print >> f, 'Id\tGroup'
     k = 0
     for line in base_set:
         k += 1
-        print >> f, line+'\t'+str(k)
+        goterm2group[line] = k
 
     f.close()
 
 
+    path_sol = '/usr1/public/yifeng/Github/outputData/test_'+cancer+'.txt'
+    f = open(path_sol, 'w')
+    print >> f, 'gene\tgoterm\tgroup'
+    for line in gene_set:
+        print >> f, line+'\t'+gene2base[line]+'\t'+str(goterm2group[gene2base[line]])
 
+    f.close()
 
     print 'Done!'
 
