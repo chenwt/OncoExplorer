@@ -1,21 +1,29 @@
 % show.m
 clc; clear; close all;
 
-can = 'brca';
+can = 'ov';
 input = tdfread(sprintf(['linked_',can,'_n.txt']));
 Source = input.Source;
 Target = input.Target;
 Weight = input.Weight;
+%Distance = 1./sqrt(Weight)/10;
 Distance = 1./Weight/100;
 
 %hist(Distance,1000)
 
 %
-perplexity = 14;
+perplexity = 10;
 
 input = tdfread(sprintf(['lut_',can,'.txt']));
 Id = input.Id;
 Gene = input.Gene;
+
+input = tdfread(sprintf(['test_',can,'.txt']));
+Gene2 = input.gene;
+goterm = input.goterm;
+group = input.group;
+%
+
 
 %min(Distance)
 maxDist = max(Distance)
@@ -25,6 +33,13 @@ N = size(Id,1);
 % D is the squared distance matrix.
 D = maxDist* ( ones(N,N) - diag(ones(N,1)) );
 
+
+labels = zeros(N,1);
+for i = 1:N
+   labels(i,1) = group(i,1);
+    
+end
+%
 num_nonzero = size(Distance,1);
 
 for i = 1:num_nonzero
@@ -44,7 +59,7 @@ initial_dims = 30;
 %ydata=tsne(train_X, [], no_dims, initial_dims, perplexity);
 %X = train_X;
 %ydata = tsne(X, labels, no_dims, initial_dims, perplexity)
-labels = [];
+%labels = [];
 % First check whether we already have an initial solution
 if numel(no_dims) > 1
     initial_solution = true;
@@ -70,15 +85,24 @@ else
     ydata = tsne_p(P, labels, no_dims);
 end
 
+
+labels = zeros(N,1);
+for i = 1:N
+   labels(i,1) = group(i,1);
+    
+end
 fig = figure();
 hold on;
 
-gscatter(ydata(:,1), ydata(:,2), [], 'r',[],20);
+%gscatter(ydata(:,1), ydata(:,2), [], 'r',[],20);
+%
+%ydata(labels==19,1)
+gscatter(ydata(labels~=19,1), ydata(labels~=19,2), labels(labels~=19));
 
 set(fig,'Position',[-20, 800, 900, 900]);
 
 
-if true
+if false
 for i = 1:N
     id = Id(i);
     gene = Gene(i,:);
@@ -92,4 +116,9 @@ end
 end
 
 
+%
+%figure;
+%hist(labels,24);
+%
+%gscatter(ydata(:,1), ydata(:,2), labels);
 %EOF.
