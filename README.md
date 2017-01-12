@@ -180,7 +180,7 @@ Note that we may want to filter the GoTerm which is not related to biological pr
 
 
 
-* Continue to test with pathway, although they overlap little.
+
 
 * It would be pretty interesting to check the results from three parts: simplified (SGA,SGA) weighted.
 * Check with SGA->GoTerm classification.
@@ -214,7 +214,10 @@ Merely classify the SGAs based on the goTerm seems not to be consistent with the
 ![alt tag](https://github.com/yifengtao/OncoExplorer/blob/master/figure/fig10_tsne_ov.jpg)
 
 * Check with SGA->DEG->GoTerm classification.
+It does not seem to work well...
 
 * Compare the SGA network in different cancers.
+
+* Continue to test with pathway, although they overlap little.
 
 EOF.
