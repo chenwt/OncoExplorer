@@ -210,6 +210,9 @@ isA     go0098743       go0008150
 isA     go0098754       go0008150
 isA     go0099531       go0008150
 
+Merely classify the SGAs based on the goTerm seems not to be consistent with the graph classification.
+![alt tag](https://github.com/yifengtao/OncoExplorer/blob/master/figure/fig10_tsne_ov.jpg)
+
 * Check with SGA->DEG->GoTerm classification.
 
 * Compare the SGA network in different cancers.
