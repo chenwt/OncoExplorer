@@ -222,7 +222,7 @@ It does not seem to work well...
 
 # Next step:
 * Run spectral clustering.
-* Run t-SNE using scaled 20k-Dim 0/1 vector.
+* Run t-SNE using scaled 8k-Dim 0/1 vector.
 * Run hierarchical clustering on DEG and cluster the SGA.
 
 Check the PI3K etc. pathway.
@@ -233,5 +233,9 @@ Compare the results.
 
 Next? Try GoTerm merge and clustering.
 
+SGA profile -> spectral clustering
+Weight
+CC
+positive predictive value
 
 EOF.
