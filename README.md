@@ -220,4 +220,18 @@ It does not seem to work well...
 
 * Continue to test with pathway, although they overlap little.
 
+# Next step:
+* Run spectral clustering.
+* Run t-SNE using scaled 20k-Dim 0/1 vector.
+* Run hierarchical clustering on DEG and cluster the SGA.
+
+Check the PI3K etc. pathway.
+
+* Try ProPPR rule to classify.
+
+Compare the results.
+
+Next? Try GoTerm merge and clustering.
+
+
 EOF.
