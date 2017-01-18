@@ -8,15 +8,16 @@ Explore cancer data interactively.
   * Github/inputData/ensemble.txt: 1+3,281,018
 
 * Metrics of ensemble.txt
-  * #patients: 4452/4468
+  *#patients: 4452/4468
+  
 |can| blca | brca | coad | esca | gbm | hnsc | kirc | kirp | lihc | luad | lusc | ov | prad | read | stad | ucec |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
 |#pat|  200|  841| 182 |  149 |  201 |  458 |  424 |  168 |  147 |  383 |  136 |  319 |  398 |  77|  176|  193|
 
-  * #SGA sets: 559
-  * #DEG sets: 8,844
-  * #(SGA | DEG): 9,162 ; #(SGA & DEG) = 241
-  * Directed edges(SGA->DEG pairs) = 33,149
+  *#SGA sets: 559
+  *#DEG sets: 8,844
+  *#(SGA | DEG): 9,162 ; #(SGA & DEG) = 241
+  *Directed edges(SGA->DEG pairs) = 33,149
 
 # Next steps:
 * Build up different affinity metrics of SGA.
@@ -61,10 +62,7 @@ I didn't try to plot the ocurrence of GENEs in a specific pathway in the figure 
 
 
 
-## Throw away the new dataset, use the `Github/inputData/ensemble.txt: 1+3,281,018`
-* New-YX_TDIresult_PanCancerAtlas_CT01_114.csv: (10,199,110+1 records, 6549+1 tumors)
-* Old-YX_TDI_SGA_DEG_Tumor.csv: (3,281,018+1 records, 4452+1 tumors)
-* Overlap: (396,715+1 records, 4239+1 tumors)
+
 
 * Check the overlap of SGA & DEG w/ KEGG pathway.
 
@@ -125,7 +123,7 @@ cdkn2b  go:0050680(B)
 cdkn2b  go:0071901(B)-
 cdkn2b  go:2000134(B)
 
- It seems that the nodes do not contain each other in the relationship of 'is_a'..
+It seems that the nodes do not contain each other in the relationship of 'is_a'..
 
 rbm17   go:0000166
 rbm17   go:0000380
@@ -139,7 +137,6 @@ rbm17   go:0043234
 * Examine the class of SGA through GOTerm, or through DEG and then GOTerm, compare the differences.
 
 ![alt tag](https://github.com/yifengtao/OncoExplorer/blob/master/figure/fig8_rbm17.jpg)
-
 
 * try different methods of clustering, e.g. using spetral clustering to check the differences between cancers.
 
@@ -178,7 +175,6 @@ Well... Actually I am really not sure if this is better after the experiment... 
 
 Remember to check duplicated edges among patients.
 
-
 * Our methods is able to analyze within different types of cancers with different number of patients.
 
 * Test within one subset:
@@ -196,22 +192,12 @@ It looks crazy, even if I tried to carefully tune the perplexity, the graph in 2
 
 There might be some other parameters to tune, e.g., the calculation of weight and distance.
 
-
-
-
-
-
-
 * Also we can consider the role within through patient-wise rule.
-
 
 Note that we may want to filter the GoTerm which is not related to biological process in the goAnn.cfacts file: Already filltered.
 
-
-
-
-
 * It would be pretty interesting to check the results from three parts: simplified (SGA,SGA) weighted.
+
 * Check with SGA->GoTerm classification.
 
 isA     go0000003       go0008150
@@ -244,6 +230,11 @@ Merely classify the SGAs based on the goTerm seems not to be consistent with the
 
 * Check with SGA->DEG->GoTerm classification.
 It does not seem to work well...
+
+* Throw away the new dataset, use the `Github/inputData/ensemble.txt: 1+3,281,018`
+  * New-YX_TDIresult_PanCancerAtlas_CT01_114.csv: (10,199,110+1 records, 6549+1 tumors)
+  * Old-YX_TDI_SGA_DEG_Tumor.csv: (3,281,018+1 records, 4452+1 tumors)
+  * Overlap: (396,715+1 records, 4239+1 tumors)
 
 # Noisy-or > 0.9
 * train edges = 31,304
