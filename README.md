@@ -33,9 +33,9 @@ We use the aggregate of SGA and DEG in advance.
 
 
 # Next step:
-New-YX_TDIresult_PanCancerAtlas_CT01_114.csv: 10,199,110+1 records.
-Old-YX_TDI_SGA_DEG_Tumor.csv: 3,281,018+1 records.
-Overlap: 396,715+1 records.
+* New-YX_TDIresult_PanCancerAtlas_CT01_114.csv: (10,199,110+1 records, 6549+1 tumors)
+* Old-YX_TDI_SGA_DEG_Tumor.csv: (3,281,018+1 records, 4452+1 tumors)
+* Overlap: (396,715+1 records, 4239+1 tumors)
 
 
 * Run spectral clustering.
