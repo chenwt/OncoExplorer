@@ -1,23 +1,23 @@
 # Onco Knowledge Explorer
 Explore cancer data interactively.
 
-1. Raw dataset
+* Raw dataset
   * Directed edges(TDI pairs, same path in different patients count as different ones): 11,769,129(filtered -> 1+3,281,018).
 
-2. Reliable inputs:
+* Reliable inputs:
   * Github/inputData/ensemble.txt: 1+3,281,018
 
-3. Metrics of ensemble.txt
-..* #patients: 4452/4468
+* Metrics of ensemble.txt
+ * #patients: 4452/4468
 
 |can| blca | brca | coad | esca | gbm | hnsc | kirc | kirp | lihc | luad | lusc | ov | prad | read | stad | ucec |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
 |#pat|  200|  841| 182 |  149 |  201 |  458 |  424 |  168 |  147 |  383 |  136 |  319 |  398 |  77|  176|  193|
 
-..* #SGA sets: 559
-..* #DEG sets: 8,844
-..* #(SGA | DEG): 9,162 ; #(SGA & DEG) = 241
-..* Directed edges(SGA->DEG pairs) = 33,149
+ * #SGA sets: 559
+ * #DEG sets: 8,844
+ * #(SGA | DEG): 9,162 ; #(SGA & DEG) = 241
+ * Directed edges(SGA->DEG pairs) = 33,149
 
 # Next steps:
 * Run spectral clustering.
