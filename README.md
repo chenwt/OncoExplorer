@@ -2,10 +2,10 @@
 Explore cancer data interactively.
 
 1. Raw dataset
-..* Directed edges(TDI pairs, same path in different patients count as different ones): 11,769,129(filtered -> 1+3,281,018).
+  * Directed edges(TDI pairs, same path in different patients count as different ones): 11,769,129(filtered -> 1+3,281,018).
 
 2. Reliable inputs:
-..* Github/inputData/ensemble.txt: 1+3,281,018
+  * Github/inputData/ensemble.txt: 1+3,281,018
 
 3. Metrics of ensemble.txt
 ..* #patients: 4452/4468
