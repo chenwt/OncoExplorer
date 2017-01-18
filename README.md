@@ -1,13 +1,13 @@
 # Onco Knowledge Explorer
 Explore cancer data interactively.
 
-* Raw dataset
+1. Raw dataset
 ..* Directed edges(TDI pairs, same path in different patients count as different ones): 11,769,129(filtered -> 1+3,281,018).
 
-* Reliable inputs:
+2. Reliable inputs:
 ..* Github/inputData/ensemble.txt: 1+3,281,018
 
-* Metrics
+3. Metrics of ensemble.txt
 ..* #patients: 4452/4468
 
 |can| blca | brca | coad | esca | gbm | hnsc | kirc | kirp | lihc | luad | lusc | ov | prad | read | stad | ucec |
@@ -18,11 +18,6 @@ Explore cancer data interactively.
 ..* #DEG sets: 8,844
 ..* #(SGA | DEG): 9,162 ; #(SGA & DEG) = 241
 ..* Directed edges(SGA->DEG pairs) = 33,149
-
-
-
-
-
 
 # Next steps:
 * Run spectral clustering.
@@ -246,7 +241,7 @@ Merely classify the SGAs based on the goTerm seems not to be consistent with the
 * Check with SGA->DEG->GoTerm classification.
 It does not seem to work well...
 
-## Noisy-or > 0.9
+# Noisy-or > 0.9
 * train edges = 31,304
 * test edges = 31,293 (overlap: 29,871)
 * base graph = 32,726 (overlap: 31,172)
