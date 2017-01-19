@@ -8,20 +8,24 @@ Explore cancer data interactively.
   * Github/inputData/ensemble.txt: 1+3,281,018
 
 * Metrics of ensemble.txt
-  *#patients: 4452/4468
+  * size patients: 4452/4468
   
 |can| blca | brca | coad | esca | gbm | hnsc | kirc | kirp | lihc | luad | lusc | ov | prad | read | stad | ucec |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
 |#pat|  200|  841| 182 |  149 |  201 |  458 |  424 |  168 |  147 |  383 |  136 |  319 |  398 |  77|  176|  193|
 
-  *#SGA sets: 559
-  *#DEG sets: 8,844
-  *#(SGA | DEG): 9,162 ; #(SGA & DEG) = 241
-  *Directed edges(SGA->DEG pairs) = 33,149
+  * size SGA sets: 559
+  * size DEG sets: 8,844
+  * size (SGA | DEG): 9,162 ; size (SGA & DEG) = 241
+  * size Directed edges(SGA->DEG pairs) = 33,149
 
 # Next steps:
 * Build up different affinity metrics of SGA.
 * Figure out the KEGG pathway.
+
+* GoTerm also has pathway information, seems to be more than KEGG pathway:
+e.g., http://amigo.geneontology.org/amigo/term/GO:0007219 Notch signaling pathway.
+
 
 * Run spectral clustering.
 * Run t-SNE using scaled 8k-Dim 0/1 vector.
@@ -54,7 +58,7 @@ I didn't try to plot the ocurrence of GENEs in a specific pathway in the figure 
 * Compare the SGA network in different cancers.
 
 * Continue to test with pathway, although they overlap little.
-
+* Transitive reduction.
 
 * Test with organelles structure, other than biological process.
 * Consider the directions of the perturbations? (Future direction)
@@ -236,9 +240,9 @@ It does not seem to work well...
   * Old-YX_TDI_SGA_DEG_Tumor.csv: (3,281,018+1 records, 4452+1 tumors)
   * Overlap: (396,715+1 records, 4239+1 tumors)
 
-# Noisy-or > 0.9
-* train edges = 31,304
-* test edges = 31,293 (overlap: 29,871)
-* base graph = 32,726 (overlap: 31,172)
+* Noisy-or > 0.9
+  * train edges = 31,304
+  * test edges = 31,293 (overlap: 29,871)
+  * base graph = 32,726 (overlap: 31,172)
 
 EOF.
