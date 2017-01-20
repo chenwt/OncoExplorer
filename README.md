@@ -20,6 +20,10 @@ Explore cancer data interactively.
   * size Directed edges(SGA->DEG pairs) = 33,149
 
 # Next steps:
+
+Looks like that the SGA2DEG edge threshold (e.g., 1) should also be considered for better construction of the network:
+![alt tag](https://github.com/yifengtao/OncoExplorer/blob/master/figure/fig11_hist_sga2deg.jpg)
+
 * Build up different affinity metrics of SGA.
 * Figure out the KEGG pathway.
 
