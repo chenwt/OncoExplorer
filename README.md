@@ -23,6 +23,8 @@ Explore cancer data interactively.
 
 Looks like that the SGA2DEG edge threshold (e.g., 1) should also be considered for better construction of the network:
 ![alt tag](https://github.com/yifengtao/OncoExplorer/blob/master/figure/fig11_hist_sga2deg.jpg)
+0.1438, 0.3306 and 0.3183 of sga2deg in brca, gbm, ov have edge weight of 1.0. In pancan, all the edge weight is larger than 5.0.
+
 
 * Build up different affinity metrics of SGA.
 * Figure out the KEGG pathway.
