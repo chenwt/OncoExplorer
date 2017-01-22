@@ -1,6 +1,7 @@
 # Get the affinity between SGAs of specific tumor.
 from collections import defaultdict as dd
 import numpy as np
+import scipy.io
 
 def getAffinity(cancer):
     set_graph = set()
@@ -89,8 +90,8 @@ def getCoordinates(cancer):
 
     set_deg = list(set_deg)
     set_sga = list(sga2deg.keys())
-    corr = [[0 for y in range(len(set_deg))] for x in range(len(sga2deg.keys()))] 
-    
+    #corr = [[0 for y in range(len(set_deg))] for x in range(len(sga2deg.keys()))] 
+    corr = np.zeros([len(set_sga), len(set_deg)], float)
 
     iter_sga = 0
 
@@ -99,7 +100,7 @@ def getCoordinates(cancer):
         print >> fi, str(iter_sga)+'\t'+sga
         numOfPat = len(sga2pat[sga])
         iter_deg = 0
-        #print iter_sga
+        print iter_sga
         for deg in set_deg:
             iter_deg += 1
             #if (sga, deg) in tmp_graph.keys():
@@ -107,15 +108,18 @@ def getCoordinates(cancer):
             #else:
             #    corr[iter_sga-1][iter_deg-1] = 0.0
 
-    for x in range(len(sga2deg.keys())):
+    #for x in range(len(sga2deg.keys())):
         #for y in range(len(set_deg)):
-            print >> f, corr[x]
+    #        print >> f, corr[x]
 
+    #set_sga = 
     # for line in tmp_graph.keys():
     #     sga,deg = line[0], line[1]
     #     print >> f, str(tmp_graph[line])
     f.close()
     fi.close()
+    scipy.io.savemat('/usr1/public/yifeng/Github/OncoExplorer/src/bond_'+cancer+'.mat', mdict = {'corr': corr})
+
     return corr
 
 if __name__ == '__main__':
