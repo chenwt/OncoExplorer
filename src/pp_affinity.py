@@ -2,6 +2,7 @@
 from collections import defaultdict as dd
 import numpy as np
 import scipy.io
+import os
 
 # def getAffinity(cancer):
 #     set_graph = set()
@@ -57,6 +58,22 @@ def getPathway(pathway):
         for gene in genes:
             gene = gene.split(' (')[1].split(')')[0].lower()
             set_pathway.add(gene)
+    f.close()
+    return set_pathway
+
+def getPathwayGo(pathway):
+    set_pathway = set()
+    path = '/usr1/public/yifeng/Github/inputData/kegg_html/'+pathway+'_go.txt'
+
+    if not os.path.exists(path): return set_pathway
+
+    f = open(path, 'r')
+    for line in f:
+        gene = line.strip().split('\t')[1].lower()
+        gene = gene.split('(')[0]
+        #print gene
+        set_pathway.add(gene)
+    f.close()
     return set_pathway
 
 def getCoordinates(cancer, set_notch1, set_p53, set_pi3k):
@@ -127,13 +144,12 @@ if __name__ == '__main__':
 
             #print gene
         #print genes
-    set_notch1 = getPathway('notch1')
-    set_p53 = getPathway('p53')
-    set_pi3k = getPathway('pi3k')
+    set_notch1 = getPathwayGo('notch1')
+    set_p53 = getPathwayGo('p53')
+    set_pi3k = getPathwayGo('pi3k')
 
     print len(set_notch1), len(set_p53), len(set_pi3k)
 
-    #for cancer in ['pancan']:
     for cancer in ['pancan', 'brca', 'gbm', 'ov']:
         getCoordinates(cancer, set_notch1, set_p53, set_pi3k)
 
