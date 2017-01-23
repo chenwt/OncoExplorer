@@ -85,8 +85,9 @@ def getCoordinates(cancer):
     # for sga in sga2pat.keys():
     #     print sga+'\t'+str(len(sga2pat[sga]))
 
-    f = open('/usr1/public/yifeng/Github/OncoExplorer/src/bond_'+cancer+'.txt', 'w')
+    #f = open('/usr1/public/yifeng/Github/OncoExplorer/src/bond_'+cancer+'.txt', 'w')
     fi = open('/usr1/public/yifeng/Github/OncoExplorer/src/index2name_'+cancer+'.txt', 'w')
+    print >> fi, 'index\tgene'
 
     set_deg = list(set_deg)
     set_sga = list(sga2deg.keys())
@@ -100,7 +101,7 @@ def getCoordinates(cancer):
         print >> fi, str(iter_sga)+'\t'+sga
         numOfPat = len(sga2pat[sga])
         iter_deg = 0
-        print iter_sga
+        #print iter_sga
         for deg in set_deg:
             iter_deg += 1
             #if (sga, deg) in tmp_graph.keys():
@@ -116,11 +117,11 @@ def getCoordinates(cancer):
     # for line in tmp_graph.keys():
     #     sga,deg = line[0], line[1]
     #     print >> f, str(tmp_graph[line])
-    f.close()
+    #f.close()
     fi.close()
     scipy.io.savemat('/usr1/public/yifeng/Github/OncoExplorer/src/bond_'+cancer+'.mat', mdict = {'corr': corr})
 
-    return corr
+    #return corr
 
 if __name__ == '__main__':
 
@@ -131,7 +132,7 @@ if __name__ == '__main__':
 
     for cancer in ['ov']:
     #for cancer in ['pancan', 'brca', 'gbm', 'ov']:
-        corr = getCoordinates(cancer)
+        getCoordinates(cancer)
 
     # path_outputData = '/usr1/public/yifeng/Github/PropprData'
     # f = open(path_outputData+'/Drives_'+cancer+'.graph', 'w')
