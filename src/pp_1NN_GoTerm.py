@@ -413,18 +413,12 @@ def getGene2GoId():
 
     return gene2goId, set_gene
 
-if __name__ == '__main__':
 
-
-    choice = 'Proppr'
-    #choice = 'hello world'
-
-    gene2goId, set_pathway = getGene2GoId()
-    #print len(gene2goId), len(set_pathway)
+def test(gene2goId, set_pathway, choice, metric):
 
     if choice == 'Proppr':
 
-        print choice
+        print metric, choice
         for cancer in ['pancan', 'brca', 'gbm', 'ov']:
         #for cancer in ['brca']:
             sga2sgaAaff = getAffinityProppr(cancer)
@@ -452,9 +446,15 @@ if __name__ == '__main__':
                     #print sga, NNgene, NNdist
                     ovlp = gene2goId[sga].intersection(gene2goId[NNgene])
                     ovlp = len(ovlp)
-
-                    if ovlp > 0:
-                        count_true += 1
+                    if metric == 'one':
+                        if ovlp > 0:
+                            count_true += 1
+                    elif metric == 'total':
+                        count_true += ovlp
+                    elif metric == 'jaccard':
+                        count_true += 1.0*ovlp/len(gene2goId[sga].union(gene2goId[NNgene]))
+                    # if ovlp > 0:
+                    #     count_true += 1
                         #print sga, NNgene, NNdist
                 acc = 1.0*count_true/count_total
                 avgacc += acc
@@ -465,7 +465,7 @@ if __name__ == '__main__':
 
 
     if choice == 'Lu affinity':
-        print choice
+        print metric, choice
         for cancer in ['pancan', 'brca', 'gbm', 'ov']:
         #for cancer in ['brca']:
             sga2sgaAaff = getLuAffinity(cancer)
@@ -495,8 +495,13 @@ if __name__ == '__main__':
                     ovlp = gene2goId[sga].intersection(gene2goId[NNgene])
                     ovlp = len(ovlp)
 
-                    if ovlp > 0:
-                        count_true += 1
+                    if metric == 'one':
+                        if ovlp > 0:
+                            count_true += 1
+                    elif metric == 'total':
+                        count_true += ovlp
+                    elif metric == 'jaccard':
+                        count_true += 1.0*ovlp/len(gene2goId[sga].union(gene2goId[NNgene]))
                         #print sga, NNgene, NNdist
                 acc = 1.0*count_true/count_total
                 avgacc += acc
@@ -505,11 +510,8 @@ if __name__ == '__main__':
             print 'cancer:'+cancer+'\tavgacc:'+str(1.0*avgacc/10)+'\t\t#checked_genes:'+str(count_total)
 
 
-
-    #print len(set_notch1), len(set_p53), len(set_pi3k)
-
     if choice == 'Lu dist':
-        print choice
+        print metric, choice
         for cancer in ['pancan', 'brca', 'gbm', 'ov']:
         #for cancer in ['brca']:
             sga2sgaDist = getCoordinates(cancer)
@@ -540,8 +542,13 @@ if __name__ == '__main__':
                     ovlp = gene2goId[sga].intersection(gene2goId[NNgene])
                     ovlp = len(ovlp)
 
-                    if ovlp > 0:
-                        count_true += 1
+                    if metric == 'one':
+                        if ovlp > 0:
+                            count_true += 1
+                    elif metric == 'total':
+                        count_true += ovlp
+                    elif metric == 'jaccard':
+                        count_true += 1.0*ovlp/len(gene2goId[sga].union(gene2goId[NNgene]))
                         #print sga, NNgene, NNdist
                 acc = 1.0*count_true/count_total
                 avgacc += acc
@@ -550,8 +557,9 @@ if __name__ == '__main__':
             print 'cancer:'+cancer+'\tavgacc:'+str(1.0*avgacc/10)+'\t\t#checked_genes:'+str(count_total)
                 #print sga, sgaContext, aff
 
+
     if choice == 'Random':
-        print choice
+        print metric, choice
         for cancer in ['pancan', 'brca', 'gbm', 'ov']:
         #for cancer in ['brca']:
             sga2sgaAaff = getAffinityBaseline1(cancer)
@@ -581,8 +589,13 @@ if __name__ == '__main__':
                     ovlp = gene2goId[sga].intersection(gene2goId[NNgene])
                     ovlp = len(ovlp)
 
-                    if ovlp > 0:
-                        count_true += 1
+                    if metric == 'one':
+                        if ovlp > 0:
+                            count_true += 1
+                    elif metric == 'total':
+                        count_true += ovlp
+                    elif metric == 'jaccard':
+                        count_true += 1.0*ovlp/len(gene2goId[sga].union(gene2goId[NNgene]))
                         #print sga, NNgene, NNdist
                 acc = 1.0*count_true/count_total
                 avgacc += acc
@@ -591,9 +604,8 @@ if __name__ == '__main__':
             print 'cancer:'+cancer+'\tavgacc:'+str(1.0*avgacc/10)+'\t\t#checked_genes:'+str(count_total)
 
 
-
     if choice == 'Baseline1':
-        print choice
+        print metric, choice
         for cancer in ['pancan', 'brca', 'gbm', 'ov']:
         #for cancer in ['brca']:
             sga2sgaAaff = getAffinityBaseline1(cancer)
@@ -623,17 +635,23 @@ if __name__ == '__main__':
                     ovlp = gene2goId[sga].intersection(gene2goId[NNgene])
                     ovlp = len(ovlp)
 
-                    if ovlp > 0:
-                        count_true += 1
+                    if metric == 'one':
+                        if ovlp > 0:
+                            count_true += 1
+                    elif metric == 'total':
+                        count_true += ovlp
+                    elif metric == 'jaccard':
+                        count_true += 1.0*ovlp/len(gene2goId[sga].union(gene2goId[NNgene]))
                 acc = 1.0*count_true/count_total
                 avgacc += acc
                 # Omit if necessary
                 #print '\tcancer:'+cancer+'\ttrial:'+str(trial)+'\taccuracy:'+str(acc)
             print 'cancer:'+cancer+'\tavgacc:'+str(1.0*avgacc/10)+'\t\t#checked_genes:'+str(count_total)
 
+
     if choice == 'Jaccard1':
 
-        print choice
+        print metric, choice
         for cancer in ['pancan', 'brca', 'gbm', 'ov']:
         #for cancer in ['brca']:
             sga2sgaAaff = getAffinityJaccard1(cancer)
@@ -662,12 +680,36 @@ if __name__ == '__main__':
                     ovlp = gene2goId[sga].intersection(gene2goId[NNgene])
                     ovlp = len(ovlp)
 
-                    if ovlp > 0:
-                        count_true += 1
+                    if metric == 'one':
+                        if ovlp > 0:
+                            count_true += 1
+                    elif metric == 'total':
+                        count_true += ovlp
+                    elif metric == 'jaccard':
+                        count_true += 1.0*ovlp/len(gene2goId[sga].union(gene2goId[NNgene]))
+
                 acc = 1.0*count_true/count_total
                 avgacc += acc
                 # Omit if necessary
                 #print '\tcancer:'+cancer+'\ttrial:'+str(trial)+'\taccuracy:'+str(acc)
             print 'cancer:'+cancer+'\tavgacc:'+str(1.0*avgacc/10)+'\t\t#checked_genes:'+str(count_total)
+
+if __name__ == '__main__':
+
+
+    # choice = 'Proppr'
+    #choice = 'hello world'
+
+    gene2goId, set_pathway = getGene2GoId()
+    #print len(gene2goId), len(set_pathway)
+
+    # metric = 'one'
+    # metric = 'total'
+    # metric = 'jaccard'
+    for metric in ['one', 'total', 'jaccard']:
+        for choice in ['Random', 'Baseline1', 'Proppr', 'Lu affinity', 'Jaccard1', 'Lu dist']:
+            test(gene2goId, set_pathway, choice, metric)
+
+
 
 #EOF.
