@@ -91,24 +91,37 @@ def distBetweenSets(S1, S2):
     # median mode
     
     dist = 0
-    l1, l2 = len(S1), len(S2)
-    dist_list = np.zeros(l1*l2, dtype=float)
-    k = 0
+    #l1, l2 = len(S1), len(S2)
+    m = 10
+    dist_list = np.ones(m, dtype=float)
+    
     for s1 in S1:
         for s2 in S2:
             if s1 == s2: print 'error!', s1, s2
             tmp = sgaAsga2dist[(s1, s2)]
-            dist_list[k] = tmp
-            k += 1
+            for k in range(m):
+                if tmp < dist_list[k]:
+                    for t in range(m-1, k, -1):
+                        dist_list[t] = dist_list[t-1]
+                    dist_list[k] = tmp
+                    break
+    for t in range(m-1, -1, -1):
+        dist = dist_list[t]
+        if dist <= 0: break
+        
+    #dist = dist_list[m-1]
+    #print dist_list, dist
+            #dist_list[k] = tmp
     #dist_list = np.array(dist_list)
-    dist = np.median(dist_list)
-            #if tmp < dist: dist = tmp
+    #dist = np.median(dist_list)
+    
+        #if tmp < dist: dist = tmp
     return dist
 
 time_start = time.time()
 link_matrix = np.zeros((len(sga_label)-1, 4), dtype=float)
+#for count in range(1):
 for count in range(len(sga_label)-1):
-#for count in range(len(sga_label)-1):
     # introduce random
     min_dist = 1.0
     min_x1 = -1.0
