@@ -18,12 +18,14 @@ import pandas as pd
 from sklearn.manifold import TSNE
 import colorsys
 import math
+import copy
 
 itertime = 10
 KM = np.array([5,10,15,20,25,30,35,40,45,50,55,60,65,70,75,80,85,90,95,100])
 #KM = np.array([40])
 
 enrich = np.zeros([len(KM),],dtype = float)
+enrich_ctrl = np.zeros([len(KM),],dtype = float)
 
 def _get_colors(num_colors):
     colors=[]
@@ -218,7 +220,8 @@ for iter in range(itertime):
         kmeans = KMeans(n_clusters=km).fit(X)
         y = kmeans.labels_
         
-        
+        y_fake = copy.deepcopy(y)
+        shuffle(y_fake)
         
         len_gene = len(set_gene)
         
@@ -240,10 +243,37 @@ for iter in range(itertime):
                     if len(gene2goid[g1].intersection(gene2goid[g2])) > 0:
                         within_u += 1
         #print within_d, total_d, within_u, total_u
-        print km, 1.0*within_u/within_d*total_d/total_u
+        print 'true', km, 1.0*within_u/within_d*total_d/total_u
         enrich[t] += 1.0*within_u/within_d*total_d/total_u
+        
+        
+        total_u = 0.0
+        total_d = 0.0
+        within_u = 0.0
+        within_d = 0.0
+        for i in range(len_gene):
+            g1 = id2gene[i]
+            for j in range(len_gene):
+                g2 = id2gene[j]
+                #l1 = y_fake[i]
+                #l2 = y_fake[j]
+                total_d += 1
+                if len(gene2goid[g1].intersection(gene2goid[g2])) > 0:
+                    total_u += 1
+                if y_fake[i] == y_fake[j]:
+                    within_d += 1
+                    if len(gene2goid[g1].intersection(gene2goid[g2])) > 0:
+                        within_u += 1
+        #print within_d, total_d, within_u, total_u
+        print 'fake', km, 1.0*within_u/within_d*total_d/total_u
+        enrich_ctrl[t] += 1.0*within_u/within_d*total_d/total_u
         t += 1
     
+
+
+
+
+
 
     
 
@@ -413,14 +443,18 @@ plt.xlabel('k')
 plt.title('SGA in BRCA')
 plt.ylim((0,2))
 
-
+enrich = enrich/itertime
+enrich_ctrl = enrich_ctrl/itertime
 plt.figure()
-plt.plot(KM, enrich/itertime)
+plt.plot(KM, enrich, color='r')
+plt.plot(KM, enrich_ctrl, color='b')
 plt.xlabel('k')
 plt.ylabel('enrichment')
 
-np.save('enrichment_baseline_mukNN_'+str(kNN)+'_brca', enrich/itertime)
 plt.title('averaged over '+str(itertime)+' replications')
+
+np.save('enrichment_baseline_mukNN_'+str(kNN)+'_brca', enrich)
+np.save('enrichment_baseline_mukNN_'+str(kNN)+'_ctrl_brca', enrich_ctrl)
 
 
 print 'Done!'
