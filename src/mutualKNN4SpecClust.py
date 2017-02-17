@@ -16,16 +16,29 @@ from sklearn.cluster import KMeans
 from sklearn.decomposition import PCA
 import pandas as pd
 from sklearn.manifold import TSNE
-
+import colorsys
+import math
 
 itertime = 10
 KM = np.array([5,10,15,20,25,30,35,40,45,50,55,60,65,70,75,80,85,90,95,100])
+#KM = np.array([40])
+
 enrich = np.zeros([len(KM),],dtype = float)
+
+def _get_colors(num_colors):
+    colors=[]
+    for i in np.arange(0., 360., 360. / num_colors):
+        hue = i/360.
+        lightness = (50 + np.random.rand() * 10)/100.
+        saturation = (90 + np.random.rand() * 10)/100.
+        colors.append(colorsys.hls_to_rgb(hue, lightness, saturation))
+    return colors
+
 
 for iter in range(itertime):
     
     
-    kNN = 40
+    kNN = 20
     sga2sgaAaff = dd(set)
     sgaAsga2aff = dd(int)
     set_gene = set()
@@ -325,16 +338,41 @@ fig, ax = plt.subplots(figsize=(8, 8))
 
 
 
+gene2degree = dd(float)
 for i in range(len(set_gene)):
     sga1 = set_gene[i]
     for line in sga2sgaAaff[sga1]:
         sga2, aff = line[0], line[1]
         sga1id = gene2id[sga1]
         sga2id = gene2id[sga2]
-        ax.plot([h[sga1id], h[sga2id]], [v[sga1id], v[sga2id]], marker='.', linestyle='-', color = [0.9, 0.9, 0.9] )
+        gene2degree[sga1] += aff
+        gene2degree[sga2] += aff
+        ax.plot([h[sga1id], h[sga2id]], [v[sga1id], v[sga2id]], marker='.', linestyle='-', color = [0.7, 0.7, 0.7] )
 
-for name, group in groups:
-    ax.plot(group.x, group.y, marker='o', linestyle='', markersize = 5, label=name)
+Mval = 0
+for g in gene2degree.keys():
+    degree = gene2degree[g]
+    if degree > Mval: Mval = degree
+
+Mval = math.sqrt(Mval)
+for g in gene2degree.keys():
+    degree = gene2degree[g]
+    gene2degree[g] = math.sqrt(degree)/Mval
+
+
+#HSV_tuples = [(x*1.0/km, 0.5, 0.5) for x in range(km)]
+#RGB_tuples = map(lambda x: colorsys.hsv_to_rgb(*x), HSV_tuples)
+
+RGB_tuples = _get_colors(km)
+
+
+for i in range(len(set_gene)):
+    sga1 = set_gene[i]
+    sga1id = gene2id[sga1]
+    ax.plot(h[sga1id], v[sga1id], marker='o', linestyle='', markersize = int(20*gene2degree[sga1])+5, color = RGB_tuples[y[sga1id]])
+
+#for name, group in groups:
+#    ax.plot(group.x, group.y, marker='o', linestyle='', markersize = 5, label=name)
 #ax.legend()
     
     
@@ -352,13 +390,16 @@ for line in f:
 f.close()
 #print 'len(blacklist)=', len(blacklist)
 #print blacklist
-for sga in blacklist:
-    if sga not in gene2id.keys(): continue
-    sgaid = gene2id[sga]
-    ax.annotate(sga, xy=(h[sgaid], v[sgaid])#, xytext=(3, 1.5),
-            #arrowprops=dict(shrink=0.05),
-            )
-    ax.plot(h[sgaid], v[sgaid], marker='*')
+
+
+#for sga in blacklist:
+#    if sga not in gene2id.keys(): continue
+#    sgaid = gene2id[sga]
+#    ax.annotate(sga, xy=(h[sgaid], v[sgaid])#, xytext=(3, 1.5),
+#            #arrowprops=dict(shrink=0.05),
+#            )
+#    ax.plot(h[sgaid], v[sgaid], marker='*')
+    
 
 
 plt.title('t-SNE of spectral clustering (k = '+str(km)+')')
