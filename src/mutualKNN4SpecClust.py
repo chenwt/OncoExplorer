@@ -134,7 +134,9 @@ for iter in range(itertime):
             #sga2, overlap = line[0], line[1]
             if overlap == 0: continue
             if sga1 == sga2: continue
-            print >> f, sga1 + '\t' + sga2 + '\t' + str(overlap)
+            #TODO:1
+            #print >> f, sga1 + '\t' + sga2 + '\t' + str(overlap)    
+            print >> f, sga1 + '\t' + sga2 + '\t' + str(math.sqrt(overlap))
             #print >> f, sga1 + '\t' + sga2 + '\t' + overlap
     f.close()
     
@@ -151,7 +153,7 @@ for iter in range(itertime):
     next(f)
     for line in f:
         l = line.strip().split('\t')
-        sga1, sga2, aff = l[0], l[1], int(l[2])
+        sga1, sga2, aff = l[0], l[1], float(l[2])
         sga2sgaAaff[sga1].add((sga2, aff))
         set_gene.add(sga1)
         set_gene.add(sga2)
@@ -173,7 +175,9 @@ for iter in range(itertime):
     W = np.zeros([len_gene, len_gene], float)
     for i in range(len_gene):
         for j in range(len_gene):
-            W[i][j] = sgaAsga2aff[(id2gene[i], id2gene[j])]*sgaAsga2aff[(id2gene[j], id2gene[i])]
+            # TODO:2            
+            #W[i][j] = sgaAsga2aff[(id2gene[i], id2gene[j])]*sgaAsga2aff[(id2gene[j], id2gene[i])]
+            W[i][j] = math.sqrt(sgaAsga2aff[(id2gene[i], id2gene[j])]*sgaAsga2aff[(id2gene[j], id2gene[i])])
     
     D = W.sum(axis=0)
     Dinv = np.diag(1.0/D)
