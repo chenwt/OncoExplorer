@@ -1,31 +1,37 @@
-# deepwalkcmd
-# simple version
-# deepwalk --input data/graph_brca.adjlist --output brca_64.embeddings
-
-wl=2
-output_path=result
-
-echo "----deepwalk----$filename ------- number walks = $wl ----------"
-
-for filename in brca gbm do
-  echo "----deepwalk----$filename ------- number walks = $nw ----------"
-done
-
-for filename in brca gbm
-do
-  for nw in 10 20 50 100 200
-  do
-    echo "----deepwalk----$filename ------- number walks = $nw ----------"
-    time deepwalk --input data/graph_${filename}.mat --output $output_path/${filename}_km40_wl_${wl}_nw${nw}.embeddings --representation-size 40 --number-walks $nw --walk-length $wl --workers 30
-  done
-
-done
-
-
-
-
-
 # Actually using version:
-# deepwalk --input data/graph_brca.adjlist --output brca_km40_wl2_nw10.embeddings --representation-size 40 --number-walks 10 --walk-length 2 --workers 30
 
-# deepwalk --input data/graph_brca.adjlist --output brca_km40_wl2_nw0.embeddings --representation-size 40 --number-walks 200 --walk-length 2 --workers 30
+deepwalk --input data/graph_brca.adjlist --output result/brca_km40_wl1_nw10.embeddings --representation-size 40 --number-walks 10 --walk-length 1 --workers 64
+deepwalk --input data/graph_brca.adjlist --output result/brca_km40_wl1_nw20.embeddings --representation-size 40 --number-walks 20 --walk-length 1 --workers 64
+deepwalk --input data/graph_brca.adjlist --output result/brca_km40_wl1_nw50.embeddings --representation-size 40 --number-walks 50 --walk-length 1 --workers 64
+deepwalk --input data/graph_brca.adjlist --output result/brca_km40_wl1_nw100.embeddings --representation-size 40 --number-walks 100 --walk-length 1 --workers 64
+deepwalk --input data/graph_brca.adjlist --output result/brca_km40_wl1_nw200.embeddings --representation-size 40 --number-walks 200 --walk-length 1 --workers 64
+
+deepwalk --input data/graph_brca.adjlist --output result/brca_km40_wl2_nw10.embeddings --representation-size 40 --number-walks 10 --walk-length 2 --workers 64
+deepwalk --input data/graph_brca.adjlist --output result/brca_km40_wl2_nw20.embeddings --representation-size 40 --number-walks 20 --walk-length 2 --workers 64
+deepwalk --input data/graph_brca.adjlist --output result/brca_km40_wl2_nw50.embeddings --representation-size 40 --number-walks 50 --walk-length 2 --workers 64
+deepwalk --input data/graph_brca.adjlist --output result/brca_km40_wl2_nw100.embeddings --representation-size 40 --number-walks 100 --walk-length 2 --workers 64
+deepwalk --input data/graph_brca.adjlist --output result/brca_km40_wl2_nw200.embeddings --representation-size 40 --number-walks 200 --walk-length 2 --workers 64
+
+deepwalk --input data/graph_brca.adjlist --output result/brca_km40_wl3_nw10.embeddings --representation-size 40 --number-walks 10 --walk-length 3 --workers 64
+deepwalk --input data/graph_brca.adjlist --output result/brca_km40_wl3_nw20.embeddings --representation-size 40 --number-walks 20 --walk-length 3 --workers 64
+deepwalk --input data/graph_brca.adjlist --output result/brca_km40_wl3_nw50.embeddings --representation-size 40 --number-walks 50 --walk-length 3 --workers 64
+deepwalk --input data/graph_brca.adjlist --output result/brca_km40_wl3_nw100.embeddings --representation-size 40 --number-walks 100 --walk-length 3 --workers 64
+deepwalk --input data/graph_brca.adjlist --output result/brca_km40_wl3_nw200.embeddings --representation-size 40 --number-walks 200 --walk-length 3 --workers 64
+
+deepwalk --input data/graph_brca.adjlist --output result/brca_km40_wl5_nw10.embeddings --representation-size 40 --number-walks 10 --walk-length 5 --workers 64
+deepwalk --input data/graph_brca.adjlist --output result/brca_km40_wl5_nw20.embeddings --representation-size 40 --number-walks 20 --walk-length 5 --workers 64
+deepwalk --input data/graph_brca.adjlist --output result/brca_km40_wl5_nw50.embeddings --representation-size 40 --number-walks 50 --walk-length 5 --workers 64
+deepwalk --input data/graph_brca.adjlist --output result/brca_km40_wl5_nw100.embeddings --representation-size 40 --number-walks 100 --walk-length 5 --workers 64
+deepwalk --input data/graph_brca.adjlist --output result/brca_km40_wl5_nw200.embeddings --representation-size 40 --number-walks 200 --walk-length 5 --workers 64
+
+deepwalk --input data/graph_brca.adjlist --output result/brca_km40_wl10_nw10.embeddings --representation-size 40 --number-walks 10 --walk-length 10 --workers 64
+deepwalk --input data/graph_brca.adjlist --output result/brca_km40_wl10_nw20.embeddings --representation-size 40 --number-walks 20 --walk-length 10 --workers 64
+deepwalk --input data/graph_brca.adjlist --output result/brca_km40_wl10_nw50.embeddings --representation-size 40 --number-walks 50 --walk-length 10 --workers 64
+deepwalk --input data/graph_brca.adjlist --output result/brca_km40_wl10_nw100.embeddings --representation-size 40 --number-walks 100 --walk-length 10 --workers 64
+deepwalk --input data/graph_brca.adjlist --output result/brca_km40_wl10_nw200.embeddings --representation-size 40 --number-walks 200 --walk-length 10 --workers 64
+
+deepwalk --input data/graph_brca.adjlist --output result/brca_km40_wl20_nw10.embeddings --representation-size 40 --number-walks 10 --walk-length 20 --workers 64
+deepwalk --input data/graph_brca.adjlist --output result/brca_km40_wl20_nw20.embeddings --representation-size 40 --number-walks 20 --walk-length 20 --workers 64
+deepwalk --input data/graph_brca.adjlist --output result/brca_km40_wl20_nw50.embeddings --representation-size 40 --number-walks 50 --walk-length 20 --workers 64
+deepwalk --input data/graph_brca.adjlist --output result/brca_km40_wl20_nw100.embeddings --representation-size 40 --number-walks 100 --walk-length 20 --workers 64
+deepwalk --input data/graph_brca.adjlist --output result/brca_km40_wl20_nw200.embeddings --representation-size 40 --number-walks 200 --walk-length 20 --workers 64
