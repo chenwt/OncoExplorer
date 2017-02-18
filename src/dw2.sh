@@ -1,0 +1,5 @@
+deepwalk --input data/graph_brca.adjlist --output result/brca_km40_wl40_nw10.embeddings --representation-size 40 --number-walks 10 --walk-length 40 --workers 64
+deepwalk --input data/graph_brca.adjlist --output result/brca_km40_wl40_nw20.embeddings --representation-size 40 --number-walks 20 --walk-length 40 --workers 64
+deepwalk --input data/graph_brca.adjlist --output result/brca_km40_wl40_nw50.embeddings --representation-size 40 --number-walks 50 --walk-length 40 --workers 64
+deepwalk --input data/graph_brca.adjlist --output result/brca_km40_wl40_nw100.embeddings --representation-size 40 --number-walks 100 --walk-length 40 --workers 64
+deepwalk --input data/graph_brca.adjlist --output result/brca_km40_wl40_nw200.embeddings --representation-size 40 --number-walks 200 --walk-length 40 --workers 64
