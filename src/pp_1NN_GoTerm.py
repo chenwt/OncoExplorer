@@ -4,7 +4,96 @@ import numpy as np
 import scipy.io
 import os
 from random import shuffle
+import math
 
+# Get pathway information
+def getPathway(pathway):
+    set_pathway = set()
+    path = '/usr1/public/yifeng/Github/inputData/kegg_html/'+pathway+'_html.txt'
+    f = open(path, 'r')
+    for line in f:
+        line = line.strip().split('\t')
+        genes = line[3]
+        genes = genes.split('\"')[1].split(', ')
+        for gene in genes:
+            gene = gene.split(' (')[1].split(')')[0].lower()
+            set_pathway.add(gene)
+    f.close()
+    return set_pathway
+
+def getPathwayGo(pathway):
+    set_pathway = set()
+    path = '/usr1/public/yifeng/Github/inputData/kegg_html/'+pathway+'_go.txt'
+
+    if not os.path.exists(path): return set_pathway
+
+    f = open(path, 'r')
+    for line in f:
+        gene = line.strip().split('\t')[1].lower()
+        gene = gene.split('(')[0]
+        #print gene
+        set_pathway.add(gene)
+    f.close()
+    return set_pathway
+
+
+# Return: Gene->GoTerm, genes that have BP GoTerm
+def getGene2GoId():
+    goAnn = set()
+    path_goAnn = '/usr1/public/yifeng/Github/inputData/go/goa_human.gaf'
+    f = open(path_goAnn, 'r')
+    for line in f:
+        if line[0] == '!': continue
+        line = line.split('\t')
+        gene, goId = line[2], line[4]
+        gene = gene.lower()
+        goId = 'go'+goId.split(':')[1].lower()
+        goAnn.add((gene, goId))
+    f.close()
+
+    f = open('/usr1/public/yifeng/Github/inputData/go/go-basic.obo', 'r')
+    go_bp_set = set() # The set that belongs to biological process.
+
+    flag_term = False
+    src_id = ''
+    name_space = ''
+    for line in f:
+        line = line.strip()
+        if line == '[Term]': flag_term = True
+
+        if flag_term == False: continue
+
+        if line.startswith('id: GO:'):
+            src_id = line
+            continue
+        if line.startswith('namespace:'):
+            name_space = line
+            continue
+        if line == '':
+            if name_space == 'namespace: biological_process':
+                src = 'go'+src_id.split(':')[2]
+                go_bp_set.add(src)
+
+            flag_term = False
+            continue
+    f.close()
+
+    gene2goId = dd(set)
+    set_gene = set()
+    for line in goAnn:
+        gene, goId = line[0], line[1]
+        if goId in go_bp_set:
+            gene2goId[gene].add(goId)
+            set_gene.add(gene)
+
+    return gene2goId, set_gene
+
+
+
+# Get information of affinity
+# return: sga2sgaAaff sga->(sga, aff)
+
+# version of max
 def getAffinityProppr(cancer):
     sga2sgaAaff = dd(set)
     sgaAsga2prob = dd(float)
@@ -16,7 +105,6 @@ def getAffinityProppr(cancer):
         line1 = line.strip().split('\t')[-1].split('(')[1].split(')')[0].split(',')
         prob = line.strip().split('\t')[1]
         sga1, sga2, prob = line1[0], line1[1], float(prob)
-        #print sga1, sga2, prob
         set_sga.add(sga1)
         set_sga.add(sga2)
         sgaAsga2prob[(sga1,sga2)] = prob
@@ -29,53 +117,6 @@ def getAffinityProppr(cancer):
             prob = max(sgaAsga2prob[(sga1,sga2)], sgaAsga2prob[(sga2,sga1)])
             
             sga2sgaAaff[sga1].add((sga2,prob))
-    #next(f)
-
-
-
-    # sga2deg = dd(set)
-    # k = 0
-    # flag = True
-    # with open('/usr1/public/yifeng/Github/inputData/ensemble.txt') as f:
-    #     next(f)
-    #     for line in f:
-    #         line = line.strip().split('\t')
-    #         patid, can, sga, deg, prob = int(line[1]),line[2],line[4],line[5],line[6]
-    #         if cancer == 'pancan': # pancan is alway true
-    #             flag = True
-    #         elif can == cancer: # cancer name match specific can
-    #             flag = True
-    #         else: # cancer does not match the specific can
-    #             flag = False
-    #         if not flag: continue
-    #         k = k+1
-
-    #         sga2deg[sga].add(deg)
-
-    # #print '#readin_edge of {} = {}'.format(cancer, k)
-
-    # f = open('/usr1/public/yifeng/Github/anal/corr_'+cancer+'_baseline1.txt', 'w')
-    # #print >> f, 'Source\tTarget\tWeight'
-    # #traversedset = set()
-    # k = 0
-    # for sga1 in sga2deg.keys():
-    #     #traversedset.add(sga1)
-    #     for sga2 in sga2deg.keys():
-    #         #if sga2 != sga1:
-    #         #    if sga2 in traversedset: continue 
-            
-    #         overlap = len(sga2deg[sga1].intersection(sga2deg[sga2]))
-    #         #if overlap == 0: continue
-    #         k += 1
-    #         print >> f, sga1+'\t'+sga2+'\t'+str(overlap)
-    #         sga2sgaAaff[sga1].add((sga2, overlap))
-    #     #degset = sga2deg[sga]
-    # numsga = len(sga2deg.keys())
-
-    # #print numsga, numsga*numsga, k
-    # #print len(sga2sgaAaff), len(sga2sgaAaff.keys())
-
-    # f.close()
     return sga2sgaAaff
 
 
@@ -127,6 +168,130 @@ def getAffinityBaseline1(cancer):
     return sga2sgaAaff
 
 
+
+def getAffinityWeightedOverlap(cancer, Mmpa):
+    sga2sgaAaff = dd(set)
+    sgaAdeg2w = dd(float)
+    sga2deg = dd(set)
+    k = 0
+    flag = True
+    with open('/usr1/public/yifeng/Github/inputData/ensemble.txt') as f:
+        next(f)
+        for line in f:
+            line = line.strip().split('\t')
+            patid, can, sga, deg, prob = int(line[1]),line[2],line[4],line[5],line[6]
+            if cancer == 'pancan': # pancan is alway true
+                flag = True
+            elif can == cancer: # cancer name match specific can
+                flag = True
+            else: # cancer does not match the specific can
+                flag = False
+            if not flag: continue
+            k = k+1
+            sgaAdeg2w[(sga,deg)] += 1.0
+            sga2deg[sga].add(deg)
+
+    #print '#readin_edge of {} = {}'.format(cancer, k)
+
+    k = 0
+    for sga1 in sga2deg.keys():
+        for sga2 in sga2deg.keys():
+            set_CommonDeg = sga2deg[sga1].intersection(sga2deg[sga2])
+            overlap = 0.0
+            for d in set_CommonDeg:
+                if Mmpa == 'prod': overlap += sgaAdeg2w[(sga1,d)]*sgaAdeg2w[(sga2,d)]
+                if Mmpa == 'min': overlap += min(sgaAdeg2w[(sga1,d)],sgaAdeg2w[(sga2,d)])
+                if Mmpa == 'max': overlap += max(sgaAdeg2w[(sga1,d)],sgaAdeg2w[(sga2,d)])
+                if Mmpa == 'avg': overlap += 0.5*(sgaAdeg2w[(sga1,d)]+sgaAdeg2w[(sga2,d)])
+            #overlap = len()
+            #if overlap == 0: continue
+            k += 1
+            #print sga1+'\t'+sga2+'\t'+str(overlap)
+            sga2sgaAaff[sga1].add((sga2, overlap))
+        #degset = sga2deg[sga]
+    #numsga = len(sga2deg.keys())
+
+    #print numsga, numsga*numsga, k
+    #print len(sga2sgaAaff), len(sga2sgaAaff.keys())
+
+
+    return sga2sgaAaff
+
+#TODO:
+def getAffinityTFIDF(cancer, Mmpa):
+    sga2sgaAaff = dd(set)
+    deg2sga = dd(set)
+    degSpan = dd(float)
+    
+    sga2deglist = dd(list)
+    #sgaAdeg2w = dd(float)
+    sga2deg = dd(set)
+    k = 0
+    flag = True
+    with open('/usr1/public/yifeng/Github/inputData/ensemble.txt') as f:
+        next(f)
+        for line in f:
+            line = line.strip().split('\t')
+            patid, can, sga, deg, prob = int(line[1]),line[2],line[4],line[5],line[6]
+            if cancer == 'pancan': # pancan is alway true
+                flag = True
+            elif can == cancer: # cancer name match specific can
+                flag = True
+            else: # cancer does not match the specific can
+                flag = False
+            if not flag: continue
+            k = k+1
+            deg2sga[deg].add(sga)
+            sga2deglist[sga].append(deg)
+            #sgaAdeg2w[(sga,deg)] += 1.0
+            sga2deg[sga].add(deg)
+
+
+    Nsga = len(sga2deg.keys())
+    #print Nsga
+    for deg in deg2sga.keys():
+        degSpan[deg] = len(deg2sga[deg])
+        #print 'degSpan',deg, degSpan[deg]
+    #print '#readin_edge of {} = {}'.format(cancer, k)
+
+    k = 0
+    for sga1 in sga2deg.keys():
+        for sga2 in sga2deg.keys():
+            set_CommonDeg = sga2deg[sga1].intersection(sga2deg[sga2])
+            overlap = 0.0
+            #print sga1, sga2, overlap
+            for d in set_CommonDeg:
+                
+                sga1d_tf = 1.0*sga2deglist[sga1].count(d)/len(sga2deglist[sga1])
+                sga1d_idf = 1.0*math.log(1.0*Nsga/degSpan[d])
+                
+                sga1d_tfidf = 1.0*sga1d_tf*sga1d_idf
+                sga2d_tf = 1.0*sga2deglist[sga2].count(d)/len(sga2deglist[sga2])
+                sga2d_idf = 1.0*math.log(1.0*Nsga/degSpan[d])
+                sga2d_tfidf = 1.0*sga2d_tf*sga2d_idf
+                #print sga2deglist[sga1]
+                #print d
+                #print sga1d_tf, sga2deglist[sga1].count(d), sga1d_idf, sga2d_tf, sga2deglist[sga2].count(d), sga2d_idf
+                if Mmpa == 'prod': overlap += sga1d_tfidf*sga2d_tfidf
+                if Mmpa == 'min': overlap += min(sga1d_tfidf, sga2d_tfidf)
+                if Mmpa == 'max': overlap += max(sga1d_tfidf, sga2d_tfidf)
+                if Mmpa == 'avg': overlap += 0.5*(sga1d_tfidf+sga2d_tfidf)
+                #print sga1, sga2, overlap
+            #overlap = len()
+            #if overlap == 0: continue
+            k += 1
+            #print sga1+'\t'+sga2+'\t'+str(overlap)
+            
+            sga2sgaAaff[sga1].add((sga2, overlap))
+        #degset = sga2deg[sga]
+    #numsga = len(sga2deg.keys())
+
+    #print numsga, numsga*numsga, k
+    #print len(sga2sgaAaff), len(sga2sgaAaff.keys())
+
+
+    return sga2sgaAaff
+
 def getAffinityJaccard1(cancer):
     sga2sgaAaff = dd(set)
     sga2deg = dd(set)
@@ -162,7 +327,7 @@ def getAffinityJaccard1(cancer):
             overlap = 1.0*len(sga2deg[sga1].intersection(sga2deg[sga2]))/len(sga2deg[sga1].union(sga2deg[sga2]))
             #if overlap < 1.0*threshold/100: continue
             k += 1
-            print >> f, sga1+'\t'+sga2+'\t'+str(overlap)
+            #print >> f, sga1+'\t'+sga2+'\t'+str(overlap)
             sga2sgaAaff[sga1].add((sga2, overlap))
         #degset = sga2deg[sga]
     #numsga = len(sga2deg.keys())
@@ -333,85 +498,12 @@ def getLuAffinity(cancer):
     return sga2sgaAaff
 
 
-def getPathway(pathway):
-    set_pathway = set()
-    path = '/usr1/public/yifeng/Github/inputData/kegg_html/'+pathway+'_html.txt'
-    f = open(path, 'r')
-    for line in f:
-        line = line.strip().split('\t')
-        genes = line[3]
-        genes = genes.split('\"')[1].split(', ')
-        for gene in genes:
-            gene = gene.split(' (')[1].split(')')[0].lower()
-            set_pathway.add(gene)
-    f.close()
-    return set_pathway
-
-def getPathwayGo(pathway):
-    set_pathway = set()
-    path = '/usr1/public/yifeng/Github/inputData/kegg_html/'+pathway+'_go.txt'
-
-    if not os.path.exists(path): return set_pathway
-
-    f = open(path, 'r')
-    for line in f:
-        gene = line.strip().split('\t')[1].lower()
-        gene = gene.split('(')[0]
-        #print gene
-        set_pathway.add(gene)
-    f.close()
-    return set_pathway
 
 
-def getGene2GoId():
-    goAnn = set()
-    path_goAnn = '/usr1/public/yifeng/Github/inputData/go/goa_human.gaf'
-    f = open(path_goAnn, 'r')
-    for line in f:
-        if line[0] == '!': continue
-        line = line.split('\t')
-        gene, goId = line[2], line[4]
-        gene = gene.lower()
-        goId = 'go'+goId.split(':')[1].lower()
-        goAnn.add((gene, goId))
-    f.close()
 
-    f = open('/usr1/public/yifeng/Github/inputData/go/go-basic.obo', 'r')
-    go_bp_set = set() # The set that belongs to biological process.
 
-    flag_term = False
-    src_id = ''
-    name_space = ''
-    for line in f:
-        line = line.strip()
-        if line == '[Term]': flag_term = True
 
-        if flag_term == False: continue
 
-        if line.startswith('id: GO:'):
-            src_id = line
-            continue
-        if line.startswith('namespace:'):
-            name_space = line
-            continue
-        if line == '':
-            if name_space == 'namespace: biological_process':
-                src = 'go'+src_id.split(':')[2]
-                go_bp_set.add(src)
-
-            flag_term = False
-            continue
-    f.close()
-
-    gene2goId = dd(set)
-    set_gene = set()
-    for line in goAnn:
-        gene, goId = line[0], line[1]
-        if goId in go_bp_set:
-            gene2goId[gene].add(goId)
-            set_gene.add(gene)
-
-    return gene2goId, set_gene
 
 
 def test(gene2goId, set_pathway, choice, metric):
@@ -420,12 +512,8 @@ def test(gene2goId, set_pathway, choice, metric):
 
         print metric, choice
         for cancer in ['pancan', 'brca', 'gbm', 'ov']:
-        #for cancer in ['brca']:
             sga2sgaAaff = getAffinityProppr(cancer)
-
-            #for pathway in ['notch1','p53','pi3k']:
-            #    set_pathway = getPathway(pathway)
-
+            
             avgacc = 0
             for trial in range(10):
                 count_total = 0
@@ -453,26 +541,16 @@ def test(gene2goId, set_pathway, choice, metric):
                         count_true += ovlp
                     elif metric == 'jaccard':
                         count_true += 1.0*ovlp/len(gene2goId[sga].union(gene2goId[NNgene]))
-                    # if ovlp > 0:
-                    #     count_true += 1
-                        #print sga, NNgene, NNdist
                 acc = 1.0*count_true/count_total
                 avgacc += acc
                 # Omit if necessary
                 #print '\tcancer:'+cancer+'\ttrial:'+str(trial)+'\taccuracy:'+str(acc)
             print 'cancer:'+cancer+'\tavgacc:'+str(1.0*avgacc/10)+'\t\t#checked_genes:'+str(count_total)
-    #getAffinityProppr
-
 
     if choice == 'Lu affinity':
         print metric, choice
         for cancer in ['pancan', 'brca', 'gbm', 'ov']:
-        #for cancer in ['brca']:
             sga2sgaAaff = getLuAffinity(cancer)
-
-            #for pathway in ['notch1','p53','pi3k']:
-            #set_pathway = getPathway(pathway)
-
             avgacc = 0
             for trial in range(10):
                 count_total = 0
@@ -490,7 +568,6 @@ def test(gene2goId, set_pathway, choice, metric):
                         if aff > NNdist:
                             NNdist = aff
                             NNgene = sgaContext
-                    #print sga, NNgene, NNdist
 
                     ovlp = gene2goId[sga].intersection(gene2goId[NNgene])
                     ovlp = len(ovlp)
@@ -513,11 +590,7 @@ def test(gene2goId, set_pathway, choice, metric):
     if choice == 'Lu dist':
         print metric, choice
         for cancer in ['pancan', 'brca', 'gbm', 'ov']:
-        #for cancer in ['brca']:
             sga2sgaDist = getCoordinates(cancer)
-
-            #for pathway in ['notch1','p53','pi3k']:
-            #    set_pathway = getPathway(pathway)
 
             avgacc = 0
             for trial in range(10):
@@ -561,11 +634,7 @@ def test(gene2goId, set_pathway, choice, metric):
     if choice == 'Random':
         print metric, choice
         for cancer in ['pancan', 'brca', 'gbm', 'ov']:
-        #for cancer in ['brca']:
             sga2sgaAaff = getAffinityBaseline1(cancer)
-
-            #for pathway in ['notch1','p53','pi3k']:
-                #set_pathway = getPathway(pathway)
 
             avgacc = 0
             for trial in range(10):
@@ -612,6 +681,101 @@ def test(gene2goId, set_pathway, choice, metric):
 
             #for pathway in ['notch1','p53','pi3k']:
             #    set_pathway = getPathway(pathway)
+
+            avgacc = 0
+            for trial in range(10):
+                count_total = 0
+                count_true = 0
+                for sga in set_pathway:
+                    if sga not in sga2sgaAaff.keys(): continue
+                    count_total += 1
+                    NNgene = 'helloworld'
+                    NNdist = 0.0
+                    Context = list(sga2sgaAaff[sga])
+                    shuffle(Context)
+                    for line in Context:
+                        sgaContext, aff = line[0], line[1]
+                        if sgaContext == sga: continue
+                        if aff > NNdist:
+                            NNdist = aff
+                            NNgene = sgaContext
+                    #print sga, NNgene, NNdist
+
+                    ovlp = gene2goId[sga].intersection(gene2goId[NNgene])
+                    ovlp = len(ovlp)
+
+                    if metric == 'one':
+                        if ovlp > 0:
+                            count_true += 1
+                    elif metric == 'total':
+                        count_true += ovlp
+                    elif metric == 'jaccard':
+                        count_true += 1.0*ovlp/len(gene2goId[sga].union(gene2goId[NNgene]))
+                acc = 1.0*count_true/count_total
+                avgacc += acc
+                # Omit if necessary
+                #print '\tcancer:'+cancer+'\ttrial:'+str(trial)+'\taccuracy:'+str(acc)
+            print 'cancer:'+cancer+'\tavgacc:'+str(1.0*avgacc/10)+'\t\t#checked_genes:'+str(count_total)
+
+    if choice in ['WeightedOverlap_min', 'WeightedOverlap_max', 'WeightedOverlap_prod','WeightedOverlap_avg']:
+        if choice == 'WeightedOverlap_min': Mmpa = 'min'
+        if choice == 'WeightedOverlap_max': Mmpa = 'max'
+        if choice == 'WeightedOverlap_prod': Mmpa = 'prod'
+        if choice == 'WeightedOverlap_avg': Mmpa = 'avg'
+        print metric, choice
+        for cancer in ['pancan', 'brca', 'gbm', 'ov']:
+        #for cancer in ['brca']:
+            
+            #Mmpa = 'min'
+            sga2sgaAaff = getAffinityWeightedOverlap(cancer, Mmpa)
+
+            avgacc = 0
+            for trial in range(10):
+                count_total = 0
+                count_true = 0
+                for sga in set_pathway:
+                    if sga not in sga2sgaAaff.keys(): continue
+                    count_total += 1
+                    NNgene = 'helloworld'
+                    NNdist = 0.0
+                    Context = list(sga2sgaAaff[sga])
+                    shuffle(Context)
+                    for line in Context:
+                        sgaContext, aff = line[0], line[1]
+                        if sgaContext == sga: continue
+                        if aff > NNdist:
+                            NNdist = aff
+                            NNgene = sgaContext
+                    #print sga, NNgene, NNdist
+
+                    ovlp = gene2goId[sga].intersection(gene2goId[NNgene])
+                    ovlp = len(ovlp)
+
+                    if metric == 'one':
+                        if ovlp > 0:
+                            count_true += 1
+                    elif metric == 'total':
+                        count_true += ovlp
+                    elif metric == 'jaccard':
+                        count_true += 1.0*ovlp/len(gene2goId[sga].union(gene2goId[NNgene]))
+                acc = 1.0*count_true/count_total
+                avgacc += acc
+                # Omit if necessary
+                #print '\tcancer:'+cancer+'\ttrial:'+str(trial)+'\taccuracy:'+str(acc)
+            print 'cancer:'+cancer+'\tavgacc:'+str(1.0*avgacc/10)+'\t\t#checked_genes:'+str(count_total)
+
+    #TODO:
+    if choice in ['TFIDF_min','TFIDF_max','TFIDF_avg','TFIDF_prod']:
+        if choice == 'TFIDF_min': Mmpa = 'min'
+        if choice == 'TFIDF_max': Mmpa = 'max'
+        if choice == 'TFIDF_prod': Mmpa = 'prod'
+        if choice == 'TFIDF_avg': Mmpa = 'avg'
+        print metric, choice
+        for cancer in ['pancan', 'brca', 'gbm', 'ov']:
+        #for cancer in ['brca']:
+            
+            #Mmpa = 'min'
+            sga2sgaAaff = getAffinityTFIDF(cancer, Mmpa)
 
             avgacc = 0
             for trial in range(10):
@@ -696,18 +860,12 @@ def test(gene2goId, set_pathway, choice, metric):
 
 if __name__ == '__main__':
 
-
-    # choice = 'Proppr'
-    #choice = 'hello world'
-
     gene2goId, set_pathway = getGene2GoId()
-    #print len(gene2goId), len(set_pathway)
 
-    # metric = 'one'
-    # metric = 'total'
-    # metric = 'jaccard'
     for metric in ['one', 'total', 'jaccard']:
-        for choice in ['Random', 'Baseline1', 'Proppr', 'Lu affinity', 'Jaccard1', 'Lu dist']:
+        for choice in ['TFIDF_min','TFIDF_max','TFIDF_avg','TFIDF_prod','Baseline1', 'Random']:
+#    for metric in ['one']:
+#        for choice in ['TFIDF_min']:            
             test(gene2goId, set_pathway, choice, metric)
 
 
