@@ -1,0 +1,170 @@
+# BLAST cmd
+
+###saskia###
+# Unmasked version
+makeblastdb -in myseq.fa -dbtype nucl -parse_seqids -out myseq -title "Unmasked sequences"
+'''
+Building a new DB, current time: 02/17/2017 00:57:30
+New DB name:   /usr1/public/yifeng/Github/blast/ncbi-blast-2.6.0+/blastdb/myseq
+New DB title:  Unmasked sequences
+Sequence type: Nucleotide
+Keep MBits: T
+Maximum file size: 1000000000B
+Adding sequences from FASTA; added 482 sequences in 0.879295 seconds.
+'''
+# Check it
+blastdbcmd -db myseq -info
+'''
+Database: Unmasked sequences
+	482 sequences; 76,547,572 total bases
+
+Date: Feb 17, 2017  12:57 AM	Longest sequence: 2,241,765 bases
+
+Volumes:
+	/usr1/public/yifeng/Github/blast/ncbi-blast-2.6.0+/blastdb/myseq
+'''
+
+# cp myseq.fa ../workd/test.fa
+
+blastn -query test.fa -db myseq -task blastn -dust no -num_threads 30 -outfmt "0" -num_descriptions 360000 -num_alignments 0 -out out_unmask.txt
+
+
+
+###lysbet###
+# Masked version
+makeblastdb -in myseq.fa -dbtype nucl -parse_seqids -out myseq -title "Unmasked sequences"
+
+# Check it
+blastdbcmd -db myseq -info
+'''
+Database: Unmasked sequences
+	482 sequences; 76,547,572 total bases
+
+Date: Feb 17, 2017  12:57 AM	Longest sequence: 2,241,765 bases
+
+Volumes:
+	/usr1/public/yifeng/Github/blast/ncbi-blast-2.6.0+/blastdb/myseq
+'''
+
+# Dust masker
+dustmasker -in myseq -infmt blastdb -parse_seqids -outfmt maskinfo_asn1_bin -out myseq_dust.asnb
+
+# Window masker
+windowmasker -in myseq -infmt blastdb -mk_counts -parse_seqids -out myseq_mask.counts -sformat obinary
+'''
+computing the genome length
+pass 1
+pass 2
+optimizing the data structure
+'''
+
+windowmasker -in myseq -infmt blastdb -ustat myseq_mask.counts -outfmt maskinfo_asn1_bin -parse_seqids -out myseq_mask.asnb
+
+# Add masker information
+makeblastdb -in myseq -input_type blastdb -dbtype nucl -parse_seqids -mask_data myseq_mask.asnb -out myseqAmask -title "Masked sequences"
+'''
+Building a new DB, current time: 02/17/2017 04:29:16
+New DB name:   /usr1/public/yifeng/Github/blast/ncbi-blast-2.6.0+/blastdb/myseqAmask
+New DB title:  Masked sequences
+Sequence type: Nucleotide
+Keep MBits: T
+Maximum file size: 1000000000B
+Mask file: myseq_mask.asnb
+Adding sequences from raw db source; added 482 sequences in 0.610902 seconds.
+'''
+# Check it
+blastdbcmd -db myseqAmask -info
+'''
+Database: Masked sequences
+	482 sequences; 76,547,572 total bases
+
+Date: Feb 17, 2017  4:29 AM	Longest sequence: 2,241,765 bases
+
+Available filtering algorithms applied to database sequences:
+
+Algorithm ID Algorithm name                          Algorithm options                       
+30           windowmasker                            default options used                    
+
+Volumes:
+	/usr1/public/yifeng/Github/blast/ncbi-blast-2.6.0+/blastdb/myseqAmask
+'''
+
+makeblastdb -in myseqAmask -input_type blastdb -dbtype nucl -parse_seqids -mask_data myseq_dust.asnb -out myseqAmd -title "Masked sequences"
+'''
+Building a new DB, current time: 02/17/2017 04:32:25
+New DB name:   /usr1/public/yifeng/Github/blast/ncbi-blast-2.6.0+/blastdb/myseqAmd
+New DB title:  Masked sequences
+Sequence type: Nucleotide
+Keep MBits: T
+Maximum file size: 1000000000B
+Mask file: myseq_dust.asnb
+Adding sequences from raw db source; added 482 sequences in 0.180131 seconds.
+'''
+blastdbcmd -db myseqAmd -info
+'''
+Database: Masked sequences
+	482 sequences; 76,547,572 total bases
+
+Date: Feb 17, 2017  4:32 AM	Longest sequence: 2,241,765 bases
+
+Available filtering algorithms applied to database sequences:
+
+Algorithm ID Algorithm name                          Algorithm options                       
+11           dust                                    window=64; level=20; linker=1           
+30           windowmasker                            default options used                    
+
+Volumes:
+	/usr1/public/yifeng/Github/blast/ncbi-blast-2.6.0+/blastdb/myseqAmd
+'''
+
+# cp myseq.fa ../workd/test.fa
+
+# Search with mask
+
+#blastn -task blastn -query test1.fa -dust yes -db myseqAmd -num_threads 30 -outfmt "0" -num_descriptions 360000 -num_alignments 0 -db_hard_mask 11 -out out_hard_dust1.txt &> out_hard_dust1.log
+'''This generates almost the same result from simple one.'''
+
+blastn -task blastn -query test.fa -dust yes -db myseqAmd -num_threads 30 -outfmt "0" -num_descriptions 360000 -num_alignments 0 -db_hard_mask 30 -out out_hard_dust_mask.txt
+
+blastn -task blastn -query test.fa -window_masker_db 9606/wmasker.obinary -db myseqAmd -num_threads 30 -outfmt "0" -num_descriptions 360000 -num_alignments 0 -db_hard_mask 30 -out out_hard_mask_mask.txt
+
+
+
+# query is also filtered
+#blastn -query test.fa -task blastn -db myseqAmd -db_hard_mask 30 -window_masker_db  -outfmt "0" -num_descriptions 360000 -num_alignments 0 -num_threads 28 -out out_hard_mask_qf.txt
+
+
+
+#blastn -query test.fa -task megablast -db myseqAmd -db_hard_mask 30 -outfmt "0" -num_descriptions 360000 -num_alignments 0 -num_threads 28 -out out_hard_mask.txt
+
+
+
+#blastn -query test.fa -task megablast -db myseqAmd -db_soft_mask 11 -outfmt "0" -num_descriptions 360000 -num_alignments 0 -num_threads 28 -out out_soft_dust.txt
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Mask low-complexity seq
+dustmasker -in seq.fa -infmt fasta -parse_seqids -outfmt maskinfo_asn1_bin -out seq_dust.asnb
+# Mask low-complexity seq, as well as over-expressed seq
+windowmasker -in seq.fa -infmt fasta -mk_counts -parse_seqids -out seq_mask.counts -sformat obinary
+windowmasker -in seq.fa -infmt fasta -ustat seq_mask.counts -outfmt maskinfo_asn1_bin -parse_seqids -out seq_mask.asnb
+
+# Generate database from fasta file
+makeblastdb -in seq.fa -dbtype nucl -parse_seqids -out seq -title "Unmasked sequences"
+# Search
+blastn -query test.fa -db seql -task blastn -dust no -outfmt "7 qseqid sseqid evalue bitscore" -max_target_seqs 4 -num_threads 28 -out out.txt
+
+blastn -query test.fa -db seql -task blastn -dust no -num_threads 4 -outfmt "0" -num_descriptions 5 -num_alignments 0 -out out4.txt
+
