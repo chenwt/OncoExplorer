@@ -6,8 +6,14 @@ Created on Sat Feb 18 04:13:47 2017
 """
 
 from collections import defaultdict as dd
-
+import numpy as np
+from scipy import sparse, io
 # Prepare data for deepwalk.
+
+
+
+#io.mmwrite(target, a, comment='', field=None, precision=None, symmetry=None)
+
 
 set_sga = set()
 set_deg = set()
@@ -78,8 +84,17 @@ for deg in set_deg:
     print >> f, s
 f.close()
 
-
-
+f = open('graph_brca.txt', 'w')
+for sga1 in set_sga:
+    id1 = gene2id[sga1]
+    for sga2 in set_sga:
+        id2 = gene2id[sga2]
+        if id1 == id2: continue
+        overlap = sga2deg[sga1].intersection(sga2deg[sga2])
+        overlap = len(overlap)
+        if overlap == 0: continue
+        print >> f, str(id1)+' '+str(id2)+' '+str(overlap)
+f.close()
 
 
 
