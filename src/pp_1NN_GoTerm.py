@@ -167,7 +167,62 @@ def getAffinityBaseline1(cancer):
     f.close()
     return sga2sgaAaff
 
+def getAffinityDW(wl,nw):
+    #sga2sgaAaff = dd(set)
+    #sga2deg = dd(set)
 
+    # gid -> gene
+    gid2gene = dd()
+    path = '/usr1/public/yifeng/Github/deepwalk-master/data/LUT_DW_brca.txt'
+    f = open(path, 'r')
+    rg_gid = 0
+    for line in f:
+        
+        l = line.strip().split('\t')
+        gene, gid = l[0], int(l[1])
+        
+        if gene.endswith('_deg'): break
+        rg_gid += 1
+        gid2gene[rg_gid-1] = gene
+        #print gene, gid, rg_gid
+    f.close()
+
+    W = np.zeros([rg_gid, 40], float)
+    path = '/usr1/public/yifeng/Github/deepwalk-master/result/brca_km40_wl'+str(wl)+'_nw'+str(nw)+'.embeddings'
+    f = open(path, 'r')
+    next(f)
+    k = 0
+    for line in f:
+        l = line.strip().split(' ', 1)
+        gid = int(l[0])
+        if gid <= rg_gid:
+            k += 1
+            x = [float(i) for i in l[1].split(' ')]
+            W[gid-1,:] = x
+            #print k, gid, x
+    f.close()
+    
+    sga2sgaAaff = dd(set)
+    
+    M = 0
+    for id1 in range(rg_gid):
+        g1 = gid2gene[id1]
+        for id2 in range(rg_gid):
+            g2 = gid2gene[id2]
+            d = W[id1,:] - W[id2,:]
+            d =  np.linalg.norm(d)
+            M = max(d, M)
+            
+    for id1 in range(rg_gid):
+        g1 = gid2gene[id1]
+        for id2 in range(rg_gid):
+            g2 = gid2gene[id2]
+            d = W[id1,:] - W[id2,:]
+            d =  M - np.linalg.norm(d)
+            
+            sga2sgaAaff[g1].add((g2, d))
+    
+    return sga2sgaAaff
 
 def getAffinityWeightedOverlap(cancer, Mmpa):
     sga2sgaAaff = dd(set)
@@ -671,8 +726,6 @@ def test(gene2goId, set_pathway, choice, metric):
                     # Omit if necessary
                 #print '\tcancer:'+cancer+'\ttrial:'+str(trial)+'\taccuracy:'+str(acc)
             print 'cancer:'+cancer+'\tavgacc:'+str(1.0*avgacc/10)+'\t\t#checked_genes:'+str(count_total)
-
-
     if choice == 'Baseline1':
         print metric, choice
         for cancer in ['pancan', 'brca', 'gbm', 'ov']:
@@ -716,6 +769,51 @@ def test(gene2goId, set_pathway, choice, metric):
                 # Omit if necessary
                 #print '\tcancer:'+cancer+'\ttrial:'+str(trial)+'\taccuracy:'+str(acc)
             print 'cancer:'+cancer+'\tavgacc:'+str(1.0*avgacc/10)+'\t\t#checked_genes:'+str(count_total)
+
+
+#TODO:DW
+    if choice == 'DW':
+        print metric, choice
+        for cancer in ['brca']:
+        #for cancer in ['brca']:
+            for wl in [1,2,3,5,10,20,40]:
+                for nw in [10,20,50,100,200]:
+
+                    sga2sgaAaff = getAffinityDW(wl,nw)
+                    avgacc = 0
+                    for trial in range(10):
+                        count_total = 0
+                        count_true = 0
+                        for sga in set_pathway:
+                            if sga not in sga2sgaAaff.keys(): continue
+                            count_total += 1
+                            NNgene = 'helloworld'
+                            NNdist = 0.0
+                            Context = list(sga2sgaAaff[sga])
+                            shuffle(Context)
+                            for line in Context:
+                                sgaContext, aff = line[0], line[1]
+                                if sgaContext == sga: continue
+                                if aff > NNdist:
+                                    NNdist = aff
+                                    NNgene = sgaContext
+                            #print sga, NNgene, NNdist
+        
+                            ovlp = gene2goId[sga].intersection(gene2goId[NNgene])
+                            ovlp = len(ovlp)
+        
+                            if metric == 'one':
+                                if ovlp > 0:
+                                    count_true += 1
+                            elif metric == 'total':
+                                count_true += ovlp
+                            elif metric == 'jaccard':
+                                count_true += 1.0*ovlp/len(gene2goId[sga].union(gene2goId[NNgene]))
+                        acc = 1.0*count_true/count_total
+                        avgacc += acc
+                        # Omit if necessary
+                        #print '\tcancer:'+cancer+'\ttrial:'+str(trial)+'\taccuracy:'+str(acc)
+                    print 'cancer:'+cancer+'\twl:'+str(wl)+'\tnw:'+str(nw)+'\tavgacc:'+str(1.0*avgacc/10)+'\t\t#checked_genes:'+str(count_total)
 
     if choice in ['WeightedOverlap_min', 'WeightedOverlap_max', 'WeightedOverlap_prod','WeightedOverlap_avg']:
         if choice == 'WeightedOverlap_min': Mmpa = 'min'
@@ -863,7 +961,7 @@ if __name__ == '__main__':
     gene2goId, set_pathway = getGene2GoId()
 
     for metric in ['one', 'total', 'jaccard']:
-        for choice in ['TFIDF_min','TFIDF_max','TFIDF_avg','TFIDF_prod','Baseline1', 'Random']:
+        for choice in ['DW']:
 #    for metric in ['one']:
 #        for choice in ['TFIDF_min']:            
             test(gene2goId, set_pathway, choice, metric)
