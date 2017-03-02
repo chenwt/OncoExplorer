@@ -22,10 +22,10 @@ import colorsys
 import math
 import copy
 
-itertime = 10
+itertime = 20
 KM = np.array([5,10,15,20,25,30,35,40,45,50,55,60,65,70,75,80,85,90,95,100])
 #KM = np.array([40])
-
+classsize = np.zeros([0,], dtype=float)
 enrich = np.zeros([len(KM),],dtype = float)
 enrich_ctrl = np.zeros([len(KM),],dtype = float)
 
@@ -206,6 +206,7 @@ for iter in range(itertime):
         for i in range(len_gene):
             g1 = id2gene[i]
             for j in range(len_gene):
+                if i == j: continue
                 g2 = id2gene[j]
                 l1 = y[i]
                 l2 = y[j]
@@ -228,6 +229,7 @@ for iter in range(itertime):
         for i in range(len_gene):
             g1 = id2gene[i]
             for j in range(len_gene):
+                if i == j: continue
                 g2 = id2gene[j]
                 #l1 = y_fake[i]
                 #l2 = y_fake[j]
@@ -242,7 +244,10 @@ for iter in range(itertime):
         print 'fake', km, 1.0*within_u/within_d*total_d/total_u
         enrich_ctrl[t] += 1.0*within_u/within_d*total_d/total_u
         t += 1
-    
+        
+        if km == 40:
+            for i in range(km):
+                classsize = np.append(classsize, np.count_nonzero(y==i))    
 
 
 
@@ -256,7 +261,7 @@ km = 40
 #km = 50
 X = V[:,0:km]
 
-kmeans = KMeans(n_clusters=km, random_state=0).fit(X)
+kmeans = KMeans(n_clusters=km).fit(X)
 y = kmeans.labels_
 
 
@@ -270,6 +275,7 @@ within_d = 0.0
 for i in range(len_gene):
     g1 = id2gene[i]
     for j in range(len_gene):
+        if i == j: continue
         g2 = id2gene[j]
         l1 = y[i]
         l2 = y[j]
@@ -318,7 +324,7 @@ plt.ylim(-1,1)
 #X = np.array([[0, 0, 0], [0, 1, 1], [1, 0, 1], [1, 1, 1]])
 
 
-model = TSNE(n_components=2, random_state=0)
+model = TSNE(n_components=2)
 #np.set_printoptions(suppress=True)
 Xnew = model.fit_transform(X)
 h = Xnew[:,0]
@@ -374,12 +380,7 @@ for i in range(len(set_gene)):
     sga1 = set_gene[i]
     sga1id = gene2id[sga1]
     ax.plot(h[sga1id], v[sga1id], marker='o', linestyle='', markersize = int(20*gene2degree[sga1])+5, color = RGB_tuples[y[sga1id]])
-
-#for name, group in groups:
-#    ax.plot(group.x, group.y, marker='o', linestyle='', markersize = 5, label=name)
-#ax.legend()
-    
-    
+   
     
 threshold = 300
 
@@ -392,19 +393,6 @@ for line in f:
     sga, degree = l[0], int(l[1])
     if degree > threshold: blacklist.add(sga)
 f.close()
-#print 'len(blacklist)=', len(blacklist)
-#print blacklist
-
-
-#for sga in blacklist:
-#    if sga not in gene2id.keys(): continue
-#    sgaid = gene2id[sga]
-#    ax.annotate(sga, xy=(h[sgaid], v[sgaid])#, xytext=(3, 1.5),
-#            #arrowprops=dict(shrink=0.05),
-#            )
-#    ax.plot(h[sgaid], v[sgaid], marker='*')
-    
-
 
 plt.title('t-SNE of spectral clustering (k = '+str(km)+')')
 #plt.xlim(-1,1)
@@ -431,160 +419,12 @@ np.save('enrichment_baseline_kNN_'+str(kNN)+'_brca', enrich)
 np.save('enrichment_baseline_kNN_'+str(kNN)+'_ctrl_brca', enrich_ctrl)
 
 
+np.save('classsize_40_baseline_kNN_'+str(kNN)+'_brca',classsize)
+#classsize
+plt.figure()
+plt.hist(classsize, bins = 200)
+
 print 'Done!'
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-#
-##TODO:
-#import numpy as np
-#import numpy.linalg as linalg
-#from collections import defaultdict as dd
-#import matplotlib.pyplot as plt
-#from random import shuffle
-#
-#kNN = 5
-#sga2sgaAaff = dd(set)
-#sgaAsga2aff = dd(int)
-#set_gene = set()
-#path = 'sga2sgaAff_baseline_brca.txt'
-#f = open(path, 'r')
-#pathout = 'out.txt'
-#fo = open(pathout, 'w')
-#next(f)
-#for line in f:
-#    l = line.strip().split('\t')
-#    sga1, sga2, aff = l[0], l[1], int(l[2])
-#    sga2sgaAaff[sga1].add((sga2, aff))
-#    set_gene.add(sga1)
-#    set_gene.add(sga2)
-#f.close()
-#
-#set_gene = list(set_gene)
-#
-#for sga in set_gene:
-#    context = sga2sgaAaff[sga]
-#    context = list(context)    
-#    # shuffle
-#    
-#    for i in range(kNN):
-#        shuffle(context)
-#    
-#        Maff = 0.0
-#        Mgene = 'helloword'
-#        for line in context:
-#            sgacontext, aff = line[0], line[1]
-#            if aff > Maff:
-#                Maff = aff
-#                Mgene = sgacontext
-#        sgaAsga2aff[(sga, Mgene)] = aff
-#        sgaAsga2aff[(Mgene, sga)] = aff
-#        #print sga, Mgene, Maff
-#        context.remove((Mgene, Maff))
-#        if len(context) == 0: break
-#    
-#    #sgaAsga2aff[(sga1, sga2)] = aff
-#
-#    #print >> fo, l
-#    
-#gene2id = dd()
-#id2gene = dd()
-#
-#k = 0
-#for g in set_gene:
-#    gene2id[g] = k
-#    id2gene[k] = g
-#    k += 1
-#
-#
-#len_gene = len(set_gene)
-#W = np.zeros([len_gene, len_gene], float)
-#for i in range(len_gene):
-#    for j in range(len_gene):
-#        W[i][j] = sgaAsga2aff[(id2gene[i], id2gene[j])]
-#
-#
-#D = W.sum(axis=0)
-#Dinv = np.diag(1.0/D)
-#
-#D = np.diag(D);
-#L =  D - W
-##L = D - W;
-#L = np.dot(Dinv,L)
-#
-#lambda0, V0 = linalg.eig(L)
-##L = diag(1./sum(W))*L;
-##[V0, lambda0] = eig(L);
-#ordr =lambda0.argsort()
-#lam = lambda0[ordr]
-##V = V0
-#V = V0[:,ordr]
-#plt.plot(lam)
-#plt.ylabel('labmda')
-#plt.xlabel('k')
-#plt.title('SGA in BRCA')
-#plt.ylim((0,2))
-##lam,ordr = sort(lambda0);
-##lambda = diag(lam);
-##v = V0(:,ord);
-#
-#path = 'sga2sgaAff_baseline_kNN_'+str(kNN)+'_brca.txt'
-#f = open(path, 'w')
-#print >> f, 'Source\tTarget\tWeight'
-#for line in sgaAsga2aff.keys():
-#        sga1, sga2, overlap = line[0], line[1], sgaAsga2aff[line]
-#        #sga2, overlap = line[0], line[1]
-#        if overlap == 0: continue
-#        if sga1 == sga2: continue
-#        print >> f, sga1 + '\t' + sga2 + '\t' + str(overlap)
-#        #print >> f, sga1 + '\t' + sga2 + '\t' + overlap
-#f.close()
-#
-#
-#sga2sgaAaff = dd(set)
-#set_gene = set()
-#
-#path = 'sga2sgaAff_baseline_kNN_'+str(kNN)+'_brca.txt'
-#f = open(path, 'r')
-#next(f)
-#for line in f:
-#    l = line.strip().split('\t')
-#    sga1, sga2, aff = l[0], l[1], int(l[2])
-#    sga2sgaAaff[sga1].add((sga2, aff))
-#    set_gene.add(sga1)
-#    set_gene.add(sga2)
-#f.close()
-#
-#set_gene = list(set_gene)
-#
-#gene2id = dd()
-#id2gene = dd()
-#
-#k = 0
-#for g in set_gene:
-#    gene2id[g] = k
-#    id2gene[k] = g
-#    k += 1
-#
-#
-#len_gene = len(set_gene)
-#W = np.zeros([len_gene, len_gene], float)
-#for i in range(len_gene):
-#    for j in range(len_gene):
-#        W[i][j] = sgaAsga2aff[(id2gene[i], id2gene[j])]*sgaAsga2aff[(id2gene[j], id2gene[i])]
 
 
 #EOF.

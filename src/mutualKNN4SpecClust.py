@@ -20,10 +20,10 @@ import colorsys
 import math
 import copy
 
-itertime = 10
+itertime = 20
 KM = np.array([5,10,15,20,25,30,35,40,45,50,55,60,65,70,75,80,85,90,95,100])
 #KM = np.array([40])
-
+classsize = np.zeros([0,], dtype=float)
 enrich = np.zeros([len(KM),],dtype = float)
 enrich_ctrl = np.zeros([len(KM),],dtype = float)
 
@@ -99,29 +99,7 @@ for iter in range(itertime):
     for i in range(len_gene):
         for j in range(len_gene):
             W[i][j] = sgaAsga2aff[(id2gene[i], id2gene[j])]*sgaAsga2aff[(id2gene[j], id2gene[i])]
-    
-    
-    #D = W.sum(axis=0)
-    #Dinv = np.diag(1.0/D)
-    #
-    #D = np.diag(D);
-    #L =  D - W
-    #
-    #lambda0, V0 = linalg.eig(L)
-    #
-    #ordr =lambda0.argsort()
-    #lam = lambda0[ordr]
-    #V = V0[:,ordr]
-    #
-    #
-    #
-    #plt.plot(lam)
-    #plt.ylabel('labmda')
-    #plt.xlabel('k')
-    #plt.title('SGA in BRCA')
-    #plt.ylim((0,50))
-    
-    
+       
     
     
     
@@ -236,6 +214,7 @@ for iter in range(itertime):
         for i in range(len_gene):
             g1 = id2gene[i]
             for j in range(len_gene):
+                if i == j: continue
                 g2 = id2gene[j]
                 l1 = y[i]
                 l2 = y[j]
@@ -258,6 +237,7 @@ for iter in range(itertime):
         for i in range(len_gene):
             g1 = id2gene[i]
             for j in range(len_gene):
+                if i == j: continue
                 g2 = id2gene[j]
                 #l1 = y_fake[i]
                 #l2 = y_fake[j]
@@ -273,20 +253,17 @@ for iter in range(itertime):
         enrich_ctrl[t] += 1.0*within_u/within_d*total_d/total_u
         t += 1
     
+        if km == 40:
+            for i in range(km):
+                classsize = np.append(classsize, np.count_nonzero(y==i))    
 
-
-
-
-
-
-    
 
 t = 0
 km = 40
 #km = 50
 X = V[:,0:km]
 
-kmeans = KMeans(n_clusters=km, random_state=0).fit(X)
+kmeans = KMeans(n_clusters=km).fit(X)
 y = kmeans.labels_
 
 
@@ -300,6 +277,7 @@ within_d = 0.0
 for i in range(len_gene):
     g1 = id2gene[i]
     for j in range(len_gene):
+        if i == j: continue
         g2 = id2gene[j]
         l1 = y[i]
         l2 = y[j]
@@ -314,23 +292,12 @@ for i in range(len_gene):
 print km, 1.0*within_u/within_d*total_d/total_u
 
 
-#X = np.array([[-1, -1], [-2, -1], [-3, -2], [1, 1], [2, 1], [3, 2]])
-#y = np.array([0,0,0,1,1,1])
-#plt.figure()
-#h = X[:,0]
-#v = X[:,1]
-#plt.plot(h,v, 'ro')
-
-
 
 pca = PCA(n_components=2)
 Xnew = pca.fit_transform(X)
 h = Xnew[:,0]
 v = Xnew[:,1]
 
-
-#plt.figure()
-#plt.plot(h,v, 'ro')
 
 df = pd.DataFrame(dict(x=h, y=v, label=y))
 
@@ -345,30 +312,23 @@ plt.xlim(-1,1)
 plt.ylim(-1,1)
 
 
-#X = np.array([[0, 0, 0], [0, 1, 1], [1, 0, 1], [1, 1, 1]])
 
 
-model = TSNE(n_components=2, random_state=0)
+model = TSNE(n_components=2)
 #np.set_printoptions(suppress=True)
 Xnew = model.fit_transform(X)
 h = Xnew[:,0]
 v = Xnew[:,1]
 
 
-#plt.figure()
-#plt.plot(h,v, 'ro')
 
 df = pd.DataFrame(dict(x=h, y=v, label=y))
 
 groups = df.groupby('label')
 
-#ax = plt.figure(figsize=(8, 8))
+
 fig, ax = plt.subplots(figsize=(8, 8))
 
-
-
-
-#set_gene = list(set_gene)
 
 
 
@@ -394,8 +354,6 @@ for g in gene2degree.keys():
     gene2degree[g] = math.sqrt(degree)/Mval
 
 
-#HSV_tuples = [(x*1.0/km, 0.5, 0.5) for x in range(km)]
-#RGB_tuples = map(lambda x: colorsys.hsv_to_rgb(*x), HSV_tuples)
 
 RGB_tuples = _get_colors(km)
 
@@ -405,9 +363,7 @@ for i in range(len(set_gene)):
     sga1id = gene2id[sga1]
     ax.plot(h[sga1id], v[sga1id], marker='o', linestyle='', markersize = int(20*gene2degree[sga1])+5, color = RGB_tuples[y[sga1id]])
 
-#for name, group in groups:
-#    ax.plot(group.x, group.y, marker='o', linestyle='', markersize = 5, label=name)
-#ax.legend()
+
     
     
     
@@ -422,17 +378,7 @@ for line in f:
     sga, degree = l[0], int(l[1])
     if degree > threshold: blacklist.add(sga)
 f.close()
-#print 'len(blacklist)=', len(blacklist)
-#print blacklist
 
-
-#for sga in blacklist:
-#    if sga not in gene2id.keys(): continue
-#    sgaid = gene2id[sga]
-#    ax.annotate(sga, xy=(h[sgaid], v[sgaid])#, xytext=(3, 1.5),
-#            #arrowprops=dict(shrink=0.05),
-#            )
-#    ax.plot(h[sgaid], v[sgaid], marker='*')
     
 
 
@@ -460,7 +406,10 @@ plt.title('averaged over '+str(itertime)+' replications')
 np.save('enrichment_baseline_mukNN_'+str(kNN)+'_brca', enrich)
 np.save('enrichment_baseline_mukNN_'+str(kNN)+'_ctrl_brca', enrich_ctrl)
 
-
+np.save('classsize_40_baseline_mukNN_'+str(kNN)+'_brca',classsize)
+#classsize
+plt.figure()
+plt.hist(classsize, bins = 200)
 print 'Done!'
 
 
